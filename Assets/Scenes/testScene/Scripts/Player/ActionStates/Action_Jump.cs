@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Action_Jump : MovableActionState {
+public class Action_Jump : ActionState {
     
     public Action_Jump () {
         //遷移を表すマップの作成

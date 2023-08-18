@@ -1,0 +1,30 @@
+@startuml 歩き状態_主人公状態遷移
+state ActionState {
+    state WAIT #FFF099
+    state WALK #FFCCF0
+    state JUMP #CCFFF0
+    state DUSH #DDCCFF
+    state GUARD #CCFFCC
+    state DUDGE #FFAACC
+
+    state Attack #FFCCCC {
+        state ATTACK_UP #FFCCCC
+        state ATTACK_DOWN #FFCCCC
+        state ATTACK_COMBO1 #FFCCCC
+        state ATTACK_CHAGE #FFCCCC
+    }
+
+    state DAMAGE #FFDDBB
+    state DEAD #EEEEEE
+}
+
+WALK -up-> Attack
+WALK -left-> WAIT
+WALK -right-> JUMP
+WALK --> DUSH
+WALK --> GUARD
+WALK --> DAMAGE
+WALK --> DEAD
+WALK --> DUDGE
+
+@enduml

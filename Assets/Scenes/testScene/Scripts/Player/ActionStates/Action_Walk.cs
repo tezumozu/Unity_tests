@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MyInputSystems;
 
-public class Action_Walk : MovableActionState {
+public class Action_Walk : ActionState {
     
     public Action_Walk () {
         
@@ -24,13 +24,13 @@ public class Action_Walk : MovableActionState {
                 switch (data.type){
                     case E_InputType.WALK_LEFT_PERFORMED :
                         playerDirection = PlayerDirection.LEFT;
-                        MovableActionState.moveToActive();
+                        isMove = true;
                         nextState = E_ActionState.WALK;
                         break;
 
                     case E_InputType.WALK_RIGHT_PERFORMED:
                         playerDirection = PlayerDirection.RIGHT;
-                        MovableActionState.moveToActive();
+                        isMove = true;
                         nextState = E_ActionState.WALK;
                         break;
                         

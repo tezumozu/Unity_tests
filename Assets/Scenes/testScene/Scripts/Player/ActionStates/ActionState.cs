@@ -10,12 +10,14 @@ abstract public class ActionState {
     protected bool isInputStandBy;
     protected bool isAir;
     protected static PlayerDirection playerDirection;
+    protected static bool isMove;
 
     public ActionState (){
         inputManager = InputManager.instance;
         currentAnimState = E_AnimState.RADY;
         isInputStandBy = true;
         isAir = false;
+        isMove = false;
         playerDirection = PlayerDirection.LEFT;
     }
 

@@ -1,0 +1,61 @@
+@startuml 入力周りクラス設計
+    enum InputKind {
+        ATTACK
+        WALK_RIGHT
+        WALK_LEFT
+        ……
+    }
+    
+    struct InputData {
+        int frameCount
+        InputKind input
+    }
+
+    abstract class InputMode <MonoBehaviour> {
+        init ()
+        inputUpdate ()
+    }
+
+    class ActionInput {
+        init ()
+        inputUpudate ()
+    }
+
+    class CamearaInput {
+        init ()
+        inputUpudate ()
+    }
+
+    class PoseInput {
+        init ()
+        inputUpudate ()
+    }
+
+    class InputManager <MonoBehaviour> {
+        Dictionary <GameMode,InputMode> inputList
+        managerUpdate()
+    }
+
+    enum GameMode{
+        ACTION_ACTION
+        POSE_ACTION
+        CAMERA_ACTION
+        TITLE_TITLE
+        STAGESELECT_STAGESELECT
+        ……
+    }
+
+    class GameManager <MonoBehaviour>{ 
+
+    }
+
+    ActionInput -up-o InputMode
+    CamearaInput -up-o InputMode
+    PoseInput -up-o InputMode
+    InputMode -up-|> InputManager
+    InputData -left-|> InputManager
+    InputKind -up-* InputData
+    GameMode -up-* GameManager
+    GameManager -right-> InputManager
+    InputManager --> GameManager
+@enduml

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Action_Dush : MovableActionState {
+public class Action_Dush : ActionState {
     
     public Action_Dush () {
         //遷移を表すマップの作成

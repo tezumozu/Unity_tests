@@ -1,0 +1,30 @@
+@startuml 着地地_主人公状態遷移
+state ActionState {
+    state WAIT #FFF099
+    state WALK #FFCCF0
+    state DUSH #DDCCFF
+    state DUDGE #FFAACC
+    state JUMP #DDFFAA
+    state LANDING #CCFFCC
+    state GUARD #CCFF22
+    state Attack #FFCCCC {
+        state ATTACK_UP #FFCCCC
+        state ATTACK_DOWN #FFCCCC
+        state ATTACK_COMBO1 #FFCCCC
+        state ATTACK_CHAGE #FFCCCC
+    }
+    state DAMAGE #FFDDBB
+    state DEAD #EEEEEE
+}
+
+LANDING -up-> Attack
+LANDING -left-> WALK
+LANDING -right-> DUSH
+LANDING --> DAMAGE
+LANDING --> DEAD
+LANDING --> DUDGE
+LANDING --> GUARD
+LANDING --> WAIT
+LANDING --> JUMP
+
+@enduml

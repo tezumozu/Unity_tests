@@ -1,0 +1,27 @@
+@startuml 落下_主人公状態遷移
+state ActionState {
+    state FALL #CCFFF0
+    state DUSH #DDCCFF
+    state DUDGE #FFAACC
+    state LANDING #CCFFCC
+    state CLACH #CCFF22
+    state Attack #FFCCCC {
+        state ATTACK_UP #FFCCCC
+        state ATTACK_DOWN #FFCCCC
+        state ATTACK_COMBO1 #FFCCCC
+        state ATTACK_CHAGE #FFCCCC
+    }
+
+    state DAMAGE #FFDDBB
+    state DEAD #EEEEEE
+}
+
+FALL -up-> Attack
+FALL -left-> LANDING
+FALL -right-> DUSH
+FALL --> DAMAGE
+FALL --> DEAD
+FALL --> DUDGE
+FALL --> CLACH
+
+@enduml

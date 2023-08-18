@@ -1,0 +1,36 @@
+@startuml 画面遷移図
+    state GameTitle{
+
+    }
+
+    state Search {
+        
+    }
+
+    state Pose {
+        state save
+        state option
+        state pictorial
+        state map
+
+        save -down-> option
+        save -down-> pictorial
+        save -left-> map
+        option -right-> pictorial
+        option -up-> save
+        option -up-> map
+        pictorial -up-> save
+        pictorial -left-> option
+        pictorial --> map
+        map -right-> save
+        map -down-> option
+        map --> pictorial
+        
+    }
+
+    [*] --> GameTitle :起動
+    GameTitle -down-> Search
+    Search -right-> Pose
+    Pose -left-> Search
+    Pose.save -up-> GameTitle
+@enduml

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Action_ChageAttack : MovableActionState {
+public class Action_ChageAttack : ActionState {
     
     public Action_ChageAttack () {
         //遷移を表すマップの作成

@@ -24,13 +24,13 @@ public class Action_Wait: ActionState{
                 switch (data.type){
                     case E_InputType.WALK_LEFT_PERFORMED:
                         playerDirection = PlayerDirection.LEFT;
-                        MovableActionState.moveToActive();
+                        isMove = true;
                         nextState = E_ActionState.WALK;
                         break;
 
                     case E_InputType.WALK_RIGHT_PERFORMED:
                         playerDirection = PlayerDirection.RIGHT;
-                        MovableActionState.moveToActive();
+                        isMove = true;
                         nextState = E_ActionState.WALK;
                         break;
                         

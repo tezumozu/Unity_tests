@@ -1,0 +1,9 @@
+@startuml プレイヤーの向きを表す状態遷移 右
+
+state DirectionState{
+    state LEFT #DDFFFF
+    state RIGHT #FFDDDD
+}
+
+RIGHT -left-> LEFT :左に移動
+@enduml
