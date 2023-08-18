@@ -10,14 +10,15 @@ public class Action_Wait: ActionState{
     }
 
     override public E_ActionState checkInput(){
+        E_ActionState nextState = E_ActionState.WAIT;
 
         if (isInputStandBy){
-            E_ActionState nextState = E_ActionState.WAIT;
-
             //入力確認処理
             var inputData = inputManager.getInputData(6.0f * 1.0f / 60.0f);
+
+            //入力がなかった場合
             if(inputData.Count < 1){
-                return E_ActionState.WAIT;
+                return nextState;
             }
 
             foreach(var data in inputData) {
@@ -35,7 +36,8 @@ public class Action_Wait: ActionState{
                         break;
                         
                     case E_InputType.JUMP:
-                        nextState = E_ActionState.WALK;
+                        nextState = E_ActionState.JUMP;
+                        isAir = true;
                         break;
                 /*
                     case E_InputType.ATTACK:
@@ -57,12 +59,10 @@ public class Action_Wait: ActionState{
                     default:
                         break;
                 }
-            }
-
-            return nextState;            
+            }          
         }
 
-        return E_ActionState.WAIT;
+        return nextState;  
     }
 
     override public E_ActionState stateUpdate (){
