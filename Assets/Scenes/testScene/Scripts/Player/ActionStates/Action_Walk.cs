@@ -4,7 +4,7 @@ using UnityEngine;
 using MyInputSystems;
 
 public class Action_Walk : ActionState {
-    
+
     public Action_Walk () {
         
     }
@@ -24,16 +24,44 @@ public class Action_Walk : ActionState {
                 switch (data.type){
                     case E_InputType.WALK_LEFT_PERFORMED :
                         playerDirection = PlayerDirection.LEFT;
-                        isMove = true;
+                        isWalkLeft = true;
                         nextState = E_ActionState.WALK;
                         break;
 
+
+                    case E_InputType.WALK_LEFT_CANCELED :
+                        isWalkRight = false;
+                        nextState = E_ActionState.WAIT;
+
+                        //右が同時押しされている場合
+                        if(isWalkRight){
+                            playerDirection = PlayerDirection.RIGHT;
+                            nextState = E_ActionState.WALK;
+                        }
+                        break;
+
+
                     case E_InputType.WALK_RIGHT_PERFORMED:
                         playerDirection = PlayerDirection.RIGHT;
-                        isMove = true;
+                        isWalkRight = true;
                         nextState = E_ActionState.WALK;
                         break;
+                    
+
+                    case E_InputType.WALK_RIGHT_CANCELED :
                         
+                        isWalkRight = false;
+                        nextState = E_ActionState.WAIT;
+
+                        //左が同時押しされている場合
+                        if(isWalkLeft){
+                            playerDirection = PlayerDirection.LEFT;
+                            nextState = E_ActionState.WALK;
+                        }
+
+                        break;
+                        
+
                     case E_InputType.JUMP:
                         nextState = E_ActionState.WALK;
                         break;
@@ -48,8 +76,8 @@ public class Action_Walk : ActionState {
     }
 
     override public E_ActionState stateUpdate (){
-        E_ActionState nextState = E_ActionState.WAIT;
-        Debug.Log("WALK");
+        E_ActionState nextState = E_ActionState.WALK;
+        Debug.Log(playerDirection);
         return nextState;
 
     }

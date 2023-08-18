@@ -24,20 +24,20 @@ public class Action_Wait: ActionState{
                 switch (data.type){
                     case E_InputType.WALK_LEFT_PERFORMED:
                         playerDirection = PlayerDirection.LEFT;
-                        isMove = true;
+                        isWalkLeft = true;
                         nextState = E_ActionState.WALK;
                         break;
 
                     case E_InputType.WALK_RIGHT_PERFORMED:
                         playerDirection = PlayerDirection.RIGHT;
-                        isMove = true;
+                        isWalkRight = true;
                         nextState = E_ActionState.WALK;
                         break;
                         
                     case E_InputType.JUMP:
                         nextState = E_ActionState.WALK;
                         break;
-
+                /*
                     case E_InputType.ATTACK:
                         nextState = E_ActionState.ATTACK;
                         break;
@@ -53,7 +53,7 @@ public class Action_Wait: ActionState{
                     case E_InputType.GUARD_PEFORMED:
                         nextState = E_ActionState.GUARD;
                         break;
-
+                */
                     default:
                         break;
                 }
@@ -67,6 +67,7 @@ public class Action_Wait: ActionState{
 
     override public E_ActionState stateUpdate (){
         E_ActionState nextState = E_ActionState.WAIT;
+        Debug.Log("WAIT");
         return nextState;
     }
 }

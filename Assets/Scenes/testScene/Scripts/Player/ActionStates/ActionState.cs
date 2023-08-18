@@ -6,18 +6,21 @@ using MyInputSystems;
 abstract public class ActionState {
     
     protected E_AnimState currentAnimState;
-    protected static InputManager inputManager;
     protected bool isInputStandBy;
-    protected bool isAir;
+
+    protected static InputManager inputManager;
     protected static PlayerDirection playerDirection;
-    protected static bool isMove;
+    protected static bool isAir;
+    protected static bool isWalkLeft;
+    protected static bool isWalkRight;
 
     public ActionState (){
         inputManager = InputManager.instance;
         currentAnimState = E_AnimState.RADY;
         isInputStandBy = true;
         isAir = false;
-        isMove = false;
+        isWalkLeft = false;
+        isWalkRight = false;
         playerDirection = PlayerDirection.LEFT;
     }
 
