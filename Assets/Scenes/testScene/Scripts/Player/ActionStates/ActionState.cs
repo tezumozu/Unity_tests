@@ -55,7 +55,8 @@ public enum E_ActionState {//アニメーション単位
     JUMP,
     DUDGE,
     GUARD,
-    DUSH
+    DUSH,
+    FALL
 }
 
 public enum PlayerDirection{

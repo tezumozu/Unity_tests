@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using MyInputSystems;
 
-public class Action_Jump : ActionState {
-    float currentFrame;
-    const float maxJumpFrame = 1.0f;
-    public Action_Jump () {
+public class Action_Fall : ActionState
+{
+    float testcurrentFrame;
+    const float testFrame = 1.0f;
+    public Action_Fall () {
         //遷移を表すマップの作成
-        currentFrame = 0.0f;
+        testcurrentFrame = 0.0f;
     }
 
     override public E_ActionState checkInput(){
-        E_ActionState nextState = E_ActionState.JUMP;
+        E_ActionState nextState = E_ActionState.FALL;
 
         if (isInputStandBy){
             //入力確認処理
@@ -57,14 +58,6 @@ public class Action_Jump : ActionState {
 
                         break;
 
-
-                    case E_InputType.LITTLE_JUMP : ///ジャンプを終了し落下に切り替える
-                        nextState = E_ActionState.FALL;
-                        currentFrame = 0.0f;
-
-                        break;
-                    
-
                     default:
                         break;
                 }
@@ -77,17 +70,23 @@ public class Action_Jump : ActionState {
     
 
     override public E_ActionState stateUpdate (){
-        E_ActionState nextState = E_ActionState.JUMP;
+        E_ActionState nextState = E_ActionState.FALL;
 
-        currentFrame += Time.deltaTime;
+        testcurrentFrame += Time.deltaTime;
 
-        //落下に切り替える
-        if(currentFrame > maxJumpFrame){ 
-            currentFrame = 0.0f;
-            nextState = E_ActionState.FALL;
+        //着地 ※テスト用
+        if(testcurrentFrame > testFrame){ 
+            testcurrentFrame = 0.0f;
+            nextState = E_ActionState.WAIT;
+            isAir = false;
+
+            //移動が入力されている場合　
+            if(isWalkLeft || isWalkRight){
+                    nextState = E_ActionState.WALK;
+            }
         }
 
-        Debug.Log("JUMP:" + currentFrame);
+        Debug.Log("FALL:" + testcurrentFrame);
 
         return nextState;   
     }
