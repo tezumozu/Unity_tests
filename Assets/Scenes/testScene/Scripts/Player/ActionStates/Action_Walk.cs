@@ -46,7 +46,6 @@ public class Action_Walk : ActionState {
                         isWalkRight = true;
                         nextState = E_ActionState.WALK;
                         break;
-                    
 
                     case E_InputType.WALK_RIGHT_CANCELED :
                         
@@ -65,6 +64,10 @@ public class Action_Walk : ActionState {
                     case E_InputType.JUMP:
                         nextState = E_ActionState.JUMP;
                         isAir = true;
+                        break;
+
+                    case E_InputType.ATTACK:
+                        nextState = E_ActionState.ATTACK;
                         break;
                 }
             }

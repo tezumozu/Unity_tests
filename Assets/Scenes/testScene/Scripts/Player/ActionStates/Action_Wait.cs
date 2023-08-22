@@ -39,11 +39,12 @@ public class Action_Wait: ActionState{
                         nextState = E_ActionState.JUMP;
                         isAir = true;
                         break;
-                /*
+                
                     case E_InputType.ATTACK:
                         nextState = E_ActionState.ATTACK;
                         break;
-
+                        
+                /*
                     case E_InputType.CHARGE_ATTACK_PEFORMED:
                         nextState = E_ActionState.CHARGE_ATTACK;
                         break;

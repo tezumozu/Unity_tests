@@ -20,6 +20,7 @@ public class Player: MonoBehaviour{
         ActionStateList[E_ActionState.GUARD] = new Action_Guard();
         ActionStateList[E_ActionState.DUSH] = new Action_Dush();
         ActionStateList[E_ActionState.FALL] = new Action_Fall();
+        ActionStateList[E_ActionState.LANDING] = new Action_Landing();
 
     }
 

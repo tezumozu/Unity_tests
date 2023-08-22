@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using MyInputSystems;
 
-public class Action_Fall : ActionState
-{
-    float testCurrentFrame;
-    const float testFrame = 1.0f;
-    public Action_Fall () {
-        //遷移を表すマップの作成
-        testCurrentFrame = 0.0f;
-    }
+public class Action_Landing : ActionState{
+    const float landingFrame =  1.0f;
+    float currentFrame;
 
+    public Action_Landing () {
+        //遷移を表すマップの作成
+        currentFrame = 0.0f;
+    }
     override public E_ActionState checkInput(){
-        E_ActionState nextState = E_ActionState.FALL;
+        E_ActionState nextState = E_ActionState.LANDING;
 
         if (isInputStandBy){
             //入力確認処理
             var inputData = inputManager.getInputData(6.0f * 1.0f / 60.0f);
 
+            //入力がなかった場合
             if(inputData.Count < 1){
                 return nextState;
             }
@@ -47,9 +47,6 @@ public class Action_Fall : ActionState
                         isWalkRight = true;
                         break;
                     
-                    case E_InputType.ATTACK:
-                        nextState = E_ActionState.ATTACK;
-                        break;
 
                     case E_InputType.WALK_RIGHT_CANCELED :
                         isWalkRight = false;
@@ -60,7 +57,32 @@ public class Action_Fall : ActionState
                         }
 
                         break;
+                        
+                    case E_InputType.JUMP:
+                        nextState = E_ActionState.JUMP;
+                        isAir = true;
+                        break;
+                    
+                    case E_InputType.ATTACK:
+                        nextState = E_ActionState.ATTACK;
+                        break;
+                /*
+                    case E_InputType.ATTACK:
+                        nextState = E_ActionState.ATTACK;
+                        break;
 
+                    case E_InputType.CHARGE_ATTACK_PEFORMED:
+                        nextState = E_ActionState.CHARGE_ATTACK;
+                        break;
+
+                    case E_InputType.DUSH:
+                        nextState = E_ActionState.DUSH;
+                        break;
+
+                    case E_InputType.GUARD_PEFORMED:
+                        nextState = E_ActionState.GUARD;
+                        break;
+                */
                     default:
                         break;
                 }
@@ -68,24 +90,27 @@ public class Action_Fall : ActionState
         }
 
         return nextState;  
-
     }
-    
 
     override public E_ActionState stateUpdate (){
-        E_ActionState nextState = E_ActionState.FALL;
+        E_ActionState nextState = E_ActionState.LANDING;
 
-        testCurrentFrame += Time.deltaTime;
+        currentFrame += Time.deltaTime;
 
-        //着地 ※テスト用
-        if(testCurrentFrame > testFrame){ 
-            testCurrentFrame = 0.0f;
-            nextState = E_ActionState.LANDING;
-            isAir = false;
+        Debug.Log("LANDING : " + currentFrame);
+
+        if (currentFrame > landingFrame){
+            nextState = E_ActionState.WAIT;
+            currentFrame = 0.0f;
+
+            //移動が入力されている場合　
+            if(isWalkLeft || isWalkRight){
+                nextState = E_ActionState.WALK;
+            }
         }
 
-        Debug.Log("FALL:" + testCurrentFrame);
+        
 
-        return nextState;   
+        return nextState;
     }
 }

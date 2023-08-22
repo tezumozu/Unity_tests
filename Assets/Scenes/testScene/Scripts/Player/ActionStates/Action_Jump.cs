@@ -57,6 +57,10 @@ public class Action_Jump : ActionState {
 
                         break;
 
+                    case E_InputType.ATTACK:
+                        nextState = E_ActionState.ATTACK;
+                        break;
+
 
                     case E_InputType.LITTLE_JUMP : ///ジャンプを終了し落下に切り替える
                         nextState = E_ActionState.FALL;
