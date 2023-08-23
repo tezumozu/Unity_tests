@@ -63,7 +63,7 @@ public class Action_Walk : ActionState {
 
                     case E_InputType.JUMP:
                         nextState = E_ActionState.JUMP;
-                        isAir = true;
+                        getPlayer.toAir();
                         break;
 
                     case E_InputType.ATTACK:

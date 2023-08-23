@@ -79,7 +79,7 @@ public class Action_Attack : ActionState {
             nextState = E_ActionState.WAIT;
 
             //空中の場合
-            if (isAir) {
+            if (getPlayer.getIsAir) {
                 nextState = E_ActionState.FALL;
             
             //移動が入力されている場合　

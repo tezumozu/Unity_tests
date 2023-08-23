@@ -60,7 +60,7 @@ public class Action_Landing : ActionState{
                         
                     case E_InputType.JUMP:
                         nextState = E_ActionState.JUMP;
-                        isAir = true;
+                        getPlayer.toAir();
                         break;
                     
                     case E_InputType.ATTACK:
@@ -97,7 +97,7 @@ public class Action_Landing : ActionState{
 
         currentFrame += Time.deltaTime;
 
-        Debug.Log("LANDING : " + currentFrame);
+        //Debug.Log("LANDING : " + currentFrame);
 
         if (currentFrame > landingFrame){
             nextState = E_ActionState.WAIT;

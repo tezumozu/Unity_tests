@@ -10,18 +10,32 @@ abstract public class ActionState {
 
     protected static InputManager inputManager;
     protected static PlayerDirection playerDirection;
-    protected static bool isAir;
+
     protected static bool isWalkLeft;
     protected static bool isWalkRight;
 
-    public ActionState (){
+    private static GravityEffectableMono playerObject;
+    protected static GravityEffectableMono getPlayer{
+        get {
+            if (playerObject == null){
+                playerObject = GameObject.Find("Player").GetComponent<GravityEffectableMono>();
+            }
+
+            return playerObject;
+        }
+    }
+
+    public static void initState(){
         inputManager = InputManager.instance;
-        currentAnimState = E_AnimState.RADY;
-        isInputStandBy = true;
-        isAir = false;
         isWalkLeft = false;
         isWalkRight = false;
         playerDirection = PlayerDirection.LEFT;
+        playerObject = GameObject.Find("Player").GetComponent<GravityEffectableMono>();
+    }
+
+    public ActionState (){
+        currentAnimState = E_AnimState.RADY;
+        isInputStandBy = true;
     }
 
     // Start is called before the first frame update

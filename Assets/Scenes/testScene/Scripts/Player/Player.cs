@@ -2,13 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MyInputSystems;
-public class Player: MonoBehaviour{
+public class Player: GravityEffectableMono{
 
     private Dictionary< E_ActionState , ActionState > ActionStateList;
     // Start is called before the first frame update
     private E_ActionState currentActionState;
     public void init(){
-        currentActionState = E_ActionState.WAIT;
+        //状態遷移の初期化
+        ActionState.initState();
+
+        currentActionState = E_ActionState.FALL;
+        toAir();
 
         //リスト作成
         ActionStateList = new Dictionary< E_ActionState , ActionState >();
@@ -31,5 +35,13 @@ public class Player: MonoBehaviour{
         
         //各状態に応じた処理
         currentActionState = ActionStateList[currentActionState].stateUpdate();
+
+        //重力の適応
+        this.addGravity();
+
+        //着地の判定
+        this.checkLanding();
     }
+
+    
 }

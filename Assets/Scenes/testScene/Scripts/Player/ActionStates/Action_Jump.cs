@@ -91,7 +91,7 @@ public class Action_Jump : ActionState {
             nextState = E_ActionState.FALL;
         }
 
-        Debug.Log("JUMP:" + currentFrame);
+        //Debug.Log("JUMP:" + currentFrame);
 
         return nextState;   
     }

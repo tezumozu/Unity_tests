@@ -81,10 +81,10 @@ public class Action_Fall : ActionState
         if(testCurrentFrame > testFrame){ 
             testCurrentFrame = 0.0f;
             nextState = E_ActionState.LANDING;
-            isAir = false;
+            getPlayer.toLand();
         }
 
-        Debug.Log("FALL:" + testCurrentFrame);
+        //Debug.Log("FALL:" + testCurrentFrame);
 
         return nextState;   
     }
