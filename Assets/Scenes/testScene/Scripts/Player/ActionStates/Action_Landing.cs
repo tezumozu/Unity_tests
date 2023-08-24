@@ -4,7 +4,7 @@ using UnityEngine;
 using MyInputSystems;
 
 public class Action_Landing : ActionState{
-    const float landingFrame =  1.0f;
+    const float landingFrame =  0.3f;
     float currentFrame;
 
     bool isBufferCheck;
@@ -105,11 +105,10 @@ public class Action_Landing : ActionState{
             //先行入力の確認
             if(isBufferCheck && nextState == E_ActionState.LANDING ){
                 var bufferList = inputManager.getInputBuffer;
-                Debug.Log(bufferList.Length);
+
                 for (int i = 0; i < bufferList.Length; i++){
                     switch (bufferList[i].type){
                         case E_InputType.JUMP:
-                        Debug.Log("test");
                         nextState = E_ActionState.JUMP;
                         getPlayer.toAir();
                         resetState();
@@ -147,6 +146,20 @@ public class Action_Landing : ActionState{
             }
         }
 
+        
+        Vector3 moveVec = new Vector3 (0.0f,0.0f,0.0f) * Time.deltaTime;
+
+        //左右への移動
+        if(isWalkLeft||isWalkRight){
+            if(playerDirection == PlayerDirection.LEFT){
+                moveVec.x = -moveDistance * Time.deltaTime;
+            }else{
+                moveVec.x = moveDistance * Time.deltaTime;
+            }
+        }
+
+        //移動する
+        playerObject.transform.position += moveVec;
         
 
         return nextState;

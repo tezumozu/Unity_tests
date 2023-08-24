@@ -27,7 +27,7 @@ public class Action_Fall : ActionState {
 
 
                     case E_InputType.WALK_LEFT_CANCELED :
-                        isWalkRight = false;
+                        isWalkLeft = false;
     
                         //右が同時押しされている場合
                         if(isWalkRight){
@@ -68,6 +68,20 @@ public class Action_Fall : ActionState {
 
     override public E_ActionState stateUpdate (){
         E_ActionState nextState = E_ActionState.FALL;
+
+        Vector3 moveVec = new Vector3 (0.0f,0.0f,0.0f) * Time.deltaTime;
+
+        //左右への移動
+        if(isWalkLeft||isWalkRight){
+            if(playerDirection == PlayerDirection.LEFT){
+                moveVec.x = -moveDistance * Time.deltaTime;
+            }else{
+                moveVec.x = moveDistance * Time.deltaTime;
+            }
+        }
+
+        //移動する
+        playerObject.transform.position += moveVec;
 
         return nextState;   
     }

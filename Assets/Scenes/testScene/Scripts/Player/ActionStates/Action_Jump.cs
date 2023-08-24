@@ -29,7 +29,7 @@ public class Action_Jump : ActionState {
 
 
                     case E_InputType.WALK_LEFT_CANCELED :
-                        isWalkRight = false;
+                        isWalkLeft = false;
 
                         //右が同時押しされている場合
                         if(isWalkRight){
@@ -86,6 +86,15 @@ public class Action_Jump : ActionState {
         if(playerObject.getCurrentGravityAcce > jumpAcce * 1.0f / 60.0f){ 
             playerObject.resetGravity();
             nextState = E_ActionState.FALL;
+        }
+
+        //左右への移動
+        if(isWalkLeft||isWalkRight){
+            if(playerDirection == PlayerDirection.LEFT){
+                moveVec.x = -moveDistance * Time.deltaTime;
+            }else{
+                moveVec.x = moveDistance * Time.deltaTime;
+            }
         }
 
         //移動する

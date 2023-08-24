@@ -14,6 +14,8 @@ abstract public class ActionState {
     protected static bool isWalkLeft;
     protected static bool isWalkRight;
 
+    protected static float moveDistance = 10.0f;
+
     protected static GravityEffectableMono playerObject;
     protected static GravityEffectableMono getPlayer{
         get {
