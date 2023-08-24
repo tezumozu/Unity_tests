@@ -4,10 +4,20 @@ using UnityEngine;
 
 abstract public class GravityEffectableMono : MonoBehaviour {
     [SerializeField]
-    LayerMask groundLayer;
+    protected LayerMask groundLayer;
 
     protected float currentGravityAcce;
-    private const float gravityAcce = 0.98f;
+
+    public float getCurrentGravityAcce{
+        get {
+            return currentGravityAcce;
+        }
+    }
+
+    [SerializeField]
+    protected float maxGravityAcce = 10.0f;
+
+    protected const float gravityAcce = 0.98f;
 
     protected bool isAir;
     public bool getIsAir {
@@ -17,8 +27,12 @@ abstract public class GravityEffectableMono : MonoBehaviour {
     virtual protected void addGravity (){
         if(!isAir) return ;
         currentGravityAcce += gravityAcce * Time.deltaTime;
+
+        //加速度上限
+        if (currentGravityAcce > maxGravityAcce){
+            currentGravityAcce = maxGravityAcce;
+        }
         transform.position += new Vector3(0.0f, -currentGravityAcce, 0.0f);
-        
     }
 
     virtual public void toAir(){
@@ -42,7 +56,6 @@ abstract public class GravityEffectableMono : MonoBehaviour {
 
         //空中の場合
         if (isAir){
-            Debug.Log(groundLayer);
             //検出していたら
             if(hitObjct){
                 toLand();
@@ -61,5 +74,8 @@ abstract public class GravityEffectableMono : MonoBehaviour {
         return;
     }
 
+    public void resetGravity(){
+        currentGravityAcce = 0.0f;
+    }
 
 }

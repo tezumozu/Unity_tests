@@ -72,7 +72,7 @@ namespace MyInputSystems {
 
             //有効フレームをすぎた入力を削除
             inputBuffer.RemoveAll( x => {
-                return x.frameCount >= maxValidFrameCount;
+                return x.frameCount > maxValidFrameCount;
             });
         }
 

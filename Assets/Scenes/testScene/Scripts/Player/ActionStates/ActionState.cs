@@ -14,7 +14,7 @@ abstract public class ActionState {
     protected static bool isWalkLeft;
     protected static bool isWalkRight;
 
-    private static GravityEffectableMono playerObject;
+    protected static GravityEffectableMono playerObject;
     protected static GravityEffectableMono getPlayer{
         get {
             if (playerObject == null){
@@ -25,7 +25,7 @@ abstract public class ActionState {
         }
     }
 
-    public static void initState(){
+    public static void initActionState(){
         inputManager = InputManager.instance;
         isWalkLeft = false;
         isWalkRight = false;
@@ -39,12 +39,12 @@ abstract public class ActionState {
     }
 
     // Start is called before the first frame update
-    virtual public void init(){
+    virtual public void resetState(){
         
     }
 
     // Update is called once per frame
-    virtual public E_ActionState  stateUpdate(){
+    virtual public E_ActionState  stateUpdate( ){
         return E_ActionState.WALK;
     }
 

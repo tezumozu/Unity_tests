@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using MyInputSystems;
 public class Player: GravityEffectableMono{
-
+    
     private Dictionary< E_ActionState , ActionState > ActionStateList;
-    // Start is called before the first frame update
+   
     private E_ActionState currentActionState;
     public void init(){
         //状態遷移の初期化
-        ActionState.initState();
+        ActionState.initActionState();
 
         currentActionState = E_ActionState.FALL;
         toAir();
@@ -30,18 +30,47 @@ public class Player: GravityEffectableMono{
 
     // Update is called once per frame
     public void objectUpdate(){
+
         //入力確認
         currentActionState = ActionStateList[currentActionState].checkInput();
         
-        //各状態に応じた処理
-        currentActionState = ActionStateList[currentActionState].stateUpdate();
-
         //重力の適応
         this.addGravity();
+
+        //各状態に応じた処理
+        currentActionState = ActionStateList[currentActionState].stateUpdate();
 
         //着地の判定
         this.checkLanding();
     }
 
-    
+    override public void checkLanding(){
+        Vector2 startPoint = new Vector2 (transform.position.x,transform.position.y);
+        Vector2 endPoint = new Vector2 (transform.position.x,transform.position.y - 1.0f);
+
+        RaycastHit2D hitObjct = Physics2D.Linecast(startPoint,endPoint,groundLayer);
+
+        //空中の場合
+        if (isAir){
+            //検出していたら
+            if(hitObjct){
+                toLand();
+                //座標を修正
+                transform.position = new Vector2 (hitObjct.point.x,hitObjct.point.y + 1.0f); 
+                currentActionState = E_ActionState.LANDING;
+                ActionStateList[currentActionState].resetState();
+            }
+
+        //地上の場合
+        }else {
+            //落下した
+            if(!hitObjct){
+                toAir();
+                currentActionState = E_ActionState.FALL;
+                resetGravity();
+            }
+        }
+
+        return;
+    }
 }

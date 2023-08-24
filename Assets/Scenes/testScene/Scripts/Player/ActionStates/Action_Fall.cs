@@ -3,13 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using MyInputSystems;
 
-public class Action_Fall : ActionState
-{
-    float testCurrentFrame;
-    const float testFrame = 1.0f;
+public class Action_Fall : ActionState {
     public Action_Fall () {
-        //遷移を表すマップの作成
-        testCurrentFrame = 0.0f;
     }
 
     override public E_ActionState checkInput(){
@@ -33,8 +28,7 @@ public class Action_Fall : ActionState
 
                     case E_InputType.WALK_LEFT_CANCELED :
                         isWalkRight = false;
-                        nextState = E_ActionState.WAIT;
-
+    
                         //右が同時押しされている場合
                         if(isWalkRight){
                             playerDirection = PlayerDirection.RIGHT;
@@ -74,17 +68,6 @@ public class Action_Fall : ActionState
 
     override public E_ActionState stateUpdate (){
         E_ActionState nextState = E_ActionState.FALL;
-
-        testCurrentFrame += Time.deltaTime;
-
-        //着地 ※テスト用
-        if(testCurrentFrame > testFrame){ 
-            testCurrentFrame = 0.0f;
-            nextState = E_ActionState.LANDING;
-            getPlayer.toLand();
-        }
-
-        //Debug.Log("FALL:" + testCurrentFrame);
 
         return nextState;   
     }

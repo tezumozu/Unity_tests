@@ -4,11 +4,9 @@ using UnityEngine;
 using MyInputSystems;
 
 public class Action_Jump : ActionState {
-    float currentFrame;
-    const float maxJumpFrame = 1.0f;
+    const float jumpAcce =  25.0f;
+
     public Action_Jump () {
-        //遷移を表すマップの作成
-        currentFrame = 0.0f;
     }
 
     override public E_ActionState checkInput(){
@@ -32,7 +30,6 @@ public class Action_Jump : ActionState {
 
                     case E_InputType.WALK_LEFT_CANCELED :
                         isWalkRight = false;
-                        nextState = E_ActionState.WAIT;
 
                         //右が同時押しされている場合
                         if(isWalkRight){
@@ -62,9 +59,9 @@ public class Action_Jump : ActionState {
                         break;
 
 
-                    case E_InputType.LITTLE_JUMP : ///ジャンプを終了し落下に切り替える
+                    case E_InputType.LITTLE_JUMP : ///ジャンプを小ジャンプへ切り替える
+                        playerObject.resetGravity();
                         nextState = E_ActionState.FALL;
-                        currentFrame = 0.0f;
 
                         break;
                     
@@ -83,15 +80,16 @@ public class Action_Jump : ActionState {
     override public E_ActionState stateUpdate (){
         E_ActionState nextState = E_ActionState.JUMP;
 
-        currentFrame += Time.deltaTime;
+        Vector3 moveVec = new Vector3 (0.0f,jumpAcce,0.0f) * Time.deltaTime;
 
-        //落下に切り替える
-        if(currentFrame > maxJumpFrame){ 
-            currentFrame = 0.0f;
+        //重力がジャンプのベクトルを上回ったら落下へ遷移
+        if(playerObject.getCurrentGravityAcce > jumpAcce * 1.0f / 60.0f){ 
+            playerObject.resetGravity();
             nextState = E_ActionState.FALL;
         }
 
-        //Debug.Log("JUMP:" + currentFrame);
+        //移動する
+        playerObject.transform.position += moveVec;
 
         return nextState;   
     }
