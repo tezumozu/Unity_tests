@@ -1,0 +1,51 @@
+@startuml ダメージ周りのクラス設計
+    interface DamageApplicableObject <MonoBehaviour>{
+        # void damageApplicable()
+    }
+
+    class Player{
+
+    }
+
+    class Enemy{
+
+    }
+
+    class PlayerAttackEffect {
+
+    }
+
+    class DamageWall{
+
+    }
+
+    class EnemyAttackEffect{
+
+    }
+
+    interface I_DamageInflict {
+        + void damageInflict( DamageApplicableObject obj)
+    }
+
+    interface I_ToPlayerDamageInflict {
+        + void damageInflict( Player obj)
+    }
+
+    interface I_ToEnemyDamageInflict {
+        + void damageInflict( Enemy obj)
+    }
+
+
+
+    Player  -up-o  DamageApplicableObject
+    Enemy  -up-o  DamageApplicableObject
+
+    Player ..> I_DamageInflict
+    Player ..> I_ToPlayerDamageInflict
+    Enemy ..> I_DamageInflict
+    Enemy ..> I_ToEnemyDamageInflict
+
+    PlayerAttackEffect .up.|> I_ToEnemyDamageInflict
+    DamageWall .up.|> I_DamageInflict
+    EnemyAttackEffect .up.|> I_ToPlayerDamageInflict
+@enduml

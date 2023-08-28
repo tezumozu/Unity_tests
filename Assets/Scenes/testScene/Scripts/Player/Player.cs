@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MyInputSystems;
-public class Player: GravityEffectableMono{
+public class Player: GravityEffectableMono , I_DamageApplicable {
     
     private Dictionary< E_ActionState , ActionState > ActionStateList;
    
@@ -73,4 +73,10 @@ public class Player: GravityEffectableMono{
 
         return;
     }
+
+    //ダメージを受けた時の処理
+    public void damageApplicable(){
+
+    }
+    
 }
