@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MyInputSystems;
-public class Player: GravityEffectableMono , I_DamageApplicable {
+public class Player: GravityEffectableMono , I_P_DamageApplicable {
     
     private Dictionary< E_ActionState , ActionState > ActionStateList;
    

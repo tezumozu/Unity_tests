@@ -1,5 +1,13 @@
 @startuml ダメージ周りのクラス設計
-    interface DamageApplicableObject <MonoBehaviour>{
+    interface I_DamageApplicableObject{
+        # void damageApplicable()
+    }
+
+    interface I_P_DamageApplicableObject{
+        # void damageApplicable()
+    }
+
+    interface I_E_DamageApplicableObject{
         # void damageApplicable()
     }
 
@@ -24,26 +32,29 @@
     }
 
     interface I_DamageInflict {
-        + void damageInflict( DamageApplicableObject obj)
+        + void damageInflict( I_DamageApplicableObject obj)
     }
 
     interface I_ToPlayerDamageInflict {
-        + void damageInflict( Player obj)
+        + void damageInflict( I_P_DamageApplicableObject obj)
     }
 
     interface I_ToEnemyDamageInflict {
-        + void damageInflict( Enemy obj)
+        + void damageInflict( I_E_Enemy obj)
     }
 
 
 
-    Player  -up-o  DamageApplicableObject
-    Enemy  -up-o  DamageApplicableObject
+    I_P_DamageApplicableObject  -up-o  I_DamageApplicableObject
+    I_E_DamageApplicableObject  -up-o  I_DamageApplicableObject
 
-    Player ..> I_DamageInflict
-    Player ..> I_ToPlayerDamageInflict
-    Enemy ..> I_DamageInflict
-    Enemy ..> I_ToEnemyDamageInflict
+    I_P_DamageApplicableObject <.. I_DamageInflict
+    I_P_DamageApplicableObject <.. I_ToPlayerDamageInflict
+    I_E_DamageApplicableObject <.. I_DamageInflict
+    I_E_DamageApplicableObject <.. I_ToEnemyDamageInflict
+
+    Player  --o  I_P_DamageApplicableObject
+    Enemy  --o  I_E_DamageApplicableObject
 
     PlayerAttackEffect .up.|> I_ToEnemyDamageInflict
     DamageWall .up.|> I_DamageInflict

@@ -1,29 +1,70 @@
 @startuml 自機周りクラス設計
-    class Player <Mono>{
-        Dictionary <E_ActionState,ActionState> actionList
-        E_ActionState currentState
-        void objectUpdate()
-        void init()
+    class Player <MonoBehaviour>{ 
+        PlayerManager playerManager
     }
 
-    abstract ActionState{
-        # static bool isAir
-        # staic bool isMove
-        # static InputManager inputManager
-        # E_AnimState currentAnimState
-        + E_ActionState actionUpdate()
-        + E_ActionState checkInput()
+
+    class PlayerManager {
+        + PlayerStatus status
+        + void playerDamaged(int damage)
     }
 
-    class Action_Wait{
+
+    class PlayerStateManager {
+        - GravityManager gravityManager
+        - E_ActionState currentState
+        - Dictionary<E_Actionstate,PlayerActionState> stateList
+
+        + void playerDamaged()
+    }
+
+
+    class GravityManager{
+        float gravityAccel
+        float currentGravityAccel
+
+        + Vector2 addGravity()
+        + void resetGravity()
+        + float getCurrentGravityAccel()
+    }
+
+
+    struct PlayerStatus {
+        + int maxHp
+        + int currentHp
+    }
+
+
+    interface I_2DPlayerUpdatable{
+        + void playerUpdate()
+        + void setPos(Vector2 vec)
+        + void setRotate(float rtate)
+        + void setAnimState(E_ActionState state)
+        + bool isLanding()
+    }
+
+
+    abstract PlayerActionState{
+        #InputManager inputManager
+
+        + void stateUpdate()
+        + void stateInit()
+        + void stateStart()
+        + void stateEnd()
+        + void checkInput()
+        - void checInputkBuffer()
+    }
+
+
+    class PlayerAction_Wait{
         
     }
 
-    Class Action_Jump{
+    Class PlayerAction_Jump{
 
     }
 
-    Class Action_Walk{
+    Class PlayerAction_Walk{
 
     }
 
@@ -48,10 +89,19 @@
         LOOP
     }
 
-    Player "1" o--> "1..*" ActionState
-    Action_Jump -up-|> ActionState
-    Action_Wait -up-|> ActionState
-    Action_Walk -up-|> ActionState
+    Player .right.|> I_2DPlayerUpdatable
+    PlayerManager *-up- PlayerStatus
+    PlayerManager *-right-> PlayerStateManager
+    PlayerManager --> I_2DPlayerUpdatable
 
-    ActionState "1" *-right-> "1" InputManager
+    PlayerStateManager --> I_2DPlayerUpdatable
+    PlayerStateManager -right-> InputManager
+    PlayerStateManager *-up- GravityManager
+
+    PlayerActionState -up-o PlayerStateManager
+
+    PlayerAction_Jump -up-|> PlayerActionState
+    PlayerAction_Wait -up-|> PlayerActionState
+    PlayerAction_Walk -up-|> PlayerActionState
+
 @enduml
