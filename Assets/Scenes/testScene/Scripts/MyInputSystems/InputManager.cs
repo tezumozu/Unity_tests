@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using MyGameManagers;
 
 namespace MyInputSystems {
-    public class InputManager : MonoSingleton<InputManager>{
+    public class InputManager : GenericSingletonObject<InputManager>{
 
         static Dictionary<E_InputType , InputData> inputDic; 
         public const float maxValidFrameCount = 6.0f * 1.0f/60.0f;
@@ -29,6 +29,11 @@ namespace MyInputSystems {
                 inputBuffer.CopyTo(copy);
                 return copy;
             }
+        }
+
+
+        public InputManager (){
+
         }
 
         public override void OnInitialize() {

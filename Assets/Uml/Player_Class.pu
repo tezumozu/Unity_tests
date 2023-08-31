@@ -92,16 +92,19 @@
     Player .right.|> I_2DPlayerUpdatable
     PlayerManager *-up- PlayerStatus
     PlayerManager *-right-> PlayerStateManager
-    PlayerManager --> I_2DPlayerUpdatable
+    PlayerManager ..> I_2DPlayerUpdatable
 
-    PlayerStateManager --> I_2DPlayerUpdatable
+    PlayerStateManager ..> I_2DPlayerUpdatable
     PlayerStateManager -right-> InputManager
-    PlayerStateManager *-up- GravityManager
 
-    PlayerActionState -up-o PlayerStateManager
+    PlayerStateManager "1" *-right- "1" GravityManager
+    PlayerActionState "1…*" *-right- "1" GravityManager
+    PlayerActionState <-up-o PlayerStateManager
 
     PlayerAction_Jump -up-|> PlayerActionState
     PlayerAction_Wait -up-|> PlayerActionState
     PlayerAction_Walk -up-|> PlayerActionState
+
+    Player .up.> PlayerManager
 
 @enduml
