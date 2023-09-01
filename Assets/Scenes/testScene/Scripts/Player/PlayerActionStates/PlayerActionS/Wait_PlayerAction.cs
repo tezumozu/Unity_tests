@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using MyInputSystems;
 
-public class PlayerAction_Wait : PlayerActionState{
+public class Wait_PlayerAction : PlayerActionState{
 
-    public PlayerAction_Wait (GravityManager gM) : base(gM){
+    public Wait_PlayerAction (GravityManager gM, I_2DPlayerUpdatable player) : base(gM,player){
         
     }
 
     public override E_ActionState stateUpdate(){
         E_ActionState nextState = E_ActionState.WAIT;
+        Debug.Log("WAIT");
 
         return nextState;
     }
@@ -26,35 +27,7 @@ public class PlayerAction_Wait : PlayerActionState{
     }
 
 
-    public override E_ActionState checkInput(){
-        E_ActionState nextState = E_ActionState.WAIT;
-
-        if (isInputStandBy){
-            //入力確認処理
-            var inputData = inputManager.getInputData(6.0f * 1.0f / 60.0f);
-
-            //入力がなかった場合
-            if(inputData.Count < 1){
-                return nextState;
-            }
-
-            foreach(var data in inputData) {
-                nextState = inputChecker(data.type);
-            }          
-        }
-
-        return nextState;  
-    }
-
-
-    public override E_ActionState checkBuffer(){
-        E_ActionState nextState = E_ActionState.WAIT;
-        
-        return nextState;
-    }
-
-
-    protected override E_ActionState inputChecker(E_InputType input){
+    public override E_ActionState checkInput(E_InputType input){
         E_ActionState nextState = E_ActionState.WAIT;
 
         switch (input){
@@ -76,7 +49,7 @@ public class PlayerAction_Wait : PlayerActionState{
 
             case E_InputType.JUMP:
                 nextState = E_ActionState.JUMP;
-                gravityManager.toAir();
+                PlayerActionState.toAir();
 
             break;
 

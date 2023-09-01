@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GravityManager{
-    private bool isAir;
-    private const float gravityAccel = 0.98f;
+    private const float gravityAccel = -9.8f;
 
     private float currentGravity;
 
@@ -12,30 +11,19 @@ public class GravityManager{
         get { return currentGravity;}
     }    
 
-    public bool getIsAir {
-        get { return isAir; }
-    }
-
     public GravityManager (){
-        isAir = false;
         currentGravity = 0.0f;
     }
 
+    //毎フレーム呼び出すことで重力を再現する
     public Vector2 addGravity(Vector2 targetPos){
+        currentGravity += gravityAccel * Time.deltaTime;
+        Debug.Log(currentGravity);
+        targetPos.y += currentGravity;
         return targetPos;
     }
 
     public void resetGravity(){
-        currentGravity = 0.0f;
-    }
-
-    public void toAir(){
-        isAir = true;
-        currentGravity = 0.0f;
-    }
-
-    public void landing(){
-        isAir = false;
         currentGravity = 0.0f;
     }
 }

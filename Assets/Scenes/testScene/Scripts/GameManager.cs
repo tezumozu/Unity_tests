@@ -12,13 +12,15 @@ namespace MyGameManagers{
             get { return currentMode; }
         }
 
+
         static private ControllerDevice currentDevise;        
         static public ControllerDevice gatCurrentDevise {
             get { return currentDevise;}
         }
 
+
         private InputManager inputManager;
-        private Player player;
+        private PlayerManager playerManager;
 
 
         // Start is called before the first frame update
@@ -31,22 +33,23 @@ namespace MyGameManagers{
 
             inputManager = InputManager.instance;
 
-            player = GameObject.Find("Player").GetComponent<Player>();
-            player.init();
+            I_2DPlayerUpdatable playerObject = GameObject.Find("Player").GetComponent<I_2DPlayerUpdatable>();
+            playerManager = new PlayerManager(playerObject);
         }
 
+
         // Update is called once per frame
-        void Update()
-        {
+        void Update(){
             //Inputを更新
             inputManager.inputUpdate();
 
             //各ゲームオブジェクト更新
-            player.objectUpdate();
+            playerManager.managerUpdate();
 
             //UI更新
         }
     }
+
 
     public enum GameModes{ //入力仕様単位ごとにモードを決める
         TITLE,
