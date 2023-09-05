@@ -7,13 +7,13 @@ public class Walk_PlayerAction : PlayerActionState{
 
     private const float moveDistance = 1.0f;
 
-    public Walk_PlayerAction (GravityManager gM, I_2DPlayerUpdatable player) : base(gM,player){
-        
+    public Walk_PlayerAction (I_2DPlayerUpdatable player) : base(player){
+        ownState = E_PlayerAction.WALK;
     }
 
-    public override E_ActionState stateUpdate(){
-        E_ActionState nextState = E_ActionState.WAIT;
-        Debug.Log("WALK : " + playerDirection);
+    public override E_PlayerAction stateUpdate(){
+        E_PlayerAction nextState = E_PlayerAction.WALK;
+        //Debug.Log("WALK : " + playerDirection);
 
         Vector3 moveVec = new Vector2 (0.0f,0.0f);
 
@@ -33,18 +33,28 @@ public class Walk_PlayerAction : PlayerActionState{
     }
 
 
-    public override void stateInit(){
-
+    public override void stateEntrance(){
+        bufferedInpuitAvailable = false;
+        isFinished = false;
+        inputStandBy = true;
     }
 
 
-    public override void stateTermination(){
+    public override E_PlayerAction stateExit(){
+        return ownState;
+    }
 
+    protected override E_PlayerAction toLand(){
+        return E_PlayerAction.LANDING;
+    }
+
+    protected override E_PlayerAction toAir(){
+        return E_PlayerAction.FALL;
     }
 
 
-    public override E_ActionState checkInput(E_InputType input){
-        E_ActionState nextState = E_ActionState.WALK;
+    protected override E_PlayerAction inputStateTransition(E_InputType input){
+        E_PlayerAction nextState = E_PlayerAction.WALK;
 
         switch (input){
             case E_InputType.WALK_LEFT_PERFORMED :
@@ -59,9 +69,9 @@ public class Walk_PlayerAction : PlayerActionState{
                 //右が同時押しされている場合
                 if(isWalkRight){
                     playerDirection = PlayerDirection.RIGHT;
-                    nextState = E_ActionState.WALK;
+                    nextState = E_PlayerAction.WALK;
                 }else{
-                    nextState = E_ActionState.WAIT;
+                    nextState = E_PlayerAction.WAIT;
                 }
                 break;
 
@@ -78,21 +88,21 @@ public class Walk_PlayerAction : PlayerActionState{
                 //左が同時押しされている場合
                 if(isWalkLeft){
                     playerDirection = PlayerDirection.LEFT;
-                    nextState = E_ActionState.WALK;
+                    nextState = E_PlayerAction.WALK;
                 }else{
-                    nextState = E_ActionState.WAIT;
+                    nextState = E_PlayerAction.WAIT;
                 }
                 break;
                         
 
             /*
             case E_InputType.JUMP:
-                nextState = E_ActionState.JUMP;
+                nextState = E_PlayerAction.JUMP;
                 PlayerActinState.toAir();
                 break;
 
             case E_InputType.ATTACK:
-                nextState = E_ActionState.ATTACK;
+                nextState = E_PlayerAction.ATTACK;
                 break;
                 */
             

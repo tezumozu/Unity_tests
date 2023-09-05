@@ -29,7 +29,7 @@ public class Action_Landing : ActionState{
             var inputData = inputManager.getInputData(6.0f * 1.0f / 60.0f);
 
             //入力あれば
-            if(inputData.Count > 0){
+            if(inputData.Length > 0){
 
                 foreach(var data in inputData) {
                     switch (data.type){

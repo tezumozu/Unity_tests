@@ -4,16 +4,19 @@ using UnityEngine;
 using MyInputSystems;
 
 public abstract class PlayerActionState{
+    protected E_PlayerAction ownState;
     protected GravityManager gravityManager;
     protected I_2DPlayerUpdatable player;
     protected bool inputStandBy;
     protected bool bufferedInpuitAvailable;
+    protected bool isFinished;
 
     static protected PlayerDirection playerDirection;
     static protected bool isWalkLeft;
     static protected bool isWalkRight;
     static protected bool isAir;
-    static protected InputManager inputManager;
+
+    static protected float availableInputTime;
 
     public bool isInputStandBy {
         get { return inputStandBy; }
@@ -23,31 +26,126 @@ public abstract class PlayerActionState{
         get { return bufferedInpuitAvailable; }
     }
 
-    static public bool getIsAir {
+    public bool getIsFinished{
+        get { return isFinished; }
+    }
+
+    static public bool getIsAir{
         get { return isAir; }
     }
 
-    public PlayerActionState (GravityManager gM,I_2DPlayerUpdatable player){
-        gravityManager = gM;
+
+    public PlayerActionState (I_2DPlayerUpdatable player){
+        ownState = E_PlayerAction.WAIT; //初期化のため
+        gravityManager = new GravityManager();
         this.player = player;
         inputStandBy = true;
-        inputManager = InputManager.instance;
         playerDirection = PlayerDirection.RIGHT;
         isWalkLeft = false;
         isWalkRight = false;
         bufferedInpuitAvailable = false;
+        isFinished = false;
+        availableInputTime = 6.0f * 1.0f / 60.0f;
     }
 
-    abstract public E_ActionState stateUpdate();
-    abstract public void stateInit();
-    abstract public void stateTermination();
-    abstract public E_ActionState checkInput(E_InputType input);
 
-    static public void toAir(){
-        isAir = true;
+    abstract public E_PlayerAction stateUpdate();
+
+    abstract public void stateEntrance();
+
+    abstract public E_PlayerAction stateExit();
+
+    abstract protected E_PlayerAction inputStateTransition(E_InputType input);
+
+    abstract protected E_PlayerAction toAir();
+
+    abstract protected E_PlayerAction toLand();
+
+
+    public E_PlayerAction checkLanding (){
+        var nextState = ownState;
+
+        //地表判定を確認 
+        if(isAir){
+            if(player.isLanding()){
+                nextState = toAir();    //着地時処理
+            }
+        
+        }else {    //落下判定
+            if(!player.isLanding()){
+                nextState = toLand();  //落下時処理
+            }
+        }
+
+        return nextState;
     }
 
-    static public void landing(){
-        isAir = false;
+    private E_PlayerAction comebackCheckInput(InputData[] input, int count, E_PlayerAction state){ 
+        
+        if(count > 0){
+            state = comebackCheckInput( input , count-1 , state ); 
+            E_PlayerAction nextState = inputStateTransition(input[count-1].type);
+
+            if(ownState != nextState){
+                return nextState;
+            }
+
+            return state;
+
+        }else{
+            return state;
+        }
+
+        /*
+        */
     }
+
+    private E_PlayerAction comebackCheckInput(InputData[] input, E_PlayerAction state){ 
+        return comebackCheckInput(input, input.Length, state);
+    }
+
+    public E_PlayerAction checkInput(){
+        var nextState = ownState;
+
+        //入力を取得
+        var inputData = InputManager.instance.getInputData(availableInputTime);
+
+        //入力があれば
+        if(inputData.Length > 0){
+            //入力をもとに遷移を確認
+            nextState = comebackCheckInput(inputData , nextState);
+        }
+
+        //先行入力を確認
+        if(isBufferedInpuitAvailable){
+            var bufferList = InputManager.instance.getInputBuffer;
+            nextState = comebackCheckInput(bufferList , nextState);
+        }
+
+        return nextState;
+    }
+
+}
+
+public enum E_PlayerAction{
+    WAIT,
+    WALK,
+    ATTACK,
+    JUMP,
+    FALL,
+    LANDING,
+    DAMAGED
+}
+
+public enum E_PlayerUpperAction {
+    ATTACK,
+    JUMP,
+    FALL
+}
+
+public enum E_PlayerLowerAction{
+    WALK,
+    FALL,
+    LANDING,
+    WAIT
 }

@@ -17,7 +17,7 @@ public class Action_Wait: ActionState{
             var inputData = inputManager.getInputData(6.0f * 1.0f / 60.0f);
 
             //入力がなかった場合
-            if(inputData.Count < 1){
+            if(inputData.Length < 1){
                 return nextState;
             }
 

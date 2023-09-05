@@ -7,14 +7,14 @@ public class Fall_PlayerAction : PlayerActionState{
      private const float moveDistance = 1.0f;
 
 
-    public Fall_PlayerAction (GravityManager gM, I_2DPlayerUpdatable player) : base(gM,player){
-        
+    public Fall_PlayerAction (I_2DPlayerUpdatable player) : base(player){
+        ownState = E_PlayerAction.FALL;
     }
 
 
     //状態の処理
-    public override E_ActionState stateUpdate(){
-        E_ActionState nextState = E_ActionState.FALL;
+    public override E_PlayerAction stateUpdate(){
+        E_PlayerAction nextState = E_PlayerAction.FALL;
         Debug.Log("Fall");
 
         var moveVec = new Vector2 (0.0f,0.0f);
@@ -37,18 +37,29 @@ public class Fall_PlayerAction : PlayerActionState{
     }
 
 
-    public override void stateInit(){
-        
+    public override void stateEntrance(){
+        bufferedInpuitAvailable = false;
+        isFinished = false;
+        inputStandBy = true;
+        isAir = true;
+        gravityManager.resetGravity();
     }
 
 
-    public override void stateTermination(){
-        
+    public override E_PlayerAction stateExit(){
+        return ownState;
     }
 
+    protected override E_PlayerAction toLand(){
+        return E_PlayerAction.LANDING;
+    }
 
-    public override E_ActionState checkInput(E_InputType input){
-        E_ActionState nextState = E_ActionState.FALL;
+    protected override E_PlayerAction toAir(){
+        return E_PlayerAction.FALL;
+    }
+
+    protected override E_PlayerAction inputStateTransition(E_InputType input){
+        E_PlayerAction nextState = E_PlayerAction.FALL;
 
         switch (input){
             case E_InputType.WALK_LEFT_PERFORMED :
@@ -84,7 +95,7 @@ public class Fall_PlayerAction : PlayerActionState{
 
             /*
             case E_InputType.ATTACK:
-                nextState = E_ActionState.ATTACK;
+                nextState = E_PlayerAction.ATTACK;
                 break;
             */
             default:

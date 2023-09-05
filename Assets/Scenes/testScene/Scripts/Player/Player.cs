@@ -15,6 +15,8 @@ public class Player: MonoBehaviour , I_P_DamageApplicable , I_2DPlayerUpdatable 
 
 
     public void addPos ( Vector2 vec){
+        vec.x = vec.x + transform.position.x;
+        vec.y = vec.y + transform.position.y;
         transform.position = vec;
     }
 

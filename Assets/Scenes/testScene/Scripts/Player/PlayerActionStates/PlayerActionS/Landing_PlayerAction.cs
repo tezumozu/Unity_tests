@@ -3,15 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using MyInputSystems;
 
-public class Wait_PlayerAction : PlayerActionState{
+public class Landing_PlayerAction : PlayerActionState{
+    
+    float testCurrentTime;
 
-    public Wait_PlayerAction (I_2DPlayerUpdatable player) : base(player){
-        ownState = E_PlayerAction.WAIT;
+    public Landing_PlayerAction (I_2DPlayerUpdatable player) : base(player){
+        ownState = E_PlayerAction.LANDING;
+        testCurrentTime = 0.0f;
     }
 
     public override E_PlayerAction stateUpdate(){
-        E_PlayerAction nextState = E_PlayerAction.WAIT;
-        //Debug.Log("WAIT");
+        E_PlayerAction nextState = E_PlayerAction.LANDING;
+        Debug.Log("LANDING");
+
+        testCurrentTime += Time.deltaTime;
+
+        Debug.Log(testCurrentTime);
+        if(testCurrentTime > 10.0f * 1.0f / 60.0f){
+            nextState = E_PlayerAction.WAIT;
+            isFinished = true;
+        }
 
         return nextState;
     }
@@ -21,11 +32,15 @@ public class Wait_PlayerAction : PlayerActionState{
         bufferedInpuitAvailable = false;
         isFinished = false;
         inputStandBy = true;
+        isAir = false;
+
+        //テスト用
+        testCurrentTime = 0.0f;
     }
 
 
     public override E_PlayerAction stateExit(){
-        return ownState;
+        return E_PlayerAction.WAIT;
     }
 
     protected override E_PlayerAction toLand(){
@@ -37,7 +52,8 @@ public class Wait_PlayerAction : PlayerActionState{
     }
 
     protected override E_PlayerAction inputStateTransition(E_InputType input){
-        E_PlayerAction nextState = E_PlayerAction.WAIT;
+        E_PlayerAction nextState = E_PlayerAction.LANDING;
+
         switch (input){
             case E_InputType.WALK_LEFT_PERFORMED:
                 playerDirection = PlayerDirection.LEFT;

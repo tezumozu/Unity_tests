@@ -920,7 +920,6 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  maxGravityAcce: 10
 --- !u!58 &1349167958
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -89,7 +89,7 @@ namespace MyInputSystems {
 
 
         // 指定フレーム以内に入力された入力をすべて取得
-        public List < InputData > getInputData( float validFrameCount){ 
+        public InputData[] getInputData( float validFrameCount){ 
 
             var result = new List<InputData>();
             var keyList = new List<E_InputType>(inputDic.Keys);
@@ -117,7 +117,10 @@ namespace MyInputSystems {
                 return -1;
             });
 
-            return result;
+            //配列にコピー
+            InputData[] copy = new InputData[result.Count];
+            result.CopyTo(copy);
+            return copy;
         }
     }
 

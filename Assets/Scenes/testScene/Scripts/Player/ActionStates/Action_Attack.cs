@@ -20,7 +20,7 @@ public class Action_Attack : ActionState {
             //入力確認処理
             var inputData = inputManager.getInputData(6.0f * 1.0f / 60.0f);
 
-            if(inputData.Count < 1){
+            if(inputData.Length < 1){
                 return nextState;
             }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GravityManager{
-    private const float gravityAccel = -9.8f;
+    private const float gravityAccel = -0.98f;
 
     private float currentGravity;
 

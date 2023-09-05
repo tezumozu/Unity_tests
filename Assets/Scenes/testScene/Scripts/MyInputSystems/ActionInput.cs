@@ -27,7 +27,7 @@ namespace MyInputSystems {
 
 
         override public void inputUpdate() {
-            //移動ボタン同時押しも考慮
+            /*移動ボタン同時押しも考慮
             if(isHoldDic[E_InputType.WALK_LEFT] || isHoldDic[E_InputType.WALK_RIGHT]){
                 inputManager.setInputData(currentMoveDirection);
             }
@@ -37,7 +37,7 @@ namespace MyInputSystems {
 
            }else if(isHoldDic[E_InputType.GUARD]){
                 inputManager.setInputData(E_InputType.GUARD);
-           }
+           }*/
         }
 
 
@@ -73,26 +73,34 @@ namespace MyInputSystems {
         }
 
         public void walk_Stick (InputAction.CallbackContext context){
-            if(context.started) return;
+            
+            if(!context.performed){
+                return;
+            } 
 
-            if(context.performed){
-                if(context.ReadValue<float>() < 0){
-                    currentMoveDirection = E_InputType.WALK_LEFT;
-                    isHoldDic[E_InputType.WALK_LEFT] = true;
-                    inputManager.setInputData(E_InputType.WALK_LEFT_PERFORMED);
-                    
+            if(isHoldDic[E_InputType.WALK_LEFT] || isHoldDic[E_InputType.WALK_RIGHT]){
+                    if(context.ReadValue<float>() == 0){
+                        isHoldDic[E_InputType.WALK_RIGHT] = false;
+                        inputManager.setInputData(E_InputType.WALK_RIGHT_CANCELED);
+                        isHoldDic[E_InputType.WALK_LEFT] = false;
+                        inputManager.setInputData(E_InputType.WALK_LEFT_CANCELED);
+                    }
 
-                }else{
-                    currentMoveDirection = E_InputType.WALK_RIGHT;
-                    isHoldDic[E_InputType.WALK_RIGHT] = true;
-                    inputManager.setInputData(E_InputType.WALK_RIGHT_PERFORMED);
+            }else{
+                if(System.Math.Abs(context.ReadValue<float>()) > 0){
+                    if(context.ReadValue<float>() < 0){
+                        currentMoveDirection = E_InputType.WALK_LEFT;
+                        isHoldDic[E_InputType.WALK_LEFT] = true;
+                        inputManager.setInputData(E_InputType.WALK_LEFT_PERFORMED);
+                        
+
+                    }else{
+                        currentMoveDirection = E_InputType.WALK_RIGHT;
+                        isHoldDic[E_InputType.WALK_RIGHT] = true;
+                        inputManager.setInputData(E_InputType.WALK_RIGHT_PERFORMED);
+                    }
                 }
-
-            } else if(context.canceled){
-                isHoldDic[E_InputType.WALK_RIGHT] = false;
-                inputManager.setInputData(E_InputType.WALK_RIGHT_CANCELED);
-                isHoldDic[E_InputType.WALK_LEFT] = false;
-                inputManager.setInputData(E_InputType.WALK_LEFT_CANCELED);
+                
             }
         }
 
