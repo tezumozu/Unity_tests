@@ -4,7 +4,7 @@ using UnityEngine;
 using MyInputSystems;
 
 public class Fall_PlayerAction : PlayerActionState{
-     private const float moveDistance = 1.0f;
+     private const float moveDistance = 10.0f;
 
 
     public Fall_PlayerAction (I_2DPlayerUpdatable player) : base(player){
@@ -50,6 +50,7 @@ public class Fall_PlayerAction : PlayerActionState{
         return ownState;
     }
 
+/*
     protected override E_PlayerAction toLand(){
         return E_PlayerAction.LANDING;
     }
@@ -57,6 +58,7 @@ public class Fall_PlayerAction : PlayerActionState{
     protected override E_PlayerAction toAir(){
         return E_PlayerAction.FALL;
     }
+*/
 
     protected override E_PlayerAction inputStateTransition(E_InputType input){
         E_PlayerAction nextState = E_PlayerAction.FALL;

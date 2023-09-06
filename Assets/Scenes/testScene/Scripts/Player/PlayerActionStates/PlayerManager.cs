@@ -17,9 +17,9 @@ public class PlayerManager {
         stateMap [E_PlayerAction.WALK] = new Walk_PlayerAction(player);
         stateMap [E_PlayerAction.FALL] = new Fall_PlayerAction(player);
         stateMap [E_PlayerAction.LANDING] = new Landing_PlayerAction(player);
+        stateMap [E_PlayerAction.JUMP] = new Jump_PlayerAction(player);
 
         /*
-        stateMap [E_PlayerAction.JUMP] = new PlayerAction_Jump();
         stateMap [E_PlayerAction.ATTACK] = new PlayerAction_Attack();
         stateMap [E_PlayerAction.CHARGE_ATTACK] = new PlayerAction_ChageAttack();
         stateMap [E_PlayerAction.GUARD] = new PlayerAction_Guard();
@@ -36,12 +36,6 @@ public class PlayerManager {
         //状態の更新
         E_PlayerAction nextState = currentState;
 
-        //Stateが終了しているか
-        if(stateMap[nextState].getIsFinished){
-            nextState = stateMap[currentState].stateExit();
-            stateMap[nextState].stateEntrance();
-        }
-
         //着地、落下判定
         if(PlayerActionState.getIsAir){
             if(player.isLanding()){
@@ -54,6 +48,12 @@ public class PlayerManager {
                 nextState = E_PlayerAction.FALL;  //落下時処理
                 stateMap[nextState].stateEntrance();
             }
+        }
+
+        //Stateが終了しているか
+        if(stateMap[currentState].getIsFinished){
+            nextState = stateMap[currentState].stateExit();
+            stateMap[nextState].stateEntrance();
         }
 
         //入力によるなどによる状態遷移を確認

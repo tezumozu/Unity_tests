@@ -53,32 +53,16 @@ public abstract class PlayerActionState{
 
     abstract public void stateEntrance();
 
+    abstract protected E_PlayerAction inputStateTransition(E_InputType input);
+
     abstract public E_PlayerAction stateExit();
 
-    abstract protected E_PlayerAction inputStateTransition(E_InputType input);
+    /*
 
     abstract protected E_PlayerAction toAir();
 
     abstract protected E_PlayerAction toLand();
-
-
-    public E_PlayerAction checkLanding (){
-        var nextState = ownState;
-
-        //地表判定を確認 
-        if(isAir){
-            if(player.isLanding()){
-                nextState = toAir();    //着地時処理
-            }
-        
-        }else {    //落下判定
-            if(!player.isLanding()){
-                nextState = toLand();  //落下時処理
-            }
-        }
-
-        return nextState;
-    }
+    */
 
     private E_PlayerAction comebackCheckInput(InputData[] input, int count, E_PlayerAction state){ 
         
@@ -120,6 +104,7 @@ public abstract class PlayerActionState{
         if(isBufferedInpuitAvailable){
             var bufferList = InputManager.instance.getInputBuffer;
             nextState = comebackCheckInput(bufferList , nextState);
+            bufferedInpuitAvailable = false;
         }
 
         return nextState;

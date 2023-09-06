@@ -5,7 +5,7 @@ using MyInputSystems;
 
 public class Walk_PlayerAction : PlayerActionState{
 
-    private const float moveDistance = 1.0f;
+    private const float moveDistance = 10.0f;
 
     public Walk_PlayerAction (I_2DPlayerUpdatable player) : base(player){
         ownState = E_PlayerAction.WALK;
@@ -44,6 +44,7 @@ public class Walk_PlayerAction : PlayerActionState{
         return ownState;
     }
 
+/*
     protected override E_PlayerAction toLand(){
         return E_PlayerAction.LANDING;
     }
@@ -51,7 +52,7 @@ public class Walk_PlayerAction : PlayerActionState{
     protected override E_PlayerAction toAir(){
         return E_PlayerAction.FALL;
     }
-
+*/
 
     protected override E_PlayerAction inputStateTransition(E_InputType input){
         E_PlayerAction nextState = E_PlayerAction.WALK;
@@ -95,12 +96,11 @@ public class Walk_PlayerAction : PlayerActionState{
                 break;
                         
 
-            /*
             case E_InputType.JUMP:
                 nextState = E_PlayerAction.JUMP;
-                PlayerActinState.toAir();
                 break;
 
+            /*
             case E_InputType.ATTACK:
                 nextState = E_PlayerAction.ATTACK;
                 break;

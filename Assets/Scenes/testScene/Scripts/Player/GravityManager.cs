@@ -18,7 +18,6 @@ public class GravityManager{
     //毎フレーム呼び出すことで重力を再現する
     public Vector2 addGravity(Vector2 targetPos){
         currentGravity += gravityAccel * Time.deltaTime;
-        Debug.Log(currentGravity);
         targetPos.y += currentGravity;
         return targetPos;
     }

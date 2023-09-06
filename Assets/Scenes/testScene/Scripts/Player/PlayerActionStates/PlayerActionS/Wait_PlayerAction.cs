@@ -28,6 +28,7 @@ public class Wait_PlayerAction : PlayerActionState{
         return ownState;
     }
 
+/*
     protected override E_PlayerAction toLand(){
         return E_PlayerAction.LANDING;
     }
@@ -35,7 +36,7 @@ public class Wait_PlayerAction : PlayerActionState{
     protected override E_PlayerAction toAir(){
         return E_PlayerAction.FALL;
     }
-
+*/
     protected override E_PlayerAction inputStateTransition(E_InputType input){
         E_PlayerAction nextState = E_PlayerAction.WAIT;
         switch (input){
@@ -57,7 +58,6 @@ public class Wait_PlayerAction : PlayerActionState{
 
             case E_InputType.JUMP:
                 nextState = E_PlayerAction.JUMP;
-                toAir();
 
             break;
 

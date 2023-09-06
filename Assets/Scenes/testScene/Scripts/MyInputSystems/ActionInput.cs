@@ -73,31 +73,30 @@ namespace MyInputSystems {
         }
 
         public void walk_Stick (InputAction.CallbackContext context){
-            
-            if(!context.performed){
-                return;
-            } 
 
+            //ホールド時
             if(isHoldDic[E_InputType.WALK_LEFT] || isHoldDic[E_InputType.WALK_RIGHT]){
-                    if(context.ReadValue<float>() == 0){
-                        isHoldDic[E_InputType.WALK_RIGHT] = false;
-                        inputManager.setInputData(E_InputType.WALK_RIGHT_CANCELED);
-                        isHoldDic[E_InputType.WALK_LEFT] = false;
-                        inputManager.setInputData(E_InputType.WALK_LEFT_CANCELED);
-                    }
+                if(System.Math.Abs(context.ReadValue<float>()) <= 0.5){
+                    isHoldDic[E_InputType.WALK_RIGHT] = false;
+                    inputManager.setInputData(E_InputType.WALK_RIGHT_CANCELED);
+                    isHoldDic[E_InputType.WALK_LEFT] = false;
+                    inputManager.setInputData(E_InputType.WALK_LEFT_CANCELED);
+                }
 
+            //未入力時
             }else{
-                if(System.Math.Abs(context.ReadValue<float>()) > 0){
+                if(System.Math.Abs(context.ReadValue<float>()) > 0.5){
+                    //向きを確認
                     if(context.ReadValue<float>() < 0){
                         currentMoveDirection = E_InputType.WALK_LEFT;
                         isHoldDic[E_InputType.WALK_LEFT] = true;
                         inputManager.setInputData(E_InputType.WALK_LEFT_PERFORMED);
-                        
 
                     }else{
                         currentMoveDirection = E_InputType.WALK_RIGHT;
                         isHoldDic[E_InputType.WALK_RIGHT] = true;
                         inputManager.setInputData(E_InputType.WALK_RIGHT_PERFORMED);
+
                     }
                 }
                 

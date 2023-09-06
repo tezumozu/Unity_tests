@@ -3,33 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using MyInputSystems;
 
-public class Landing_PlayerAction : PlayerActionState{
+public class Jump_PlayerAction : PlayerActionState{
     
-    float testCurrentTime;
-    private const float moveDistance = 5.0f;
+    const float jumpAccel = 24.0f;
+    const float moveDistance = 10.0f;
 
-    public Landing_PlayerAction (I_2DPlayerUpdatable player) : base(player){
-        ownState = E_PlayerAction.LANDING;
-        testCurrentTime = 0.0f;
+    public Jump_PlayerAction (I_2DPlayerUpdatable player) : base(player){
+        ownState = E_PlayerAction.JUMP;
+        gravityManager.resetGravity();
     }
 
     public override E_PlayerAction stateUpdate(){
-        E_PlayerAction nextState = E_PlayerAction.LANDING;
-        //Debug.Log("LANDING");
+        E_PlayerAction nextState = E_PlayerAction.JUMP;
 
-        testCurrentTime += Time.deltaTime;
+        var moveVec = new Vector2 (0.0f,0.0f);
 
-        if(testCurrentTime > 2.0f * 1.0f / 60.0f){
-            nextState = E_PlayerAction.WAIT;
+        moveVec = gravityManager.addGravity(moveVec);
 
-            if(isWalkLeft||isWalkRight){
-                nextState = E_PlayerAction.WALK;
-            }
+        moveVec.y = moveVec.y + jumpAccel * Time.deltaTime;
 
+        //ジャンプが最高地点に到達したら
+        if(moveVec.y < 0){
+            nextState = E_PlayerAction.FALL;
             isFinished = true;
         }
-
-        Vector3 moveVec = new Vector2 (0.0f,0.0f);
 
         //左右への移動
         if(isWalkLeft||isWalkRight){
@@ -38,38 +35,26 @@ public class Landing_PlayerAction : PlayerActionState{
             }else{
                 moveVec.x = moveDistance * Time.deltaTime;
             }
-
         }
 
-        //移動する
         player.addPos(moveVec);
+        Debug.Log("JUMP");
 
-        Debug.Log(nextState);
         return nextState;
     }
 
 
     public override void stateEntrance(){
-        bufferedInpuitAvailable = true;
+        bufferedInpuitAvailable = false;
         isFinished = false;
         inputStandBy = true;
-        isAir = false;
-
-        //テスト用
-        testCurrentTime = 0.0f;
+        isAir = true;
+        gravityManager.resetGravity();
     }
 
 
     public override E_PlayerAction stateExit(){
-        E_PlayerAction nextState;
-
-        nextState = E_PlayerAction.WAIT;
-
-        if(isWalkLeft||isWalkRight){
-            nextState = E_PlayerAction.WALK;
-        }
-
-        return nextState;
+        return E_PlayerAction.FALL;
     }
 
 /*
@@ -81,14 +66,14 @@ public class Landing_PlayerAction : PlayerActionState{
         return E_PlayerAction.FALL;
     }
 */
+
     protected override E_PlayerAction inputStateTransition(E_InputType input){
-        E_PlayerAction nextState = E_PlayerAction.LANDING;
+        E_PlayerAction nextState = E_PlayerAction.JUMP;
 
         switch (input){
-            case E_InputType.WALK_LEFT_PERFORMED:
+            case E_InputType.WALK_LEFT_PERFORMED :
                 playerDirection = PlayerDirection.LEFT;
                 isWalkLeft = true;
-
                 break;
 
 
@@ -119,31 +104,19 @@ public class Landing_PlayerAction : PlayerActionState{
                 break;
 
 
-            case E_InputType.JUMP:
-                nextState = E_PlayerAction.JUMP;
-
-            break;
-
-
+            /*
             case E_InputType.ATTACK:
                 nextState = E_PlayerAction.ATTACK;
-            
-            break;
+                
+                break;
 
 
-                /*
-                    case E_InputType.CHARGE_ATTACK_PEFORMED:
-                        nextState = E_PlayerAction.CHARGE_ATTACK;
-                        break;
+            case E_InputType.LITTLE_JUMP : ///ジャンプを小ジャンプへ切り替える
+                nextState = E_PlayerAction.FALL;
 
-                    case E_InputType.DUSH:
-                        nextState = E_PlayerAction.DUSH;
-                        break;
+                break;
+            */
 
-                    case E_InputType.GUARD_PEFORMED:
-                        nextState = E_PlayerAction.GUARD;
-                        break;
-                */
             default:
                 break;
         }

@@ -111,7 +111,7 @@
                     "id": "07f3b119-3d9b-4835-9e5d-fa226c90d9f0",
                     "path": "<Gamepad>/leftStick/x",
                     "interactions": "",
-                    "processors": "AxisDeadzone(min=0.3)",
+                    "processors": "AxisDeadzone(min=0.125)",
                     "groups": "GamePad",
                     "action": "Walk_Stick",
                     "isComposite": false,
