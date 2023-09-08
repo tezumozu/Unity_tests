@@ -103,19 +103,17 @@ public class Jump_PlayerAction : PlayerActionState{
 
                 break;
 
-
             /*
             case E_InputType.ATTACK:
                 nextState = E_PlayerAction.ATTACK;
                 
                 break;
-
+            */
 
             case E_InputType.LITTLE_JUMP : ///ジャンプを小ジャンプへ切り替える
                 nextState = E_PlayerAction.FALL;
 
                 break;
-            */
 
             default:
                 break;

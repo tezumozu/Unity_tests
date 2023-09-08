@@ -10,6 +10,9 @@ public interface I_2DPlayerUpdatable {
     void addRotate (float rotate);
     void setActionState(E_ActionState state);
     bool isLanding();
-
     void setManager(PlayerManager manager);
+
+    void attack(bool isAir);
+
+    void chargeAttack(bool isAir);
 }

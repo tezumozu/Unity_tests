@@ -134,3 +134,9 @@ public enum E_PlayerLowerAction{
     LANDING,
     WAIT
 }
+
+public enum E_AnimState {
+    RADY,
+    ACTION,
+    FOLLOW_THROUGH
+}

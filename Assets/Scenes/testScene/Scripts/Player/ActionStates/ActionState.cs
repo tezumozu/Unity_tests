@@ -57,12 +57,6 @@ abstract public class ActionState {
 
 }
 
-public enum E_AnimState {
-    RADY,
-    ACTION,
-    FOLLOW_THROUGH
-}
-
 public enum E_ActionState {//アニメーション単位
     WAIT,
     WALK,

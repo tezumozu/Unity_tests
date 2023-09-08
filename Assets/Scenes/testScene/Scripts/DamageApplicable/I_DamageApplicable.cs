@@ -4,7 +4,7 @@ using UnityEngine;
 
 //ダメージを受ける側
 public interface I_DamageApplicable{
-    void damageApplicable ();
+    void damageApplicated ();
 }
 
 public interface I_P_DamageApplicable : I_DamageApplicable{
@@ -16,8 +16,9 @@ public interface I_E_DamageApplicable : I_DamageApplicable{
 }
 
 
+
 //ダメージ与える側
-public interface I_DamageInflict {
+public interface I_DamageInflictable {
     void damageInflict (I_DamageApplicable obj);
 }
 
@@ -28,4 +29,3 @@ public interface I_ToPlayerDamageInflict {
 public interface I_ToEnemyDamageInflict {
     void damageInflict (I_E_DamageApplicable obj);
 }
-

@@ -5,8 +5,22 @@ using MyInputSystems;
 public class Player: MonoBehaviour , I_P_DamageApplicable , I_2DPlayerUpdatable {
     [SerializeField]
     LayerMask groundLayer;
+    I_AttackEffectGeneratable normalAttackEffect_Land;
+    I_AttackEffectGeneratable normalAttackEffect_Air;
+    I_AttackEffectGeneratable chageAttackEffect_Land;
+    I_AttackEffectGeneratable chageAttackEffect_Air;
+    
 
     static PlayerManager playerManager;
+
+    void Start ( ){
+        //プレハブの作成と取得
+        GameObject land = (GameObject)Resources.Load("testScene/Prefub/AttackEffect/PlayerAttackEffect_Land");
+        normalAttackEffect_Land = Instantiate( land , new Vector3(0,0,0), Quaternion.identity).GetComponent<I_AttackEffectGeneratable>();
+
+        GameObject air = (GameObject)Resources.Load("testScene/Prefub/AttackEffect/PlayerAttackEffect_Air");
+        normalAttackEffect_Air = Instantiate(air,new Vector3(0,0,0),Quaternion.identity).GetComponent<I_AttackEffectGeneratable>();
+    }
 
     public void playerUpdate (){
         //ダメージ判定
@@ -32,7 +46,7 @@ public class Player: MonoBehaviour , I_P_DamageApplicable , I_2DPlayerUpdatable 
 
 
     //ダメージを受けた時の処理
-    public void damageApplicable(){
+    public void damageApplicated(){
 
     }
 
@@ -53,6 +67,24 @@ public class Player: MonoBehaviour , I_P_DamageApplicable , I_2DPlayerUpdatable 
             return false;
 
         }
+    }
+
+
+    //通常攻撃生成
+    public void attack(bool isAir){
+
+        if(isAir){
+            normalAttackEffect_Air.generateEffect();
+        }else{
+            normalAttackEffect_Land.generateEffect();
+        }
+        
+    }
+
+
+    //チャージ攻撃生成
+    public void chargeAttack(bool isAir){
+
     }
 
 

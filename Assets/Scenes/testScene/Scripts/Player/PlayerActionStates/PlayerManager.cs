@@ -18,9 +18,9 @@ public class PlayerManager {
         stateMap [E_PlayerAction.FALL] = new Fall_PlayerAction(player);
         stateMap [E_PlayerAction.LANDING] = new Landing_PlayerAction(player);
         stateMap [E_PlayerAction.JUMP] = new Jump_PlayerAction(player);
+        stateMap [E_PlayerAction.ATTACK] = new Attack_PlayerAction(player);
 
         /*
-        stateMap [E_PlayerAction.ATTACK] = new PlayerAction_Attack();
         stateMap [E_PlayerAction.CHARGE_ATTACK] = new PlayerAction_ChageAttack();
         stateMap [E_PlayerAction.GUARD] = new PlayerAction_Guard();
         stateMap [E_PlayerAction.DUSH] = new PlayerAction_Dush();

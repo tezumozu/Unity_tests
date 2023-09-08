@@ -8,7 +8,7 @@ namespace MyInputSystems {
     public class ActionInput : InputMode{
         private Dictionary < E_InputType , bool> isHoldDic;
         private InputManager inputManager;
-        private E_InputType currentMoveDirection;
+        //private E_InputType currentMoveDirection;
 
         override public void init() {
 
@@ -46,12 +46,12 @@ namespace MyInputSystems {
             if(context.started) return;
 
             if(context.performed){
-                currentMoveDirection = E_InputType.WALK_LEFT;
+                //currentMoveDirection = E_InputType.WALK_LEFT;
                 isHoldDic[E_InputType.WALK_LEFT] = true;
                 inputManager.setInputData(E_InputType.WALK_LEFT_PERFORMED);
 
             } else if(context.canceled){
-                currentMoveDirection = E_InputType.WALK_RIGHT;
+                //currentMoveDirection = E_InputType.WALK_RIGHT;
                 isHoldDic[E_InputType.WALK_LEFT] = false;
                 inputManager.setInputData(E_InputType.WALK_LEFT_CANCELED);
             }
@@ -61,12 +61,12 @@ namespace MyInputSystems {
             if(context.started) return;
                 
             if(context.performed){
-                currentMoveDirection = E_InputType.WALK_RIGHT;
+                //currentMoveDirection = E_InputType.WALK_RIGHT;
                 isHoldDic[E_InputType.WALK_RIGHT] = true;
                 inputManager.setInputData(E_InputType.WALK_RIGHT_PERFORMED);
 
             } else if(context.canceled){
-                currentMoveDirection = E_InputType.WALK_LEFT;
+                //currentMoveDirection = E_InputType.WALK_LEFT;
                 isHoldDic[E_InputType.WALK_RIGHT] = false;
                 inputManager.setInputData(E_InputType.WALK_RIGHT_CANCELED);
             }
@@ -88,12 +88,12 @@ namespace MyInputSystems {
                 if(System.Math.Abs(context.ReadValue<float>()) > 0.5){
                     //向きを確認
                     if(context.ReadValue<float>() < 0){
-                        currentMoveDirection = E_InputType.WALK_LEFT;
+                        //currentMoveDirection = E_InputType.WALK_LEFT;
                         isHoldDic[E_InputType.WALK_LEFT] = true;
                         inputManager.setInputData(E_InputType.WALK_LEFT_PERFORMED);
 
                     }else{
-                        currentMoveDirection = E_InputType.WALK_RIGHT;
+                        //currentMoveDirection = E_InputType.WALK_RIGHT;
                         isHoldDic[E_InputType.WALK_RIGHT] = true;
                         inputManager.setInputData(E_InputType.WALK_RIGHT_PERFORMED);
 
@@ -111,13 +111,17 @@ namespace MyInputSystems {
             if(context.performed){
                 inputManager.setInputData(E_InputType.JUMP);
             }
+
+            if(context.canceled){
+                inputManager.setInputData(E_InputType.LITTLE_JUMP);
+            }
         }
 
         public void littleJumpInputs (InputAction.CallbackContext context){
             if(context.started) return;
 
             if(context.performed){
-                inputManager.setInputData(E_InputType.LITTLE_JUMP);
+                //inputManager.setInputData(E_InputType.LITTLE_JUMP);
             }
         }
 
