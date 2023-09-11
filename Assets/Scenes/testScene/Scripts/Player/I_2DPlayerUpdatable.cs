@@ -14,5 +14,7 @@ public interface I_2DPlayerUpdatable {
 
     void attack(bool isAir);
 
+    void setPlayerDirection(E_PlayerDirection direction);
+
     void chargeAttack(bool isAir);
 }

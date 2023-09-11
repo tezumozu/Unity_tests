@@ -33,7 +33,7 @@ public class Landing_PlayerAction : PlayerActionState{
 
         //左右への移動
         if(isWalkLeft||isWalkRight){
-            if(playerDirection == PlayerDirection.LEFT){
+            if(playerDirection == E_PlayerDirection.LEFT){
                 moveVec.x = -moveDistance * Time.deltaTime;
             }else{
                 moveVec.x = moveDistance * Time.deltaTime;
@@ -86,7 +86,7 @@ public class Landing_PlayerAction : PlayerActionState{
 
         switch (input){
             case E_InputType.WALK_LEFT_PERFORMED:
-                playerDirection = PlayerDirection.LEFT;
+                playerDirection = E_PlayerDirection.LEFT;
                 isWalkLeft = true;
 
                 break;
@@ -97,13 +97,13 @@ public class Landing_PlayerAction : PlayerActionState{
 
                 //右が同時押しされている場合
                 if(isWalkRight){
-                    playerDirection = PlayerDirection.RIGHT;
+                    playerDirection = E_PlayerDirection.RIGHT;
                 }
                 break;
 
 
             case E_InputType.WALK_RIGHT_PERFORMED:
-                playerDirection = PlayerDirection.RIGHT;
+                playerDirection = E_PlayerDirection.RIGHT;
                 isWalkRight = true;
                 break;
                     
@@ -113,7 +113,7 @@ public class Landing_PlayerAction : PlayerActionState{
 
                 //左が同時押しされている場合
                 if(isWalkLeft){
-                    playerDirection = PlayerDirection.LEFT;
+                    playerDirection = E_PlayerDirection.LEFT;
                 }
 
                 break;

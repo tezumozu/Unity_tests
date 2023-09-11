@@ -11,7 +11,7 @@ public abstract class PlayerActionState{
     protected bool bufferedInpuitAvailable;
     protected bool isFinished;
 
-    static protected PlayerDirection playerDirection;
+    static protected E_PlayerDirection playerDirection;
     static protected bool isWalkLeft;
     static protected bool isWalkRight;
     static protected bool isAir;
@@ -40,7 +40,7 @@ public abstract class PlayerActionState{
         gravityManager = new GravityManager();
         this.player = player;
         inputStandBy = true;
-        playerDirection = PlayerDirection.RIGHT;
+        playerDirection = E_PlayerDirection.RIGHT;
         isWalkLeft = false;
         isWalkRight = false;
         bufferedInpuitAvailable = false;
@@ -90,23 +90,23 @@ public abstract class PlayerActionState{
 
     public E_PlayerAction checkInput(){
         var nextState = ownState;
+        if(isInputStandBy){
+            //入力を取得
+            var inputData = InputManager.instance.getInputData(availableInputTime);
 
-        //入力を取得
-        var inputData = InputManager.instance.getInputData(availableInputTime);
+            //入力があれば
+            if(inputData.Length > 0){
+                //入力をもとに遷移を確認
+                nextState = comebackCheckInput(inputData , nextState);
+            }
 
-        //入力があれば
-        if(inputData.Length > 0){
-            //入力をもとに遷移を確認
-            nextState = comebackCheckInput(inputData , nextState);
+            //先行入力を確認
+            if(isBufferedInpuitAvailable){
+                var bufferList = InputManager.instance.getInputBuffer;
+                nextState = comebackCheckInput(bufferList , nextState);
+                bufferedInpuitAvailable = false;
+            }
         }
-
-        //先行入力を確認
-        if(isBufferedInpuitAvailable){
-            var bufferList = InputManager.instance.getInputBuffer;
-            nextState = comebackCheckInput(bufferList , nextState);
-            bufferedInpuitAvailable = false;
-        }
-
         return nextState;
     }
 
@@ -139,4 +139,9 @@ public enum E_AnimState {
     RADY,
     ACTION,
     FOLLOW_THROUGH
+}
+
+public enum E_PlayerDirection{
+    LEFT,
+    RIGHT
 }

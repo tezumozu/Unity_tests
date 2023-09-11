@@ -41,7 +41,7 @@ public class Wait_PlayerAction : PlayerActionState{
         E_PlayerAction nextState = E_PlayerAction.WAIT;
         switch (input){
             case E_InputType.WALK_LEFT_PERFORMED:
-                playerDirection = PlayerDirection.LEFT;
+                playerDirection = E_PlayerDirection.LEFT;
                 isWalkLeft = true;
                 nextState = E_PlayerAction.WALK;
 
@@ -49,7 +49,7 @@ public class Wait_PlayerAction : PlayerActionState{
 
 
             case E_InputType.WALK_RIGHT_PERFORMED:
-                playerDirection = PlayerDirection.RIGHT;
+                playerDirection = E_PlayerDirection.RIGHT;
                 isWalkRight = true;
                 nextState = E_PlayerAction.WALK;
 
