@@ -29,12 +29,6 @@
     }
 
 
-    struct PlayerStatus {
-        + int maxHp
-        + int currentHp
-    }
-
-
     interface I_2DPlayerUpdatable{
         + void playerUpdate()
         + void setPos(Vector2 vec)
@@ -45,28 +39,18 @@
 
 
     abstract PlayerActionState{
-        #InputManager inputManager
-
         + void stateUpdate()
-        + void stateInit()
-        + void stateStart()
-        + void stateEnd()
+        + void stateEnter()
+        + void stateExit()
         + void checkInput()
-        - void checInputkBuffer()
     }
 
-
-    class PlayerAction_Wait{
-        
+    abstract PlayerUpActionState{
     }
 
-    Class PlayerAction_Jump{
-
+    abstract PlayerBottomActionState{
     }
 
-    Class PlayerAction_Walk{
-
-    }
 
     Class InputManager <SingletonMono>{
         - Dictionary <E_InputType,InputData> inputDataDic
@@ -75,36 +59,24 @@
         + List<InputData> getInputData()
     }
 
-    enum E_ActionState{
-        WALK
-        WAIT
-        JUMP
-        ……
-    }
-
-    enum E_AnimState{
-        REDY
-        ACTION
-        FOLLOW_THROUGH
-        LOOP
-    }
+    
 
     Player .right.|> I_2DPlayerUpdatable
-    PlayerManager *-up- PlayerStatus
-    PlayerManager *-right-> PlayerStateManager
-    PlayerManager ..> I_2DPlayerUpdatable
+    PlayerActionState *.left.> I_2DPlayerUpdatable
 
-    PlayerStateManager ..> I_2DPlayerUpdatable
+    PlayerActionState <|-up- PlayerUpActionState
+    PlayerActionState <|-up- PlayerBottomActionState
+    PlayerActionState *--> GravityManager
+
+    PlayerStateManager o-- PlayerUpActionState
+    PlayerStateManager o-- PlayerBottomActionState
+
+    PlayerManager *-down-> PlayerStateManager
+
     PlayerStateManager -right-> InputManager
 
-    PlayerStateManager "1" *-right- "1" GravityManager
-    PlayerActionState "1…*" *-right- "1" GravityManager
-    PlayerActionState <-up-o PlayerStateManager
 
-    PlayerAction_Jump -up-|> PlayerActionState
-    PlayerAction_Wait -up-|> PlayerActionState
-    PlayerAction_Walk -up-|> PlayerActionState
 
-    Player .up.> PlayerManager
+
 
 @enduml
