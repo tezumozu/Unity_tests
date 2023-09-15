@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using StateManagement_ver2;
+using StateManagement_ver3;
 
 public class PlayerNormalAttaclEffect_Land : MonoBehaviour , I_ToEnemyDamageInflict , I_AttackEffectGeneratable{
 
     float currentTime;
     const float EffectValidTime = 10.0f * GameValue.g_FrameTime; //5フレーム分
+    
     Player player;
 
     public void generateEffect(E_PlayerDirection direction){

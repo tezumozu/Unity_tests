@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MyInputSystems;
-using StateManagement_ver2;
+using StateManagement_ver3;
 public class Player: MonoBehaviour , I_P_DamageApplicable , I_2DPlayerUpdatable {
     [SerializeField]
     LayerMask groundLayer;

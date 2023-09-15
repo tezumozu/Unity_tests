@@ -10,7 +10,7 @@ namespace StateManagement_ver3{
         }
 
 
-        override public void stateUpdate(){
+        override public void updateState(){
 
         }
 

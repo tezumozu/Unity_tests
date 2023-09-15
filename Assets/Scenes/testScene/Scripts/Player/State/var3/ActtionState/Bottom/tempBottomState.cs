@@ -10,7 +10,7 @@ namespace StateManagement_ver3{
             ownState = E_BottomActionState.WAIT;
         }
 
-        override public void stateUpdate(){
+        override public void updateState(){
 
         }
 

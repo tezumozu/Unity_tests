@@ -40,7 +40,7 @@ namespace StateManagement_ver3{
         public abstract void stateEnter();
 
 
-        public abstract void stateUpdate();
+        public abstract void updateState();
         
 
 

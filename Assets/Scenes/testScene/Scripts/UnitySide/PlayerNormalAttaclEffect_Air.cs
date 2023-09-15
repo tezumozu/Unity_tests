@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using StateManagement_ver2;
+using StateManagement_ver3;
 
 public class PlayerNormalAttaclEffect_Air : MonoBehaviour , I_ToEnemyDamageInflict , I_AttackEffectGeneratable {
     float currentTime;
