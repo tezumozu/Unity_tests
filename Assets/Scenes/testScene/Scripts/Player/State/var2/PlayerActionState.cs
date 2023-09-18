@@ -95,7 +95,7 @@ namespace StateManagement_ver2 {
             var nextState = ownState;
             if(isInputStandBy){
                 //入力を取得
-                var inputData = InputManager.instance.getInputData(availableInputTime);
+                var inputData = InputManager.instance.getInputList;
 
                 //入力があれば
                 if(inputData.Length > 0){

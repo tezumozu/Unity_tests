@@ -7,11 +7,84 @@ using MyGameManagers;
 namespace MyInputSystems {
     public class InputManager : GenericSingletonObject<InputManager>{
 
-        static Dictionary<E_InputType , InputData> inputDic; 
-        public const float maxValidFrameCount = 6.0f * 1.0f/60.0f;
+        public const float maxValidFrameCount = 6.0f * GameValue.g_FrameTime;
 
-        private Dictionary< GameModes , InputMode > input_Mode_List;
+        private List< InputData > inputList;
+
         private List< InputData > inputBuffer;
+
+
+        public InputManager (){
+            //インプットデータの初期化
+            inputList = new List<InputData> ();
+            inputBuffer = new List<InputData> ();
+        }
+
+
+        public override void OnInitialize() {
+            inputBuffer.Clear();
+            inputList.Clear();
+        }
+
+
+        public void inputUpdate(){
+            
+            //インプットデータの更新
+            //入力されてから何フレーム経ったかカウント
+            for (int i = 0; i < inputList.Count; i++){
+                //フレームカウントを加算
+                InputData data  = inputList[i]; 
+                data.frameCount += Time.deltaTime;
+                inputList[i] = data;
+            }
+
+            //バッファの更新
+            for (int i = 0; i < inputBuffer.Count; i++){
+                //フレームカウントを加算
+                InputData data  = inputBuffer[i]; 
+                data.frameCount += Time.deltaTime;
+                inputBuffer[i] = data;
+            }
+
+            //有効フレームをすぎた入力を削除
+            inputList.RemoveAll( x => {
+                return x.frameCount > maxValidFrameCount;
+            });
+
+            inputBuffer.RemoveAll( x => {
+                return x.frameCount > maxValidFrameCount;
+            });
+        }
+
+
+        //入力を登録
+        public void setInputData(E_InputType type){
+            InputData data = new InputData(type);
+            inputList.Add(data);
+            inputBuffer.Add(data);
+        }
+
+
+        // 指定フレーム以内に入力された入力をすべて取得
+        public InputData[] getInputList { 
+            get {
+                //入力が古い順にソート
+                inputList.Sort((x,y) => {
+                    if(y.frameCount > x.frameCount){
+                        return 1;
+                    }
+                    return -1;
+                });
+
+                //配列にコピー
+                InputData[] copy = new InputData[inputList.Count];
+                inputList.CopyTo(copy);
+
+                inputList.Clear();
+                return copy;
+            }
+        }
+
 
         public InputData[] getInputBuffer { 
             get {
@@ -27,102 +100,15 @@ namespace MyInputSystems {
                 //配列にコピー
                 InputData[] copy = new InputData[inputBuffer.Count];
                 inputBuffer.CopyTo(copy);
+
+                inputList.Clear();
                 return copy;
             }
         }
 
-
-        public InputManager (){
-
-        }
-
-        public override void OnInitialize() {
-            //インプットデータの初期化
-            inputDic =  new Dictionary<E_InputType , InputData>();
-            inputBuffer = new List<InputData> ();
-
-            //各モードインプットの初期化
-            input_Mode_List = new Dictionary<GameModes, InputMode>();
-            input_Mode_List[GameModes.ACTION_ACTION] = GameObject.Find("IS_Action").GetComponent<ActionInput>();
-
-            foreach (var key in input_Mode_List.Keys) {
-                input_Mode_List[key].init();
-            }
-        }
-
-        public void inputUpdate(){
-            //ゲームモードをもとに入力を更新
-            input_Mode_List[GameManager.getCurrentMode].inputUpdate();
-            
-            //インプットデータの更新
-            //入力されてから何フレーム経ったかカウント
-            var keyList = new List<E_InputType>(inputDic.Keys);
-
-            foreach(var key in keyList){
-                if(inputDic[key].frameCount < maxValidFrameCount){
-                    //フレームカウントを加算
-                    InputData nextData = inputDic[key];
-                    nextData.frameCount += Time.deltaTime;
-                    inputDic[key] = nextData;
-                }
-            }
-
-            //バッファの更新
-            for (int i = 0; i < inputBuffer.Count; i++){
-                //フレームカウントを加算
-                InputData data  = inputBuffer[i]; 
-                data.frameCount += Time.deltaTime;
-                inputBuffer[i] = data;
-            }
-
-            //有効フレームをすぎた入力を削除
-            inputBuffer.RemoveAll( x => {
-                return x.frameCount > maxValidFrameCount;
-            });
-        }
-
-
-        //入力を登録
-        public void setInputData(E_InputType type){
-            inputDic[type] = new InputData(type);
-        }
-
-
-        // 指定フレーム以内に入力された入力をすべて取得
-        public InputData[] getInputData( float validFrameCount){ 
-
-            var result = new List<InputData>();
-            var keyList = new List<E_InputType>(inputDic.Keys);
-
-            foreach(var key in keyList){
-                //一定フレーム前までの入力取得
-                if (inputDic[key].frameCount < validFrameCount) {
-                    InputData data = inputDic[key];
-
-                    //有効な入力データをリストとバッファに登録
-                    result.Add(data);
-                    inputBuffer.Add(data);
-
-                    //辞書を無効な入力へ
-                    data.frameCount = maxValidFrameCount;
-                    inputDic[key] = data;
-                }
-            }
-
-            //入力が古い順にソート
-            result.Sort((x,y) => {
-                if(y.frameCount > x.frameCount){
-                    return 1;
-                }
-                return -1;
-            });
-
-            //配列にコピー
-            InputData[] copy = new InputData[result.Count];
-            result.CopyTo(copy);
-            return copy;
-        }
+        
     }
+
 
     public enum E_InputType {
         //Action
@@ -156,6 +142,7 @@ namespace MyInputSystems {
         CAMERA_MOVE_UP,
         CAMERA_MOVE_DOWN
     }
+
 
     public struct InputData{
         public E_InputType type;

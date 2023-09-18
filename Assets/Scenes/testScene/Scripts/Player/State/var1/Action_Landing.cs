@@ -28,7 +28,7 @@ namespace StateManagement_ver1{
 
             if (isInputStandBy){
                 //入力確認処理
-                var inputData = inputManager.getInputData(6.0f * 1.0f / 60.0f);
+                var inputData = inputManager.getInputList;
 
                 //入力あれば
                 if(inputData.Length > 0){

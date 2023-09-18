@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace StateManagement_ver3{
-    public enum E_BottomActionState{
+    public enum E_MoveState {
         WAIT,
-        FALL,
-        LANDING
+        JUNP,
+        WALK,
+        FALL
     }
-
-
-    
 }
