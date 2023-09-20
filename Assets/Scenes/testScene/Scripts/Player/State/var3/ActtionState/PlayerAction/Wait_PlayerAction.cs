@@ -4,64 +4,46 @@ using UnityEngine;
 using MyInputSystems;
 
 namespace StateManagement_ver3{
-    public class Wait_PlayerAction : PlayerActionState{
-        private bool isToLanding; 
+    public class Wait_PlayerAction : I_StateUpdatable{
 
-        public  Wait_PlayerAction (I_2DPlayerUpdatable player) : base(player){
-            ownState = E_PlayerAction.WAIT;
+        static E_ActionState ownState;
+        private I_2DPlayerUpdatable player;
+
+        public  Wait_PlayerAction (){
+            ownState = E_ActionState.WAIT;
         }
+        
 
-        //Stateの処理
-        override public void stateProsses (){
-            //Debug.Log("WAIT");
-            moveStateMap[currentMoveState].movePlayer();
+        public void stateUpdate (S_StateData stateData){
+            player.stateEnter(stateData.actionState);
+            player.moveEnter(stateData.moveState,stateData.playerDirection);
         }
-
+        
 
         //State開始時の初期化処理
-        override public void stateEnter (){
-            isBufferCheck = false;
-            isFinished = false;
-            ownState = E_PlayerAction.WAIT;
-            isToLanding = false;
+        public void stateEnter (){
         }
 
+        //Stateの完了を確認
+        public bool getIsFinished(){
+            return false;
+        }
 
         //State終了時に次にどのStateへ遷移するか
-        override public E_PlayerAction getNextState(){
-            if(isToLanding){
-                return E_PlayerAction.LANDING;
-            }else{
-                return ownState;
-            }
+        public E_ActionState getNextState(){
+            return ownState;
         }
 
 
         //入力確認
-        override protected E_PlayerAction checkTransrate(E_PlayerAction currentState, E_InputType type){
-            return currentState;
+        public E_ActionState checkTransrationForInput(E_InputType type){
+            return ownState;
         }
 
 
         //入力バッファ確認
-        override protected E_PlayerAction checkTransrateForBuffer(E_PlayerAction currentState, E_InputType type){
-            return currentState;
+        public E_ActionState checkTransrationForBuffer(E_InputType type){
+            return ownState;
         }
-
-
-        //着地時処理
-        override protected void landing (){
-            isToLanding = true;
-            isFinished = true;
-            return;
-        }
-
-
-        //落下時処理
-        override protected void falling (){
-            currentMoveState = E_MoveState.FALL;
-            return;
-        }
-
     }
 }

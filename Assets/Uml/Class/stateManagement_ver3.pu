@@ -1,0 +1,88 @@
+@startuml stateManagement_ver3
+    namespace Unity{
+        class Player <Mono>{
+        [Serializable] PlayerConfig config
+
+        }
+
+        Struct ActionConfig <Serializable>{
+
+        }
+    }
+
+
+
+    namespace StateManagement_ver3{
+        interface I_2DPlayerUpdatable{
+
+        }
+
+
+        class PlayerManager{
+
+        }
+
+
+        class PlayerStateManager{
+
+        }
+
+
+        interface I_StateUpdatable {
+
+        }
+
+        class StateClass{
+
+        }
+
+
+        Struct StateData{
+            E_PlayerState playerState
+            E_MoveState moveState
+        }
+    }
+
+    namespace MyInputSystems{
+        class InputManager{
+            
+        }
+    }
+
+
+
+    namespace UniRx{
+        class Subject {
+
+        }
+
+        interface IObserver {
+
+        }
+    }
+    
+
+    Player *-- ActionConfig
+
+    Player .right.|> I_2DPlayerUpdatable
+
+    StateData --* I_2DPlayerUpdatable
+    StateData --* PlayerStateManager
+
+    StateClass --|> I_StateUpdatable
+    
+
+    PlayerManager *--> PlayerStateManager 
+
+    PlayerStateManager *-left-> I_2DPlayerUpdatable : Set state
+    PlayerStateManager -down-> IObserver
+    PlayerStateManager o-right-> I_StateUpdatable
+    PlayerStateManager -down-> InputManager
+
+    I_2DPlayerUpdatable *--> Subject 
+
+    IObserver <-right-o Subject :落下、着地、ダメージの監視
+
+    
+
+@enduml

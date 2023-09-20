@@ -10,15 +10,16 @@ namespace StateManagement_ver3{
 
         public PlayerManager (I_2DPlayerUpdatable player){
             this.player = player;
-            player.setManager(this);
-
             stateManager = new PlayerStateManager(player);
         }
 
 
         public void managerUpdate(){
             //状態を更新
-            stateManager.updateState();
+            stateManager.managerUpdate();
+
+            //プレイヤーの更新
+            player.playerUpdate();
         }
 
     }

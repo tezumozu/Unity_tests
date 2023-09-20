@@ -5,37 +5,31 @@ using MyInputSystems;
 
 namespace StateManagement_ver3{
     public class PlayerStateManager {
-        private Dictionary<E_PlayerAction,PlayerActionState> actionStateMap;
-        private E_PlayerAction currentState;
+        private Dictionary<E_ActionState,I_StateUpdatable> actionStateMap;
         private I_2DPlayerUpdatable player;
 
+        private S_StateData stateData;
+
+
         public PlayerStateManager(I_2DPlayerUpdatable player){
+            this.player = player;
+            stateData = new S_StateData();
 
-            //マップの初期化
-            actionStateMap = new Dictionary<E_PlayerAction,PlayerActionState>();
-
-            //UPState
-            actionStateMap[E_PlayerAction.WAIT] = new Wait_PlayerAction(player);
-
-            //状態管理を初期化
-            currentState = E_PlayerAction.WAIT;
+            //状態の初期化
+            stateData.actionState = E_ActionState.WAIT;
+            stateData.moveState = E_MoveState.WAIT;
+            stateData.isAir = false;
+            stateData.playerDirection = E_PlayerDirection.RIGHT;
         }
 
 
-        public void updateState(){
-            E_PlayerAction nextState = currentState;
-
-            //アクションが終了したときの処理
-            if(actionStateMap[currentState].getIsFinished){
-                nextState = actionStateMap[currentState].getNextState();
-                actionStateMap[nextState].stateEnter();
-            }  
+        public void managerUpdate(){
 
             //入力を確認
-            nextState = actionStateMap[nextState].checkInpuit();
+            player.stateEnter(stateData.actionState);
 
-            //アクションごとの処理
-            actionStateMap[nextState].stateUpdate();
+            //状態の変化があれば状態を更新
+            
         }
 
     }

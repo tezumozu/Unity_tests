@@ -4,51 +4,42 @@ using UnityEngine;
 using MyInputSystems;
 
 namespace StateManagement_ver3{
-    public class temp_PlayerAction : PlayerActionState{
+    public class temp_PlayerAction : I_StateUpdatable{
+        static E_ActionState ownState;
 
-        public  temp_PlayerAction (I_2DPlayerUpdatable player) : base(player){
-            ownState = E_PlayerAction.WAIT;
+        public  temp_PlayerAction (){
+            ownState = E_ActionState.WAIT;
         }
+        
 
-        //Stateの処理
-        override public void stateProsses (){
-
+        public void stateUpdate (){
         }
-
+        
 
         //State開始時の初期化処理
-        override public void stateEnter (){
-
+        public void stateEnter (){
         }
 
 
         //State終了時に次にどのStateへ遷移するか
-        override public E_PlayerAction getNextState(){
+        public E_ActionState getNextState(){
             return ownState;
+        }
+
+        public bool getIsFinished(){
+            return false;
         }
 
 
         //入力確認
-        override protected E_PlayerAction checkTransrate(E_PlayerAction currentState, E_InputType type){
-            return currentState;
+        public E_ActionState checkTransrationForInput(E_InputType type){
+            return ownState;
         }
 
 
         //入力バッファ確認
-        override protected E_PlayerAction checkTransrateForBuffer(E_PlayerAction currentState, E_InputType type){
-            return currentState;
-        }
-
-
-        //着地時処理
-        override protected void landing (){
-            return;
-        }
-
-
-        //落下時処理
-        override protected void falling (){
-            return;
+        public E_ActionState checkTransrationForBuffer(E_InputType type){
+            return ownState;
         }
 
     }

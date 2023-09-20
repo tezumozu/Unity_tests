@@ -68,20 +68,22 @@ namespace StateManagement_ver1{
 
     }
 
+    public enum E_ActionState {//アニメーション単位
+        WAIT,
+        WALK,
+        ATTACK,
+        CHARGE_ATTACK,
+        JUMP,
+        DUDGE,
+        GUARD,
+        DUSH,
+        FALL,
+        LANDING
+    }
+
+
 }
 
-public enum E_ActionState {//アニメーション単位
-    WAIT,
-    WALK,
-    ATTACK,
-    CHARGE_ATTACK,
-    JUMP,
-    DUDGE,
-    GUARD,
-    DUSH,
-    FALL,
-    LANDING
-}
 
 
 

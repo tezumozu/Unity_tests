@@ -697,8 +697,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1349167955}
   - component: {fileID: 1349167956}
-  - component: {fileID: 1349167957}
-  - component: {fileID: 1349167958}
+  - component: {fileID: 1349167959}
+  - component: {fileID: 1349167960}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -715,7 +715,7 @@ Transform:
   m_GameObject: {fileID: 1349167953}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -773,7 +773,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1349167957
+--- !u!114 &1349167959
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -787,10 +787,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundLayer:
     serializedVersion: 2
-    m_Bits: 64
-  playerHight: 1
---- !u!58 &1349167958
-CircleCollider2D:
+    m_Bits: 0
+  playerSize: {x: 1, y: 1}
+  config:
+    jumpMaxAccel: 10
+    warkMaxSpeed: 10
+--- !u!70 &1349167960
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -822,5 +825,5 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
+  m_Size: {x: 1, y: 1}
+  m_Direction: 0
