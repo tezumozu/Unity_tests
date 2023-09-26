@@ -4,46 +4,33 @@ using UnityEngine;
 using MyInputSystems;
 
 namespace StateManagement_ver3{
-    public class Wait_PlayerAction : I_StateUpdatable{
+    public class Wait_PlayerAction : ActionState{
 
-        static E_ActionState ownState;
-        private I_2DPlayerUpdatable player;
+        const E_ActionState ownState = E_ActionState.WAIT;
 
-        public  Wait_PlayerAction (){
-            ownState = E_ActionState.WAIT;
-        }
-        
 
-        public void stateUpdate (S_StateData stateData){
-            player.stateEnter(stateData.actionState);
-            player.moveEnter(stateData.moveState,stateData.playerDirection);
-        }
-        
-
-        //State開始時の初期化処理
-        public void stateEnter (){
-        }
-
-        //Stateの完了を確認
-        public bool getIsFinished(){
-            return false;
-        }
-
-        //State終了時に次にどのStateへ遷移するか
-        public E_ActionState getNextState(){
-            return ownState;
+        override public void updateState (){
+            //Debug.Log("WAIT");
         }
 
 
-        //入力確認
-        public E_ActionState checkTransrationForInput(E_InputType type){
-            return ownState;
+        override protected S_StateData inputStateTransration(E_InputType input , S_StateData state){
+            return state;
         }
 
 
-        //入力バッファ確認
-        public E_ActionState checkTransrationForBuffer(E_InputType type){
-            return ownState;
+        override protected S_StateData bufferStateTransration(E_InputType input , S_StateData state){
+            return state;
+        }
+
+
+        override public S_StateData getNextState(S_StateData state){
+            return state;
+        }
+
+
+        override public void stateEnter(){
+
         }
     }
 }

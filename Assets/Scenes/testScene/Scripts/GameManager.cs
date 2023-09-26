@@ -44,8 +44,11 @@ namespace MyGameManagers{
             //Inputを更新
             inputManager.inputUpdate();
 
+            //インプットの取得
+            var input = inputManager.getInputList;
+
             //各ゲームオブジェクト更新
-            playerManager.managerUpdate();
+            playerManager.playerUpdate(input);
 
             //UI更新
         }

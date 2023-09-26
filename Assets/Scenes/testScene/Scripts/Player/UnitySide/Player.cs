@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using MyInputSystems;
 using StateManagement_ver3;
+using UniRx;
+
 public class Player: MonoBehaviour , I_P_DamageApplicable , I_2DPlayerUpdatable {
     [SerializeField]
     LayerMask groundLayer;
@@ -13,35 +15,50 @@ public class Player: MonoBehaviour , I_P_DamageApplicable , I_2DPlayerUpdatable 
     [SerializeField]
     S_ActionConfig config;
 
-    bool isAir;
 
-    GravityManager gravityManager;
-
-
-    E_PlayerDirection playerDirection;
+    S_StateData currentState;
 
     PlayerAttackManager attackManager;
 
+    Dictionary <E_ActionState, I_PlayerActionavele> actionMap;
+    Dictionary <E_MoveState, I_PlayerMovable> moveMap;
+
+
+    //Subject
+    Subject<Unit> landingSubject;
+    Subject<Unit> fallSubject;
+    Subject<Unit> damagedSubject;
+
+    
     public Vector2 getPlayerSize {
         get {return playerSize;}
     }
 
-    
-    
-
-    static PlayerManager playerManager;
-
-    void Start ( ){
+    //プレイヤーの初期化
+    public void playerInit(){
         attackManager = new PlayerAttackManager(this);
         transform.localScale = playerSize;
-        isAir = true;
-        gravityManager = new GravityManager();
+
+        landingSubject = new Subject<Unit>();
+        fallSubject = new Subject<Unit>();
+        damagedSubject = new Subject<Unit>();
     }
 
 
+    //プレイヤーの状態を更新
+    public void stateUpdate(S_StateData nextState){
+        
+        currentState = nextState;
+    }
 
+    //プイレイヤーの更新
     public void playerUpdate (){
-        //現在の状態を出力
+        //着地・落下を判定
+        checkLanding();
+
+        //ダメージ判定
+
+        //stateに応じて移動や処理
     }
 
 
@@ -50,16 +67,8 @@ public class Player: MonoBehaviour , I_P_DamageApplicable , I_2DPlayerUpdatable 
 
     }
 
-    public void stateEnter( StateManagement_ver3.E_ActionState state){
 
-    }
-
-    public void moveEnter(E_MoveState state,E_PlayerDirection direction){
-
-    }
-
-
-    public bool checkLanding(){
+    public void checkLanding(){
         Vector2 startPoint = new Vector2 (transform.position.x,transform.position.y);
         Vector2 endPoint = new Vector2 (transform.position.x,transform.position.y - playerSize.y / 2);
 
@@ -67,31 +76,40 @@ public class Player: MonoBehaviour , I_P_DamageApplicable , I_2DPlayerUpdatable 
 
         if(hitObjct){
 
-            //座標を修正
-            transform.position = new Vector2 (hitObjct.point.x,hitObjct.point.y + playerSize.y / 2); 
-            return true;
+            //着地したら
+            if(currentState.isAir){
+                //座標を修正
+                transform.position = new Vector2 (hitObjct.point.x,hitObjct.point.y + playerSize.y / 2); 
+
+                currentState.isAir = false;
+                landingSubject.OnNext(Unit.Default);
+            }
 
         }else {
-            return false;
+            //落下したら
+            if(!currentState.isAir){
+
+                currentState.isAir = true;
+                fallSubject.OnNext(Unit.Default);
+            }
 
         }
     }
 
 
-    //通常攻撃生成
-    public void attack(){   
-        //攻撃を生成
-        attackManager.normalAttack(isAir,playerDirection);
 
-        //アニメーションを再生
+    //落下時の購読設定
+    public void subscribeFall(SubscrivableMethod method){
+        fallSubject.Subscribe(x => method());
     }
 
+    //着地時の購読設定
+    public void subscribeLanding(SubscrivableMethod method){
+        landingSubject.Subscribe(x => method());
+    }
 
-    //チャージ攻撃生成
-    public void chargeAttack(){
-        //攻撃を生成
-        attackManager.chageAttack(isAir,playerDirection);
-
-        //アニメーションを再生
+    //ダメージ時の購読設定
+    public void subscribeDamaged(SubscrivableMethod method){
+        damagedSubject.Subscribe(x => method());
     }
 }

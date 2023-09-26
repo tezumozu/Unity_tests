@@ -80,6 +80,7 @@ namespace MyInputSystems {
                 InputData[] copy = new InputData[inputList.Count];
                 inputList.CopyTo(copy);
 
+                //配列内をクリア
                 inputList.Clear();
                 return copy;
             }
@@ -101,7 +102,6 @@ namespace MyInputSystems {
                 InputData[] copy = new InputData[inputBuffer.Count];
                 inputBuffer.CopyTo(copy);
 
-                inputList.Clear();
                 return copy;
             }
         }
