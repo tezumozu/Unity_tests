@@ -17,6 +17,10 @@ namespace StateManagement_ver3{
 
 
         public void playerUpdate(InputData[] input){
+
+            //落下・着地の確認
+            player.checkLanding();
+
             //状態を更新
             stateManager.managerUpdate(input);
 

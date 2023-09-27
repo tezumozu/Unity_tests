@@ -6,17 +6,19 @@ using MyInputSystems;
 namespace StateManagement_ver3{
     abstract public class ActionState : I_StateUpdatable{
 
-        protected bool isBufferCheck;
+        protected static bool isLeftMove;
 
+        protected static bool isRightMove;
+
+        protected bool isBufferCheck;
         protected bool isFinished;
 
         public ActionState (){
             isBufferCheck = false;
             isFinished = false;
+            isLeftMove = false;
+            isRightMove = false;
         }  
-
-        abstract protected S_StateData inputStateTransration(E_InputType input , S_StateData state);
-        abstract protected S_StateData bufferStateTransration(E_InputType input , S_StateData state);
 
         public S_StateData checkInput( S_StateData state , InputData[] input){
 
@@ -39,6 +41,10 @@ namespace StateManagement_ver3{
 
             }
 
+            if(isBufferCheck){
+                isBufferCheck = false;
+            }
+
             return state;
         }
 
@@ -46,12 +52,29 @@ namespace StateManagement_ver3{
             return isFinished;
         }
 
+        public virtual S_StateData falling(S_StateData state){
+            state.moveState = E_MoveState.FALL;
+            state.isAir = true;
+            return state;
+        }
 
-        abstract public void updateState();
+        public virtual S_StateData landing(S_StateData state){
+            state.actionState = E_ActionState.LANDING;
+            state.moveState = E_MoveState.LAND;
 
-        abstract public S_StateData getNextState(S_StateData state);
+            state.isAir = false;
+            return state;
+        }
 
-        abstract public void stateEnter();
+        protected abstract S_StateData inputStateTransration(E_InputType input , S_StateData state);
+        protected abstract S_StateData bufferStateTransration(E_InputType input , S_StateData state);
+
+        public abstract void updateState();
+
+        public abstract S_StateData getNextState(S_StateData state);
+
+        public abstract void stateEnter();
+
     }
 
 

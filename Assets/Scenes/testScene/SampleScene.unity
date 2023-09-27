@@ -787,11 +787,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   playerSize: {x: 0.5, y: 1}
   config:
-    jumpMaxAccel: 10
-    warkMaxSpeed: 10
+    jumpMaxAccel: 5
+    walkMaxSpeed: 5
+    landing:
+      rady: 0
+      action: 3
+      followThrough: 3
+    attack:
+      rady: 0
+      action: 0
+      followThrough: 0
 --- !u!70 &1349167960
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

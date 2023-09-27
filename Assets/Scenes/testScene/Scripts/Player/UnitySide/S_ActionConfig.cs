@@ -5,12 +5,14 @@ using UnityEngine;
 [System.Serializable]
 public struct S_ActionConfig {
     public float jumpMaxAccel;
-    public float warkMaxSpeed;
-
-    public S_ActionConfig(float jump,float wark){
-        jumpMaxAccel = jump;
-        warkMaxSpeed = wark;
-    }
-
+    public float walkMaxSpeed;
+    public S_ActionFrameConfig landing;
+    public S_ActionFrameConfig attack;
 }
 
+[System.Serializable]
+public struct S_ActionFrameConfig{
+    public float rady;
+    public float action;
+    public float followThrough;
+}

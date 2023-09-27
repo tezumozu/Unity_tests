@@ -15,10 +15,14 @@ namespace StateManagement_ver3{
 
         void playerInit();
 
+        void checkLanding();
+
         void subscribeFall (SubscrivableMethod method);
 
         void subscribeLanding (SubscrivableMethod method);
 
         void subscribeDamaged (SubscrivableMethod method);    
+
+        S_ActionConfig getActionConfig();
     }
 }

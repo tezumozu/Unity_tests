@@ -14,5 +14,9 @@ namespace StateManagement_ver3{
         public bool getIsFinished();
 
         public void stateEnter();
+
+        public S_StateData falling(S_StateData state);
+
+        public S_StateData landing(S_StateData state);
     }
 }

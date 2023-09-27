@@ -20,8 +20,8 @@ public class Player: MonoBehaviour , I_P_DamageApplicable , I_2DPlayerUpdatable 
 
     PlayerAttackManager attackManager;
 
-    Dictionary <E_ActionState, I_PlayerActionavele> actionMap;
-    Dictionary <E_MoveState, I_PlayerMovable> moveMap;
+    Dictionary <E_ActionState, PlayerAction> actionMap;
+    Dictionary <E_MoveState, PlayerMove> moveMap;
 
 
     //Subject
@@ -34,6 +34,11 @@ public class Player: MonoBehaviour , I_P_DamageApplicable , I_2DPlayerUpdatable 
         get {return playerSize;}
     }
 
+    public S_StateData getStateData {
+        get {return currentState;}
+    }
+
+
     //プレイヤーの初期化
     public void playerInit(){
         attackManager = new PlayerAttackManager(this);
@@ -42,30 +47,67 @@ public class Player: MonoBehaviour , I_P_DamageApplicable , I_2DPlayerUpdatable 
         landingSubject = new Subject<Unit>();
         fallSubject = new Subject<Unit>();
         damagedSubject = new Subject<Unit>();
+
+
+        //マップの作成
+        actionMap = new Dictionary<E_ActionState, PlayerAction>();
+
+        actionMap[E_ActionState.WAIT] = new Wait_Action(this);
+        actionMap[E_ActionState.LANDING] = new Landing_Action(this);
+        actionMap[E_ActionState.JUMP] = new Jump_Action(this);
+
+
+        //move
+        moveMap = new Dictionary<E_MoveState, PlayerMove>();
+
+        moveMap[E_MoveState.LAND] = new Land_Move(this);
+        moveMap[E_MoveState.FALL] = new Fall_Move(this);
+        moveMap[E_MoveState.JUMP] = new Jump_Move(this);
     }
+
 
 
     //プレイヤーの状態を更新
     public void stateUpdate(S_StateData nextState){
-        
+
+        if(nextState.actionState != currentState.actionState){
+            actionMap[nextState.actionState].actionInit();
+        }
+
+
+        if(nextState.moveState != currentState.moveState){
+            moveMap[nextState.moveState].moveInit();
+        }
+
+
         currentState = nextState;
     }
 
+
+
     //プイレイヤーの更新
     public void playerUpdate (){
-        //着地・落下を判定
-        checkLanding();
-
         //ダメージ判定
+        checkDamaged();
 
         //stateに応じて移動や処理
+        actionMap[currentState.actionState].actionUpdate();
+        moveMap[currentState.moveState].moveUpdate();
     }
+
+
+
+    private void checkDamaged(){
+
+    }
+
 
 
     //ダメージを受けた時の処理
     public void damageApplicated(){
 
     }
+
 
 
     public void checkLanding(){
@@ -75,22 +117,19 @@ public class Player: MonoBehaviour , I_P_DamageApplicable , I_2DPlayerUpdatable 
         RaycastHit2D hitObjct = Physics2D.Linecast(startPoint,endPoint,groundLayer);
 
         if(hitObjct){
-
             //着地したら
             if(currentState.isAir){
                 //座標を修正
                 transform.position = new Vector2 (hitObjct.point.x,hitObjct.point.y + playerSize.y / 2); 
-
-                currentState.isAir = false;
                 landingSubject.OnNext(Unit.Default);
+
             }
 
         }else {
             //落下したら
             if(!currentState.isAir){
-
-                currentState.isAir = true;
                 fallSubject.OnNext(Unit.Default);
+
             }
 
         }
@@ -111,5 +150,9 @@ public class Player: MonoBehaviour , I_P_DamageApplicable , I_2DPlayerUpdatable 
     //ダメージ時の購読設定
     public void subscribeDamaged(SubscrivableMethod method){
         damagedSubject.Subscribe(x => method());
+    }
+
+    public S_ActionConfig getActionConfig(){
+        return config;
     }
 }

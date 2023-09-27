@@ -16,19 +16,23 @@ namespace StateManagement_ver3{
             currentState = new S_StateData();
 
             currentState.actionState = E_ActionState.WAIT;
-            currentState.moveState = E_MoveState.WAIT;
-            currentState.isAir = false;
+            currentState.moveState = E_MoveState.FALL;
             currentState.playerDirection = E_PlayerDirection.RIGHT;
-
+            currentState.isAir = true;
+            currentState.isRanning = false;
 
             this.player = player;
             player.stateUpdate(currentState);
 
+            //状態の初期化
             actionStateMap = new Dictionary<E_ActionState, I_StateUpdatable>();
-            actionStateMap[E_ActionState.WAIT] = new Wait_PlayerAction();
+            actionStateMap[E_ActionState.WAIT] = new Wait_ActionState();
+            actionStateMap[E_ActionState.LANDING] = new Landing_ActionState();
+            actionStateMap[E_ActionState.JUMP] = new Jump_ActionState();
 
             //Subscrive
             player.subscribeFall(falling);
+            player.subscribeLanding(landing);
         }
 
         public void initManager(){
@@ -36,7 +40,7 @@ namespace StateManagement_ver3{
 
             //状態の初期化
             currentState.actionState = E_ActionState.WAIT;
-            currentState.moveState = E_MoveState.WAIT;
+            currentState.moveState = E_MoveState.LAND;
             currentState.isAir = false;
             currentState.playerDirection = E_PlayerDirection.RIGHT;
         }
@@ -49,12 +53,11 @@ namespace StateManagement_ver3{
             //状態が終了していたら
             if(actionStateMap[currentState.actionState].getIsFinished()){
                 nextState = actionStateMap[currentState.actionState].getNextState(currentState);
-                actionStateMap[currentState.actionState].stateEnter();   
             }
 
 
             //入力を確認
-            nextState = actionStateMap[currentState.actionState].checkInput(currentState,input);
+            nextState = actionStateMap[nextState.actionState].checkInput(nextState,input);
 
 
             //状態の変化があれば状態を更新
@@ -65,10 +68,8 @@ namespace StateManagement_ver3{
             //状態の更新
             actionStateMap[nextState.actionState].updateState();
 
-
-            //状態の更新
+            //状態を上書き
             currentState = nextState;
-
 
             //プレイヤーの状態を更新
             player.stateUpdate(nextState);
@@ -76,12 +77,16 @@ namespace StateManagement_ver3{
         }
 
         public void falling(){
-            Debug.Log("Falling!");
-            currentState.isAir = true;
+            currentState = actionStateMap[currentState.actionState].falling(currentState);
+            actionStateMap[currentState.actionState].stateEnter();
+            player.stateUpdate(currentState);
         }
 
         public void landing(){
-            Debug.Log("Landing!");
+            currentState = actionStateMap[currentState.actionState].landing(currentState);
+            actionStateMap[currentState.actionState].stateEnter();
+            player.stateUpdate(currentState);
+            
         }
     }
 }

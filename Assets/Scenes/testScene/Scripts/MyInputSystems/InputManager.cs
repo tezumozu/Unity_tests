@@ -18,6 +18,8 @@ namespace MyInputSystems {
             //インプットデータの初期化
             inputList = new List<InputData> ();
             inputBuffer = new List<InputData> ();
+
+            //各InputModeを初期化
         }
 
 
@@ -102,47 +104,14 @@ namespace MyInputSystems {
                 InputData[] copy = new InputData[inputBuffer.Count];
                 inputBuffer.CopyTo(copy);
 
+                //inputListをクリア
+                inputList.Clear();
                 return copy;
             }
         }
 
         
     }
-
-
-    public enum E_InputType {
-        //Action
-        WALK_LEFT,
-        WALK_LEFT_PERFORMED,
-        WALK_LEFT_CANCELED,
-
-        WALK_RIGHT,
-        WALK_RIGHT_PERFORMED,
-        WALK_RIGHT_CANCELED,
-
-        ATTACK,
-
-        CHARGE_ATTACK,
-        CHARGE_ATTACK_PEFORMED,
-        CHARGE_ATTACK_CANCELED,
-
-        GUARD,
-        GUARD_PEFORMED,
-        GUARD_CANCELED,
-
-        JUMP,
-        LITTLE_JUMP,        
-        DUSH,
-        POUSE,
-        CAMERA_CHANGE,
-
-        //Title
-
-        //Camera
-        CAMERA_MOVE_UP,
-        CAMERA_MOVE_DOWN
-    }
-
 
     public struct InputData{
         public E_InputType type;

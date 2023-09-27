@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace StateManagement_ver3{
     public enum E_MoveState {
-        WAIT,
-        JUNP,
-        WALK,
-        FALL
+        LAND,
+        JUMP,
+        FALL,
+        DUSH
     }
 }

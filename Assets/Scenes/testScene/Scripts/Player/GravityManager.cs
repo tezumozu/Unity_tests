@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GravityManager{
-    private const float gravityAccel = -0.98f;
+    private const float gravityAccel = - 0.125f;
 
     private float currentGravity;
 
@@ -16,7 +16,7 @@ public class GravityManager{
     }
 
     //毎フレーム呼び出すことで重力を再現する
-    public Vector2 addGravity(Vector2 targetPos){
+    public Vector3 addGravity(Vector3 targetPos){
         currentGravity += gravityAccel * Time.deltaTime;
         targetPos.y += currentGravity;
         return targetPos;

@@ -20,9 +20,7 @@ namespace MyInputSystems {
             isHoldDic.Add(E_InputType.WALK_LEFT,false);
             isHoldDic.Add(E_InputType.WALK_RIGHT,false);
             isHoldDic.Add(E_InputType.GUARD,false);
-            isHoldDic.Add(E_InputType.CHARGE_ATTACK,false);
-
-            
+            isHoldDic.Add(E_InputType.CHARGE_ATTACK,false);            
         }
 
 

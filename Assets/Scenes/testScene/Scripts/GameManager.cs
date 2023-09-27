@@ -24,18 +24,26 @@ namespace MyGameManagers{
         private PlayerManager playerManager;
 
 
+        private S_ActionConfig actionConfig; 
+
+        public S_ActionConfig getActionConfig{
+            get {return actionConfig;}
+        }
+
         // Start is called before the first frame update
-        void Start()
-        {
+        void Start(){
             //フレームレートの設定
             Application.targetFrameRate = 60; 
 
             currentMode = GameModes.ACTION_ACTION;
 
+            //入力関係の初期化
             inputManager = InputManager.instance;
+            GameObject.Find("IS_Action").GetComponent<ActionInput>().init();
 
             I_2DPlayerUpdatable playerObject = GameObject.Find("Player").GetComponent<I_2DPlayerUpdatable>();
             playerManager = new PlayerManager(playerObject);
+            actionConfig = playerObject.getActionConfig();
         }
 
 
