@@ -29,6 +29,7 @@ namespace StateManagement_ver3{
             actionStateMap[E_ActionState.WAIT] = new Wait_ActionState();
             actionStateMap[E_ActionState.LANDING] = new Landing_ActionState();
             actionStateMap[E_ActionState.JUMP] = new Jump_ActionState();
+            actionStateMap[E_ActionState.ATTACK] = new Attack_ActionState();
 
             //Subscrive
             player.subscribeFall(falling);

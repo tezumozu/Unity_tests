@@ -41,7 +41,6 @@ public class Player: MonoBehaviour , I_P_DamageApplicable , I_2DPlayerUpdatable 
 
     //プレイヤーの初期化
     public void playerInit(){
-        attackManager = new PlayerAttackManager(this);
         transform.localScale = playerSize;
 
         landingSubject = new Subject<Unit>();
@@ -55,6 +54,7 @@ public class Player: MonoBehaviour , I_P_DamageApplicable , I_2DPlayerUpdatable 
         actionMap[E_ActionState.WAIT] = new Wait_Action(this);
         actionMap[E_ActionState.LANDING] = new Landing_Action(this);
         actionMap[E_ActionState.JUMP] = new Jump_Action(this);
+        actionMap[E_ActionState.ATTACK] = new Attack_Action(this);
 
 
         //move

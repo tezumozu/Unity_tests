@@ -25,42 +25,6 @@ namespace StateManagement_ver3{
 
             //移動関係
             switch (input){
-                case E_InputType.WALK_RIGHT_PERFORMED:
-                    isRightMove = true;
-                    state.playerDirection = E_PlayerDirection.RIGHT;
-                    state.isRanning = true;
-                break;
-
-
-                case E_InputType.WALK_RIGHT_CANCELED:
-                    isRightMove = false;
-
-                    //同時押しされていた場合
-                    if(isLeftMove){
-                        state.playerDirection = E_PlayerDirection.LEFT;
-                    }else{
-                        state.isRanning = false;
-                    }
-                    
-                break;
-
-
-                case E_InputType.WALK_LEFT_PERFORMED:
-                    isLeftMove = true;
-                    state.playerDirection = E_PlayerDirection.LEFT;
-                    state.isRanning = true;
-                break;
-
-
-                case E_InputType.WALK_LEFT_CANCELED:
-                    isLeftMove = false;
-                    //同時押しされていた場合
-                    if(isRightMove){
-                        state.playerDirection = E_PlayerDirection.RIGHT;
-                    }else{
-                        state.isRanning = false;
-                    }
-                break;
 
                 case E_InputType.JUMP:
                     state.isAir = true;
@@ -79,6 +43,7 @@ namespace StateManagement_ver3{
                 break;
 
                 case E_InputType.ATTACK:
+                    state.actionState = E_ActionState.ATTACK;
                 break;
 
                 case E_InputType.DUSH:
@@ -95,42 +60,6 @@ namespace StateManagement_ver3{
 
             //移動関係
             switch (input){
-                case E_InputType.WALK_RIGHT_PERFORMED:
-                    isRightMove = true;
-                    state.playerDirection = E_PlayerDirection.RIGHT;
-                    state.isRanning = true;
-                break;
-
-
-                case E_InputType.WALK_RIGHT_CANCELED:
-                    isRightMove = false;
-
-                    //同時押しされていた場合
-                    if(isLeftMove){
-                        state.playerDirection = E_PlayerDirection.LEFT;
-                    }else{
-                        state.isRanning = false;
-                    }
-                    
-                break;
-
-
-                case E_InputType.WALK_LEFT_PERFORMED:
-                    isLeftMove = true;
-                    state.playerDirection = E_PlayerDirection.LEFT;
-                    state.isRanning = true;
-                break;
-
-
-                case E_InputType.WALK_LEFT_CANCELED:
-                    isLeftMove = false;
-                    //同時押しされていた場合
-                    if(isRightMove){
-                        state.playerDirection = E_PlayerDirection.RIGHT;
-                    }else{
-                        state.isRanning = false;
-                    }
-                break;
 
                 case E_InputType.JUMP:
                     state.isAir = true;

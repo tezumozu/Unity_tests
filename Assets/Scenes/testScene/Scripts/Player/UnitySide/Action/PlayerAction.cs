@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class PlayerAction {
     
-    Player target;
+    protected Player target;
 
     public PlayerAction (Player target){
         this.target = target;

@@ -6,8 +6,7 @@ using MyInputSystems;
 namespace StateManagement_ver3{
     public class Jump_ActionState : ActionState{
 
-        const E_ActionState ownState = E_ActionState.WAIT;
-
+        const E_ActionState ownState = E_ActionState.JUMP;
 
         override public void updateState (){
             
@@ -18,42 +17,9 @@ namespace StateManagement_ver3{
 
             //移動関係
             switch (input){
-                case E_InputType.WALK_RIGHT_PERFORMED:
-                    isRightMove = true;
-                    state.playerDirection = E_PlayerDirection.RIGHT;
-                    state.isRanning = true;
-                break;
 
-
-                case E_InputType.WALK_RIGHT_CANCELED:
-                    isRightMove = false;
-
-                    //同時押しされていた場合
-                    if(isLeftMove){
-                        state.playerDirection = E_PlayerDirection.LEFT;
-                    }else{
-                        state.isRanning = false;
-                    }
-                    
-                break;
-
-
-                case E_InputType.WALK_LEFT_PERFORMED:
-                    isLeftMove = true;
-                    state.playerDirection = E_PlayerDirection.LEFT;
-                    state.isRanning = true;
-                break;
-
-
-                case E_InputType.WALK_LEFT_CANCELED:
-                    isLeftMove = false;
-
-                    //同時押しされていた場合
-                    if(isRightMove){
-                        state.playerDirection = E_PlayerDirection.RIGHT;
-                    }else{
-                        state.isRanning = false;
-                    }
+                case E_InputType.LITTLE_JUMP:
+                    state.moveState = E_MoveState.FALL;
                 break;
 
 
@@ -61,10 +27,12 @@ namespace StateManagement_ver3{
                 break;
             }
 
+
             //アクション関係
             switch (input){
 
                 case E_InputType.ATTACK:
+                    state.actionState = E_ActionState.ATTACK;
                 break;
 
                 case E_InputType.DUSH:

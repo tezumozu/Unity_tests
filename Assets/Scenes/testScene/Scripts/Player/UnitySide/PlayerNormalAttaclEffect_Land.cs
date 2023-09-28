@@ -6,7 +6,7 @@ using StateManagement_ver3;
 public class PlayerNormalAttaclEffect_Land : MonoBehaviour , I_ToEnemyDamageInflict , I_AttackEffectGeneratable{
 
     float currentTime;
-    const float EffectValidTime = 10.0f * GameValue.g_FrameTime; //5フレーム分
+    const float EffectValidTime = 10.0f * GameValue.g_FrameTime; //10フレーム分
     
     Player player;
 
@@ -46,5 +46,7 @@ public class PlayerNormalAttaclEffect_Land : MonoBehaviour , I_ToEnemyDamageInfl
         transform.parent = player.gameObject.transform;
         Vector3 pos = new Vector3 (player.getPlayerSize.x / 2 , player.getPlayerSize.y / 2 , 0.0f );
         transform.localPosition = pos;
+
+        
     }
 }

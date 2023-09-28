@@ -31,7 +31,53 @@ namespace StateManagement_ver3{
             if(input.Length > 0){
 
                 for(int i = 0; i < input.Length; i++){
+
+                    //移動関係の入力処理
+                    switch (input[i].type){
+                        case E_InputType.WALK_RIGHT_PERFORMED:
+                            isRightMove = true;
+                            state.playerDirection = E_PlayerDirection.RIGHT;
+                            state.isRanning = true;
+                        break;
+
+
+                        case E_InputType.WALK_RIGHT_CANCELED:
+                            isRightMove = false;
+
+                            //同時押しされていた場合
+                            if(isLeftMove){
+                                state.playerDirection = E_PlayerDirection.LEFT;
+                            }else{
+                                state.isRanning = false;
+                            }
+                            
+                        break;
+
+
+                        case E_InputType.WALK_LEFT_PERFORMED:
+                            isLeftMove = true;
+                            state.playerDirection = E_PlayerDirection.LEFT;
+                            state.isRanning = true;
+                        break;
+
+
+                        case E_InputType.WALK_LEFT_CANCELED:
+                            isLeftMove = false;
+                            //同時押しされていた場合
+                            if(isRightMove){
+                                state.playerDirection = E_PlayerDirection.RIGHT;
+                            }else{
+                                state.isRanning = false;
+                            }
+                        break;
+
+                        default:
+                        break;
+                    }
+
+
                     //バッファーを確認する場合
+                    //アクション、固有の移動系の遷移
                     if(isBufferCheck){
                         state = bufferStateTransration(input[i].type , state);
                     }else{
@@ -41,6 +87,7 @@ namespace StateManagement_ver3{
 
             }
 
+            //バッファを確認していた場合
             if(isBufferCheck){
                 isBufferCheck = false;
             }

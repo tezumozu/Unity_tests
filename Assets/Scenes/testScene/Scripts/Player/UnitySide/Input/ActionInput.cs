@@ -109,17 +109,13 @@ namespace MyInputSystems {
             if(context.performed){
                 inputManager.setInputData(E_InputType.JUMP);
             }
-
-            if(context.canceled){
-                inputManager.setInputData(E_InputType.LITTLE_JUMP);
-            }
         }
 
         public void littleJumpInputs (InputAction.CallbackContext context){
             if(context.started) return;
 
             if(context.performed){
-                //inputManager.setInputData(E_InputType.LITTLE_JUMP);
+                inputManager.setInputData(E_InputType.LITTLE_JUMP);
             }
         }
 
