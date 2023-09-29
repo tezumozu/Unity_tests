@@ -11,6 +11,10 @@ namespace StateManagement_ver3{
 
         float currentFrame;
 
+        public Landing_ActionState (I_2DPlayerUpdatable player): base(player){
+            
+        }
+
         override public void updateState (){
             currentFrame += Time.deltaTime;
 
@@ -29,6 +33,7 @@ namespace StateManagement_ver3{
                 case E_InputType.JUMP:
                     state.isAir = true;
                     state.moveState = E_MoveState.JUMP;
+                    isUpdateMove = true;
                 break;
 
 
@@ -40,13 +45,16 @@ namespace StateManagement_ver3{
             switch (input){
                 case E_InputType.JUMP:
                     state.actionState = E_ActionState.JUMP;
+                    isUpdateAction = true;
                 break;
 
                 case E_InputType.ATTACK:
                     state.actionState = E_ActionState.ATTACK;
+                    isUpdateAction = true;
                 break;
 
                 case E_InputType.DUSH:
+                    isUpdateAction = true;
                 break;
 
                 default:
@@ -64,6 +72,7 @@ namespace StateManagement_ver3{
                 case E_InputType.JUMP:
                     state.isAir = true;
                     state.moveState = E_MoveState.JUMP;
+                    isUpdateMove = true;
                 break;
 
 
@@ -75,12 +84,17 @@ namespace StateManagement_ver3{
             switch (input){
                 case E_InputType.JUMP:
                     state.actionState = E_ActionState.JUMP;
+                    isUpdateAction = true;
                 break;
 
                 case E_InputType.ATTACK:
+                    state.actionState = E_ActionState.ATTACK;
+                    isUpdateAction = true;
                 break;
 
                 case E_InputType.DUSH:
+                    state.actionState = E_ActionState.ATTACK;
+                    isUpdateAction = true;
                 break;
 
                 default:
@@ -92,12 +106,12 @@ namespace StateManagement_ver3{
 
         override public S_StateData getNextState(S_StateData state){
             state.actionState = E_ActionState.WAIT;
-            state.moveState = E_MoveState.LAND;
 
+            player.actionEnter(state.actionState);
             return state;
         }
 
-        override public void stateEnter(){
+        override public void stateEnter(S_StateData state){
             isFinished = false;
             isBufferCheck = true;
             currentFrame = 0.0f;

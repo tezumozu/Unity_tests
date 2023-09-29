@@ -8,6 +8,9 @@ namespace StateManagement_ver3{
 
         const E_ActionState ownState = E_ActionState.WAIT;
 
+        public Wait_ActionState (I_2DPlayerUpdatable player): base(player){
+            
+        }
 
         override public void updateState (){
         }
@@ -21,6 +24,7 @@ namespace StateManagement_ver3{
                 case E_InputType.JUMP:
                     state.isAir = true;
                     state.moveState = E_MoveState.JUMP;
+                    isUpdateMove = true;
                 break;
 
                 default:
@@ -31,13 +35,16 @@ namespace StateManagement_ver3{
             switch (input){
                 case E_InputType.JUMP:
                     state.actionState = E_ActionState.JUMP;
+                    isUpdateAction = true;
                 break;
 
                 case E_InputType.ATTACK:
                     state.actionState = E_ActionState.ATTACK;
+                    isUpdateAction = true;
                 break;
 
                 case E_InputType.DUSH:
+                    isUpdateAction = true;
                 break;
 
                 default:
@@ -58,7 +65,7 @@ namespace StateManagement_ver3{
             return state;
         }
 
-        override public void stateEnter(){
+        override public void stateEnter(S_StateData state){
         }
 
     }

@@ -13,7 +13,7 @@ namespace StateManagement_ver3{
 
         public bool getIsFinished();
 
-        public void stateEnter();
+        public void stateEnter(S_StateData state);
 
         public S_StateData falling(S_StateData state);
 

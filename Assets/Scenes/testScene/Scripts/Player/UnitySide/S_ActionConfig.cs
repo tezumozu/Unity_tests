@@ -6,8 +6,14 @@ using UnityEngine;
 public struct S_ActionConfig {
     public float jumpMaxAccel;
     public float walkMaxSpeed;
+    public float littleJump;
     public S_ActionFrameConfig landing;
-    public S_ActionFrameConfig attack;
+    public S_ActionFrameConfig normalAttack_Air;
+    public S_ActionFrameConfig normalAttack_Land;
+    public S_ActionFrameConfig chargeAttack_Air;
+    public S_ActionFrameConfig chargeAttack_Land;
+    public S_ActionFrameConfig dush;
+    public S_ActionFrameConfig dodge;
 }
 
 [System.Serializable]

@@ -11,11 +11,15 @@ namespace StateManagement_ver3{
 
         void playerUpdate ();
 
+        void checkLanding();
+
         void stateUpdate(S_StateData nextState);
 
-        void playerInit();
+        void actionEnter(E_ActionState nextState);
 
-        void checkLanding();
+        void moveEnter(E_MoveState nextState);
+
+        void playerInit();
 
         void subscribeFall (SubscrivableMethod method);
 

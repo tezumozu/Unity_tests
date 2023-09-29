@@ -2,8 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MyInputSystems;
+using UniRx;
 
 namespace StateManagement_ver3{
+    public delegate void SubscrivableUpdateAction(E_ActionState state);
+    public delegate void SubscrivableUpdateMove(E_MoveState state);
+
     abstract public class ActionState : I_StateUpdatable{
 
         protected static bool isLeftMove;
@@ -13,11 +17,32 @@ namespace StateManagement_ver3{
         protected bool isBufferCheck;
         protected bool isFinished;
 
-        public ActionState (){
+        protected bool isUpdateAction;
+        protected bool isUpdateMove;
+
+        protected static I_2DPlayerUpdatable player;
+        protected static Subject<E_MoveState> updateMove;
+        protected static Subject<E_ActionState> updateAction; 
+
+        public ActionState (I_2DPlayerUpdatable target){
             isBufferCheck = false;
             isFinished = false;
             isLeftMove = false;
             isRightMove = false;
+            isUpdateAction = false;
+            isUpdateMove = false;
+
+            if(player == null){
+               player = target;
+            }
+
+            if(updateAction == null){
+                updateAction = new Subject<E_ActionState>();
+            }
+
+            if(updateMove == null){
+                updateMove = new Subject<E_MoveState>();
+            }
         }  
 
         public S_StateData checkInput( S_StateData state , InputData[] input){
@@ -83,6 +108,16 @@ namespace StateManagement_ver3{
                     }else{
                         state = inputStateTransration(input[i].type , state);
                     }
+
+                    if(isUpdateAction){
+                        isUpdateAction = false;
+                        updateAction.OnNext(state.actionState);
+                    }
+
+                    if(isUpdateMove){
+                        isUpdateMove = false;
+                        updateMove.OnNext(state.moveState);
+                    }
                 }
 
             }
@@ -102,6 +137,8 @@ namespace StateManagement_ver3{
         public virtual S_StateData falling(S_StateData state){
             state.moveState = E_MoveState.FALL;
             state.isAir = true;
+            
+            updateMove.OnNext(state.moveState);
             return state;
         }
 
@@ -110,6 +147,8 @@ namespace StateManagement_ver3{
             state.moveState = E_MoveState.LAND;
 
             state.isAir = false;
+            updateAction.OnNext(state.actionState);
+            updateMove.OnNext(state.moveState);
             return state;
         }
 
@@ -120,10 +159,15 @@ namespace StateManagement_ver3{
 
         public abstract S_StateData getNextState(S_StateData state);
 
-        public abstract void stateEnter();
+        public abstract void stateEnter(S_StateData state);
+
+        public static void subscribeUpdateAction(SubscrivableUpdateAction method){
+            updateAction.Subscribe(x => method(x));
+        }
+
+        public static void subscribeUpdateMove(SubscrivableUpdateMove method){
+            updateMove.Subscribe(x => method(x));
+        }
 
     }
-
-
-
 }

@@ -792,14 +792,35 @@ MonoBehaviour:
   config:
     jumpMaxAccel: 18
     walkMaxSpeed: 5
+    littleJump: 20
     landing:
       rady: 0
       action: 3
       followThrough: 3
-    attack:
+    normalAttack_Air:
       rady: 3
-      action: 7
-      followThrough: 4
+      action: 20
+      followThrough: 3
+    normalAttack_Land:
+      rady: 3
+      action: 10
+      followThrough: 3
+    chargeAttack_Air:
+      rady: 0
+      action: 0
+      followThrough: 0
+    chargeAttack_Land:
+      rady: 0
+      action: 0
+      followThrough: 0
+    dush:
+      rady: 0
+      action: 0
+      followThrough: 0
+    dodge:
+      rady: 0
+      action: 0
+      followThrough: 0
 --- !u!70 &1349167960
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

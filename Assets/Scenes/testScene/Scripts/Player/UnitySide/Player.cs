@@ -69,18 +69,17 @@ public class Player: MonoBehaviour , I_P_DamageApplicable , I_2DPlayerUpdatable 
 
     //プレイヤーの状態を更新
     public void stateUpdate(S_StateData nextState){
-
-        if(nextState.actionState != currentState.actionState){
-            actionMap[nextState.actionState].actionInit();
-        }
-
-
-        if(nextState.moveState != currentState.moveState){
-            moveMap[nextState.moveState].moveInit();
-        }
-
-
         currentState = nextState;
+    }
+
+    //stateEnter
+    public void actionEnter(E_ActionState state){
+        actionMap[state].actionInit();
+    }
+
+     //stateEnter
+    public void moveEnter(E_MoveState state){
+        moveMap[state].moveInit();
     }
 
 
