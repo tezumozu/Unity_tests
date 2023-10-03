@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using MyInputSystems;
 using StateManagement_ver3;
 using UniRx;
 
-public class Player: MonoBehaviour , I_P_DamageApplicable , I_2DPlayerUpdatable {
+public class Player: MonoBehaviour , I_P_DamageApplicable , I_PlayerUpdatable {
     [SerializeField]
     LayerMask groundLayer;
 
@@ -137,17 +138,17 @@ public class Player: MonoBehaviour , I_P_DamageApplicable , I_2DPlayerUpdatable 
 
 
     //落下時の購読設定
-    public void subscribeFall(SubscrivableMethod method){
+    public void subscribeFall(Action method){
         fallSubject.Subscribe(x => method());
     }
 
     //着地時の購読設定
-    public void subscribeLanding(SubscrivableMethod method){
+    public void subscribeLanding(Action method){
         landingSubject.Subscribe(x => method());
     }
 
     //ダメージ時の購読設定
-    public void subscribeDamaged(SubscrivableMethod method){
+    public void subscribeDamaged(Action method){
         damagedSubject.Subscribe(x => method());
     }
 

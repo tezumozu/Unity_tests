@@ -10,9 +10,9 @@ namespace StateManagement_ver3{
 
         private S_StateData currentState;
 
-        private I_2DPlayerUpdatable player;
+        private I_PlayerStateUpdatable player;
 
-        public PlayerStateManager(I_2DPlayerUpdatable player){
+        public PlayerStateManager(I_PlayerStateUpdatable player){
             //状態の初期化
             currentState = new S_StateData();
 
@@ -70,23 +70,23 @@ namespace StateManagement_ver3{
 
 
 
-        public void falling(){
+        private void falling(){
             currentState = actionStateMap[currentState.actionState].falling(currentState);
             player.stateUpdate(currentState);
         }
 
-        public void landing(){
+        private void landing(){
             currentState = actionStateMap[currentState.actionState].landing(currentState);
             player.stateUpdate(currentState);
         }
 
-        public void updateAction(E_ActionState state){
+        private void updateAction(E_ActionState state){
             Debug.Log(state);
             actionStateMap[state].stateEnter(currentState);
             player.actionEnter(state);
         }
 
-        public void updateMove(E_MoveState state){
+        private void updateMove(E_MoveState state){
             player.moveEnter(state);
         }
     }

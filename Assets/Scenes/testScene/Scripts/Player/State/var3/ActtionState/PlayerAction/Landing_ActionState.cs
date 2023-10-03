@@ -11,7 +11,7 @@ namespace StateManagement_ver3{
 
         float currentFrame;
 
-        public Landing_ActionState (I_2DPlayerUpdatable player): base(player){
+        public Landing_ActionState (I_PlayerStateUpdatable player): base(player){
             
         }
 

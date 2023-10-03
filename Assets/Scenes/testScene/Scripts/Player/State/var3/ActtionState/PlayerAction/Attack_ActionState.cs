@@ -18,7 +18,7 @@ namespace StateManagement_ver3{
 
         S_ActionFrameConfig config;
 
-        public Attack_ActionState (I_2DPlayerUpdatable player): base(player){
+        public Attack_ActionState (I_PlayerStateUpdatable player): base(player){
             
         }
 

@@ -41,7 +41,7 @@ namespace MyGameManagers{
             inputManager = InputManager.instance;
             GameObject.Find("IS_Action").GetComponent<ActionInput>().init();
 
-            I_2DPlayerUpdatable playerObject = GameObject.Find("Player").GetComponent<I_2DPlayerUpdatable>();
+            I_PlayerUpdatable playerObject = GameObject.Find("Player").GetComponent<I_PlayerUpdatable>();
             playerManager = new PlayerManager(playerObject);
             actionConfig = playerObject.getActionConfig();
         }

@@ -4,20 +4,15 @@ using UnityEngine;
 using MyInputSystems;
 
 namespace StateManagement_ver3{
-    public class Jump_ActionState : ActionState{
+    public class Guard_ActionState : ActionState{
 
-        const E_ActionState ownState = E_ActionState.JUMP;
+        const E_ActionState ownState = E_ActionState.WAIT;
 
-        float currentFrame;
-
-        float config;
-
-        public Jump_ActionState (I_PlayerStateUpdatable player): base(player){
-            config = player.getActionConfig().littleJump;
+        public Guard_ActionState (I_PlayerUpdatable player): base(player){
+            
         }
 
         override public void updateState (){
-            currentFrame += Time.deltaTime;
         }
 
 
@@ -26,21 +21,22 @@ namespace StateManagement_ver3{
             //移動関係
             switch (input){
 
-                case E_InputType.LITTLE_JUMP:
-                    if(currentFrame <= config * 1.0f/60.0f){
-                        state.moveState = E_MoveState.FALL;
-                        isUpdateMove = true;
-                    }
+                case E_InputType.JUMP:
+                    state.isAir = true;
+                    state.moveState = E_MoveState.JUMP;
+                    isUpdateMove = true;
                 break;
-
 
                 default:
                 break;
             }
 
-
             //アクション関係
             switch (input){
+                case E_InputType.JUMP:
+                    state.actionState = E_ActionState.JUMP;
+                    isUpdateAction = true;
+                break;
 
                 case E_InputType.ATTACK:
                     state.actionState = E_ActionState.ATTACK;
@@ -70,7 +66,6 @@ namespace StateManagement_ver3{
         }
 
         override public void stateEnter(S_StateData state){
-            currentFrame = 0.0f;
         }
 
     }

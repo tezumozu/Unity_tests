@@ -7,6 +7,7 @@ namespace StateManagement_ver3{
         WAIT,
         ATTACK,
         LANDING,
-        JUMP
+        JUMP,
+        DUSH
     }
 }

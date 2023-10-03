@@ -815,8 +815,8 @@ MonoBehaviour:
       followThrough: 0
     dush:
       rady: 0
-      action: 0
-      followThrough: 0
+      action: 30
+      followThrough: 10
     dodge:
       rady: 0
       action: 0

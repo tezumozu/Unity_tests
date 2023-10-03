@@ -8,15 +8,15 @@ namespace StateManagement_ver3{
 
         const E_ActionState ownState = E_ActionState.WAIT;
 
-        public Wait_ActionState (I_2DPlayerUpdatable player): base(player){
+        public Wait_ActionState (I_PlayerStateUpdatable player): base(player){
             
         }
 
-        override public void updateState (){
+        public override void updateState (){
         }
 
 
-        override protected S_StateData inputStateTransration(E_InputType input , S_StateData state){
+        protected override S_StateData inputStateTransration(E_InputType input , S_StateData state){
 
             //移動関係
             switch (input){
@@ -54,18 +54,18 @@ namespace StateManagement_ver3{
         }
 
 
-        override protected S_StateData bufferStateTransration(E_InputType input , S_StateData state){
+        protected override S_StateData bufferStateTransration(E_InputType input , S_StateData state){
             //呼ばれないので呼ばれたらバグ
             Debug.Log("Wait_PlayerAction bufferStateTransration called!");
             return state;
         }
 
 
-        override public S_StateData getNextState(S_StateData state){
+        public override S_StateData getNextState(S_StateData state){
             return state;
         }
 
-        override public void stateEnter(S_StateData state){
+        public override void stateEnter(S_StateData state){
         }
 
     }

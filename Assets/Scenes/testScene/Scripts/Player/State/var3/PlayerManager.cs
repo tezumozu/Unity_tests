@@ -6,10 +6,10 @@ using MyInputSystems;
 namespace StateManagement_ver3{
     public class PlayerManager {
 
-        private I_2DPlayerUpdatable player;
+        private I_PlayerUpdatable player;
         private PlayerStateManager stateManager;
 
-        public PlayerManager (I_2DPlayerUpdatable player){
+        public PlayerManager (I_PlayerUpdatable player){
             this.player = player;
             player.playerInit();
             stateManager = new PlayerStateManager(player);

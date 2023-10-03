@@ -1,88 +1,223 @@
 @startuml stateManagement_ver3
-    namespace Unity{
-        class Player <Mono>{
-        [Serializable] PlayerConfig config
 
-        }
-
-        Struct ActionConfig <Serializable>{
-
-        }
+namespace ObjectSettings{
+    class PlayerActionSetting <ScriptableObject> {
+        + float JumpAceel
+        + float WalkSpeed
+        + float DushSpeed
+        + float AcceptLittleJump
+        + ActionFrameSetting Jump
+        + ActionFrameSetting Landing
+        + ActionFrameSetting NormalAttack_Land
+        + ActionFrameSetting NormalAttack_Air
+        + ActionFrameSetting ChageAttack_Land
+        + ActionFrameSetting ChageAttack_Air
+        + ActionFrameSetting Dush
+        + ActionFrameSetting Dodge
     }
 
+    class ActionFrameSetting{
+        + float Preliminary
+        + float Action
+        + float FollowThrough
+        + float CancelFrame
+        + float StaminaCost
+    }
+}
 
+namespace Unity {
 
-    namespace StateManagement_ver3{
-        interface I_2DPlayerUpdatable{
+    class Player <MonoBehaviour>{
+        + LayerMask GroundLayer <SerializeField>
+        + Vector2 PlayerSize <SerializeField>
 
-        }
+        - PlayerActionSetting config
+        - Dictionary<E_ActionState,PlayerAction> actionMap
+        - Dictionary<E_MoveState,PlayerMove> moveMap
+        - S_StateData currentState
+        - UniRx.Subject<Unit> landingSubject
+        - UniRx.Subject<Unit> fallSubject
+        - UniRx.Subject<Unit> damagedSubject
 
+        + void UpdatePlayer()
+        + void InitPlayer()
+        + void CheckLanding()
 
-        class PlayerManager{
-
-        }
-
-
-        class PlayerStateManager{
-
-        }
-
-
-        interface I_StateUpdatable {
-
-        }
-
-        class StateClass{
-
-        }
-
-
-        Struct StateData{
-            E_PlayerState playerState
-            E_MoveState moveState
-        }
+        + void SetState (S_StateData state)
+        + void ActionEnter (E_ActionState state)
+        + void MoveEnter (E_MoveState state)
+        + void SubscriveDamaged (Action metod)
+        + void SubscriveFalling (Action metod)
+        + void SubscriveLanding (Action metod)
+        
     }
 
-    namespace MyInputSystems{
-        class InputManager{
-            
-        }
+    abstract class PlayerMove{
+        # Player player
+        + abstract void MoveInit()
+        + abstract void MoveUpdate()
     }
 
+    abstract class PlayerAction{
+        # Player player
+        + abstract void ActionInit()
+        + abstract void ActionUpdate()
+    }
+
+}
 
 
-    namespace UniRx{
-        class Subject {
+namespace stateManagement_ver3{
 
-        }
+    interface I_PlayerUpdatable{
+        + UpdatePlayer()
+        + InitPlayer()
+        + CheckLanding()
 
-        interface IObserver {
+        + SetState (S_StateData state)
+        + ActionEnter (E_ActionState state)
+        + MoveEnter (E_MoveState state)
+        + SubscriveDamaged (Action metod)
+        + SubscriveFalling (Action metod)
+        + SubscriveLanding (Action metod)
+    }
 
-        }
+    interface I_PlayerStateUpdatable{
+        + SetState (S_StateData state)
+        + ActionEnter (E_ActionState state)
+        + MoveEnter (E_MoveState state)
+        + SubscriveDamaged (Action metod)
+        + SubscriveFalling (Action metod)
+        + SubscriveLanding (Action metod)
+    }
+
+    interface I_StateUpdatable{
+        + void UpdateState();
+        + void StateEnter(S_StateData state);
+        + S_StateData CheckInput(S_StateData state , InputData[] input);
+        + S_StateData GetNextState(S_StateData state);
+        + S_StateData Falling(S_StateData state);
+        + S_StateData Landing(S_StateData state);
+        + bool GetIsFinished();
+    }
+
+    abstract class ActionState{
+        # static I_PlayerStateUpdatable player
+        # static UniRx.Subject<E_MoveState> updateMove
+        # static UniRx.Subject<E_ActionState> updateAction
+
+        # static bool isLeftMove
+        # static bool isRightMove
+
+        # bool isBufferCheck
+        # bool isFinished
+
+        # bool isUpdateAction
+        # bool isUpdateMove
+
+        + bool GetIsFinished();
+        + S_StateData CheckInput(S_StateData state , InputData[] input);
+        + virtual S_StateData Falling(S_StateData state)
+        + virtual S_StateData Landing(S_StateData state)
+        + abstruct void UpdateState();
+        + abstruct void StateEnter(S_StateData state);
+        + abstruct S_StateData GetNextState(S_StateData state);
+
+        + static void SubscribeUpdateAction(Action<E_ActionState> method)
+        + static void SubscribeUpdateMove(Action<E_MoveState> method)
+        # abstract S_StateData inputStateTransration(E_InputType input , S_StateData state)
+        # abstract S_StateData bufferStateTransration(E_InputType input , S_StateData state)
+        
+    }
+
+    class PlayerManager <singleton>{
+        - I_PlayerUpdatable player
+        - PlayerStateManager stateManager
+
+        + void playerUpdate(InputData[] input)
+    }
+
+    class PlayerStateManager <singleton>{
+        - Dictionary<E_ActionState,I_StateUpdatable> actionStateMap
+        - S_StateData currentState
+        - I_PlayerStateUpdatable player
+
+        + void initManager()
+        + void managerUpdate(InputData[] input)
+
+        - void falling()
+        - void landing()
+        - void updateAction()
+        - void updateMove()
+    }
+
+    class Wait_ActionState{
+        + const E_ActionState ownState
+
+        + override S_StateData getNextState(S_StateData state)
+        + override void stateEnter(S_StateData state)
+
+        # override S_StateData inputStateTransration(E_InputType input , S_StateData state)
+        # override S_StateData bufferStateTransration(E_InputType input , S_StateData state)
+        
+    }
+
+    enum E_ActionState{
+        WAIT
+        JUMP
+        ATTACK
+        CHARGE_ATTACK_CHAGE
+        CHARGE_ATTACK_ATTACK
+        DUSH
+        GURAD
+        DODGE
+    }
+
+    enum E_MoveState{
+        WAIT
+        JUMP
+        FALL
+        DUSH
+        STAND
+    }
+
+    enum E_PlayerDirection{
+       LEFT
+       LIGHT
+    }
+
+    struct S_StateData{
+        + E_ActionState actionState
+        + E_MoveState moveState
+        + E_PlayerDirection playerDirection
+        + bool isRanning
+        + bool isAir
     }
     
+}
 
-    Player *-- ActionConfig
 
-    Player .right.|> I_2DPlayerUpdatable
+I_PlayerUpdatable -down-|> I_PlayerStateUpdatable
 
-    StateData --* I_2DPlayerUpdatable
-    StateData --* PlayerStateManager
+PlayerManager "1" *-down-> "1" PlayerStateManager
 
-    StateClass --|> I_StateUpdatable
-    
+PlayerManager -left-> I_PlayerUpdatable
+PlayerStateManager -left-> I_PlayerStateUpdatable
 
-    PlayerManager *--> PlayerStateManager 
+PlayerStateManager o--> I_StateUpdatable
 
-    PlayerStateManager *-left-> I_2DPlayerUpdatable : Set state
-    PlayerStateManager -down-> IObserver
-    PlayerStateManager o-right-> I_StateUpdatable
-    PlayerStateManager -down-> InputManager
+ActionState ..|> I_StateUpdatable
+PlayerActionSetting --* ActionState
 
-    I_2DPlayerUpdatable *--> Subject 
 
-    IObserver <-right-o Subject :落下、着地、ダメージの監視
+Wait_ActionState --|> ActionState
 
-    
+Player ..|> I_PlayerUpdatable
+
+Player o-left- PlayerAction
+Player o-up- PlayerMove
+Player *-- PlayerActionSetting
+
+PlayerActionSetting o-- ActionFrameSetting
 
 @enduml

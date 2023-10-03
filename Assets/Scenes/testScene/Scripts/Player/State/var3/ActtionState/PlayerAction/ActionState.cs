@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,8 +6,6 @@ using MyInputSystems;
 using UniRx;
 
 namespace StateManagement_ver3{
-    public delegate void SubscrivableUpdateAction(E_ActionState state);
-    public delegate void SubscrivableUpdateMove(E_MoveState state);
 
     abstract public class ActionState : I_StateUpdatable{
 
@@ -20,11 +19,13 @@ namespace StateManagement_ver3{
         protected bool isUpdateAction;
         protected bool isUpdateMove;
 
-        protected static I_2DPlayerUpdatable player;
-        protected static Subject<E_MoveState> updateMove;
-        protected static Subject<E_ActionState> updateAction; 
+        protected static I_PlayerStateUpdatable player;
 
-        public ActionState (I_2DPlayerUpdatable target){
+        //Subject
+        protected static Subject<E_MoveState> updateMove;
+        protected static Subject<E_ActionState> updateAction;  
+
+        public ActionState (I_PlayerStateUpdatable target){
             isBufferCheck = false;
             isFinished = false;
             isLeftMove = false;
@@ -161,11 +162,11 @@ namespace StateManagement_ver3{
 
         public abstract void stateEnter(S_StateData state);
 
-        public static void subscribeUpdateAction(SubscrivableUpdateAction method){
+        public static void subscribeUpdateAction(Action< E_ActionState > method){
             updateAction.Subscribe(x => method(x));
         }
 
-        public static void subscribeUpdateMove(SubscrivableUpdateMove method){
+        public static void subscribeUpdateMove(Action<E_MoveState> method){
             updateMove.Subscribe(x => method(x));
         }
 
