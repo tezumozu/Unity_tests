@@ -4,9 +4,15 @@ using UnityEngine;
 using MyInputSystems;
 using StateManagement_ver3;
 
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+
 namespace MyGameManagers{
 
     public class GameManager : MonoSingleton<GameManager>{
+
+        AsyncOperationHandle<GameObject> opHandleA;
+        AsyncOperationHandle<GameObject> opHandleB;
 
         static private GameModes currentMode;
         static public GameModes getCurrentMode {
@@ -31,7 +37,7 @@ namespace MyGameManagers{
         }
 
         // Start is called before the first frame update
-        void Start(){
+        public void Start(){
             //フレームレートの設定
             Application.targetFrameRate = 60; 
 
@@ -44,6 +50,34 @@ namespace MyGameManagers{
             I_PlayerUpdatable playerObject = GameObject.Find("Player").GetComponent<I_PlayerUpdatable>();
             playerManager = new PlayerManager(playerObject);
             actionConfig = playerObject.getActionConfig();
+
+
+            /*読み込みテスト
+            opHandleA = Addressables.LoadAssetAsync<GameObject>("Area_1-1");
+            opHandleB = Addressables.LoadAssetAsync<GameObject>("Area_1-2");
+            yield return opHandleA;
+            yield return opHandleB;
+
+            if (opHandleA.Status == AsyncOperationStatus.Succeeded)
+            {
+                GameObject obj = opHandleA.Result;
+                Instantiate(obj, transform);
+            }
+
+            if (opHandleB.Status == AsyncOperationStatus.Succeeded)
+            {
+                GameObject obj = opHandleB.Result;
+                Instantiate(obj, transform);
+            }
+            */
+
+
+        }
+
+         void OnDestroy()
+        {
+            Addressables.Release(opHandleA);
+            Addressables.Release(opHandleB);
         }
 
 

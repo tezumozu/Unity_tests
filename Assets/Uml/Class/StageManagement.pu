@@ -1,0 +1,62 @@
+@startuml StageManagement
+    enum E_Area{
+        STAGE1_AREA1
+        STAGE1_AREA2
+        ……
+    }
+
+
+    class AreaLoder {
+        - Dictionary < E_Area , LinkedListNode<I_AreaUpdatable> > cacheDic
+        - LinkedList<I_AreaUpdatable> lordedList
+        - const int maxCacheNum
+        - int listTotalCount
+
+        - bool checkCache(E_Area area)
+        - void updateList(E_Area area)
+        + List<AreaObject> LoadArea (E_Area area)
+        
+    }
+
+
+    class AreaManager {
+        - I_AreaUpdatable currentArea
+
+        + void InitManager(E_Stage stage)
+        + void UpdateManager()
+    }
+
+
+    interface I_AreaUpdatable{
+        + void InitArea()
+        + void UpdateArea()
+    }
+
+    interface I_AreaObjectUpdatable{
+
+    }
+
+    class Area<MonoBihavier>{
+        
+    }
+
+
+    class AreaChangePoint{
+        - Subject<E_Area> changeArea
+        + <<serializefield>> E_Area NextArea
+
+        + SubscriveChangeArea(Action<E_Area> method)
+    }
+    
+    AreaLoder "1" *-right- "1..*" I_AreaUpdatable
+
+    AreaManager -left-> AreaLoder
+    AreaManager o--> I_AreaUpdatable
+    AreaManager --> AreaChangePoint :subscrive
+
+    I_AreaUpdatable <|-- Area
+
+    Area o-right-> I_AreaObjectUpdatable
+    I_AreaObjectUpdatable <|-up- AreaChangePoint
+
+@enduml
