@@ -37,7 +37,7 @@ namespace MyGameManagers{
         }
 
         // Start is called before the first frame update
-        public void Start(){
+        public async void Start(){
             //フレームレートの設定
             Application.targetFrameRate = 60; 
 
@@ -50,6 +50,10 @@ namespace MyGameManagers{
             I_PlayerUpdatable playerObject = GameObject.Find("Player").GetComponent<I_PlayerUpdatable>();
             playerManager = new PlayerManager(playerObject);
             actionConfig = playerObject.getActionConfig();
+
+            var areaLoder = new AreaLoader();
+            await areaLoder.LoadArea(E_Area.STAGE1_AREA1);
+            await areaLoder.LoadArea(E_Area.STAGE1_AREA2);
 
 
             /*読み込みテスト
@@ -76,8 +80,10 @@ namespace MyGameManagers{
 
          void OnDestroy()
         {
+            /*
             Addressables.Release(opHandleA);
             Addressables.Release(opHandleB);
+            */
         }
 
 
