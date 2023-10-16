@@ -30,6 +30,16 @@ namespace MyInputSystems {
         CAMERA_CHANGE,
 
         //Title
+        DECIDE,
+        CANCEL,
+        CURSOR_MOVE_UP_PERFORMED,
+        CURSOR_MOVE_UP_CANCELED,
+        CURSOR_MOVE_DOWN_PERFORMED,
+        CURSOR_MOVE_DOWN_CANCELED,
+        CURSOR_MOVE_LEFT_PERFORMED,
+        CURSOR_MOVE_LEFT_CANCELED,
+        CURSOR_MOVE_RIGHT_PERFORMED,
+        CURSOR_MOVE_RIGHT_CANCELED,
 
         //Camera
         CAMERA_MOVE_UP,

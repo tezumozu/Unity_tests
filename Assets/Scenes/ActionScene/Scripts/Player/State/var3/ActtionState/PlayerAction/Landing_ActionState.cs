@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MyInputSystems;
-using MyGameManagers;
 
 namespace StateManagement_ver3{
     public class Landing_ActionState : ActionState{
@@ -18,10 +17,10 @@ namespace StateManagement_ver3{
         override public void updateState (){
             currentFrame += Time.deltaTime;
 
-            //さらに一定フレーム経過したら
+            /*さらに一定フレーム経過したら
             if(currentFrame > GameManager.instance.getActionConfig.landing.followThrough * 1.0f/60.0f){
                 isFinished = true;
-            }
+            }*/
         }
 
 

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MyInputSystems;
-using MyGameManagers;
 
 namespace StateManagement_ver3{
     public class Attack_ActionState : ActionState{
@@ -160,12 +159,12 @@ namespace StateManagement_ver3{
             isFinished = false;
             isLanding = false;
 
-            //空中なら空中攻撃として処理
+            /*空中なら空中攻撃として処理
             if(state.isAir){
                 config = GameManager.instance.getActionConfig.normalAttack_Air;
             }else{
                 config = GameManager.instance.getActionConfig.normalAttack_Land;
-            }
+            }*/
         }
 
         //空中攻撃を中断しない
