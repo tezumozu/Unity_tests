@@ -1,0 +1,14 @@
+@startuml ゲームサイクル
+start
+
+repeat
+repeat
+:ステージ探索;
+backward:再挑戦 or 違うステージへ;
+repeat While (ステージクリア) is(no) not (yes)
+:新ステージ開放;
+backward:新しいステージへ;
+repeat While (全ステージクリア) is(no) not (yes)
+:ゲームクリア;
+stop
+@enduml

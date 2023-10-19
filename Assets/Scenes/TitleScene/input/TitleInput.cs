@@ -19,7 +19,9 @@ namespace MyInputSystems {
             isHoldDic.Add(E_InputType.CURSOR_MOVE_UP_PERFORMED,false);
             isHoldDic.Add(E_InputType.CURSOR_MOVE_DOWN_PERFORMED,false);
             isHoldDic.Add(E_InputType.CURSOR_MOVE_LEFT_PERFORMED,false);
-            isHoldDic.Add(E_InputType.CURSOR_MOVE_RIGHT_PERFORMED,false);            
+            isHoldDic.Add(E_InputType.CURSOR_MOVE_RIGHT_PERFORMED,false);
+
+            isActive = true;                   
         }
 
 
@@ -40,7 +42,7 @@ namespace MyInputSystems {
 
         //カーソル移動・UP
         public void CursorMoveButtonUp (InputAction.CallbackContext context){
-            if(context.started) return;
+            if(context.started || !isActive) return;
 
             if(context.performed){
                 isHoldDic[E_InputType.CURSOR_MOVE_UP_PERFORMED] = true;
@@ -55,7 +57,7 @@ namespace MyInputSystems {
 
         //カーソル移動・DOWN
         public void CursorMoveButtonDown (InputAction.CallbackContext context){
-            if(context.started) return;
+            if(context.started || !isActive) return;
 
             if(context.performed){
                 isHoldDic[E_InputType.CURSOR_MOVE_DOWN_PERFORMED] = true;
@@ -69,8 +71,8 @@ namespace MyInputSystems {
 
 
         //カーソル移動・LEFT
-        public void walk_Button_Left (InputAction.CallbackContext context){
-            if(context.started) return;
+        public void CursorMoveButtonLeft (InputAction.CallbackContext context){
+            if(context.started || !isActive) return;
 
             if(context.performed){
                 isHoldDic[E_InputType.CURSOR_MOVE_LEFT_PERFORMED] = true;
@@ -84,8 +86,8 @@ namespace MyInputSystems {
 
 
         //カーソル移動・RIGHT
-        public void walk_Button_Right (InputAction.CallbackContext context){
-            if(context.started) return;
+        public void CursorMoveButtonRight (InputAction.CallbackContext context){
+            if(context.started || !isActive) return;
                 
             if(context.performed){
                 isHoldDic[E_InputType.CURSOR_MOVE_RIGHT_PERFORMED] = true;
@@ -99,17 +101,18 @@ namespace MyInputSystems {
 
 
         //カーソル移動・スティック
-        public void walk_Stick (InputAction.CallbackContext context){
+        public void CursorMoveStick (InputAction.CallbackContext context){
+            if(!isActive) return;
+
+            Vector2 stickVec = context.ReadValue<Vector2>();
 
             //ホールド時
-            if(isHoldDic[E_InputType.WALK_LEFT] || isHoldDic[E_InputType.WALK_RIGHT]){
-                if(System.Math.Abs(context.ReadValue<float>()) <= 0.5){
+            if(isHoldDic[E_InputType.CURSOR_MOVE_LEFT_PERFORMED] || isHoldDic[E_InputType.CURSOR_MOVE_RIGHT_PERFORMED] || isHoldDic[E_InputType.CURSOR_MOVE_UP_PERFORMED] || isHoldDic[E_InputType.CURSOR_MOVE_DOWN_PERFORMED] ){
+                if(Vector2.Distance(stickVec, Vector2.zero) <= 0.5){
                     isHoldDic[E_InputType.CURSOR_MOVE_LEFT_PERFORMED] = false;
                     inputManager.setInputData(E_InputType.CURSOR_MOVE_LEFT_CANCELED);
                     isHoldDic[E_InputType.CURSOR_MOVE_RIGHT_PERFORMED] = false;
                     inputManager.setInputData(E_InputType.CURSOR_MOVE_RIGHT_CANCELED);
-
-                }else if(System.Math.Abs(context.ReadValue<float>()) <= 0.5){
                     isHoldDic[E_InputType.CURSOR_MOVE_UP_PERFORMED] = false;
                     inputManager.setInputData(E_InputType.CURSOR_MOVE_UP_CANCELED);
                     isHoldDic[E_InputType.CURSOR_MOVE_DOWN_PERFORMED] = false;
@@ -118,28 +121,33 @@ namespace MyInputSystems {
 
             //未入力時
             }else{
-                if(System.Math.Abs(context.ReadValue<float>()) > 0.5){
+                if(Vector2.Distance(stickVec, Vector2.zero) > 0.5){
                     //向きを確認
-                    if(context.ReadValue<float>() < 0){
-                        //currentMoveDirection = E_InputType.WALK_LEFT;
-                        isHoldDic[E_InputType.WALK_LEFT] = true;
-                        inputManager.setInputData(E_InputType.WALK_LEFT_PERFORMED);
+                    if(Vector2.Dot(stickVec,Vector2.one) > 0){
+                        if(Vector2.Dot(stickVec,Vector2.left + Vector2.up) > 0){ 
+                            //上を向いている
+                            isHoldDic[E_InputType.CURSOR_MOVE_UP_PERFORMED] = true;
+                            inputManager.setInputData(E_InputType.CURSOR_MOVE_UP_PERFORMED);
 
-                    }else if(context.ReadValue<float>() < 0){
-                        //currentMoveDirection = E_InputType.WALK_RIGHT;
-                        isHoldDic[E_InputType.WALK_RIGHT] = true;
-                        inputManager.setInputData(E_InputType.WALK_RIGHT_PERFORMED);
+                        } else {
+                            //右を向いている
+                            isHoldDic[E_InputType.CURSOR_MOVE_RIGHT_PERFORMED] = true;
+                            inputManager.setInputData(E_InputType.CURSOR_MOVE_RIGHT_PERFORMED);
 
-                    }else if(context.ReadValue<float>() < 0){
-                        //currentMoveDirection = E_InputType.WALK_RIGHT;
-                        isHoldDic[E_InputType.WALK_RIGHT] = true;
-                        inputManager.setInputData(E_InputType.WALK_RIGHT_PERFORMED);
+                        }
 
-                    }else if(context.ReadValue<float>() < 0){
-                        //currentMoveDirection = E_InputType.WALK_RIGHT;
-                        isHoldDic[E_InputType.WALK_RIGHT] = true;
-                        inputManager.setInputData(E_InputType.WALK_RIGHT_PERFORMED);
+                    }else{
+                        if(Vector2.Dot(stickVec,Vector2.left + Vector2.up) > 0){ 
+                            //左を向いている
+                            isHoldDic[E_InputType.CURSOR_MOVE_LEFT_PERFORMED] = true;
+                            inputManager.setInputData(E_InputType.CURSOR_MOVE_LEFT_PERFORMED);
 
+                        } else {
+                            //下を向いている
+                            isHoldDic[E_InputType.CURSOR_MOVE_DOWN_PERFORMED] = true;
+                            inputManager.setInputData(E_InputType.CURSOR_MOVE_DOWN_PERFORMED);
+
+                        }
                     }
                 }
                 
@@ -148,21 +156,21 @@ namespace MyInputSystems {
 
 
          //決定
-        public void JumpInputs (InputAction.CallbackContext context){
-            if(context.started || context.canceled) return;
+        public void DecideInputs (InputAction.CallbackContext context){
+            if(context.started || context.canceled || !isActive) return;
 
             if(context.performed){
-                inputManager.setInputData(E_InputType.JUMP);
+                inputManager.setInputData(E_InputType.DECIDE);
             }
         }
 
 
         //キャンセル
-        public void attackInputs (InputAction.CallbackContext context){
-            if(context.started || context.canceled) return;
+        public void CancelInputs (InputAction.CallbackContext context){
+            if(context.started || context.canceled || !isActive) return;
 
             if(context.performed){
-                inputManager.setInputData(E_InputType.ATTACK);
+                inputManager.setInputData(E_InputType.CANCEL);
             }
         }
 

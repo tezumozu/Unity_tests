@@ -7,11 +7,11 @@ namespace StateManagement_ver3{
     public class Dush_ActionState : ActionState{
 
         const E_ActionState ownState = E_ActionState.DUSH;
-        float currentFrame;
+        //float currentFrame;
         E_ActionPhase currentPhase;
 
         public Dush_ActionState (I_PlayerStateUpdatable player): base(player){
-            currentFrame = 0.0f;
+            //currentFrame = 0.0f;
         }
 
 

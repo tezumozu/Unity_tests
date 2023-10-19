@@ -13,6 +13,51 @@ namespace MyInputSystems {
         private List< InputData > inputBuffer;
 
 
+        // 指定フレーム以内に入力された入力をすべて取得
+        public InputData[] getInputList { 
+            get {
+                //入力が古い順にソート
+                inputList.Sort((x,y) => {
+                    if(y.frameCount > x.frameCount){
+                        return 1;
+                    }
+                    return -1;
+                });
+
+                //配列にコピー
+                InputData[] copy = new InputData[inputList.Count];
+                inputList.CopyTo(copy);
+
+                //配列内をクリア
+                inputList.Clear();
+                return copy;
+            }
+        }
+
+
+        public InputData[] getInputBuffer { 
+            get {
+
+                //入力順にソート
+                inputBuffer.Sort((x,y) => {
+                    if(y.frameCount > x.frameCount){
+                        return 1;
+                    }
+                        return -1;
+                });
+
+                //配列にコピー
+                InputData[] copy = new InputData[inputBuffer.Count];
+                inputBuffer.CopyTo(copy);
+
+                //inputListをクリア
+                inputList.Clear();
+                return copy;
+            }
+        }
+
+
+
         public InputManager (){
             //インプットデータの初期化
             inputList = new List<InputData> ();
@@ -65,51 +110,6 @@ namespace MyInputSystems {
             inputBuffer.Add(data);
         }
 
-
-        // 指定フレーム以内に入力された入力をすべて取得
-        public InputData[] getInputList { 
-            get {
-                //入力が古い順にソート
-                inputList.Sort((x,y) => {
-                    if(y.frameCount > x.frameCount){
-                        return 1;
-                    }
-                    return -1;
-                });
-
-                //配列にコピー
-                InputData[] copy = new InputData[inputList.Count];
-                inputList.CopyTo(copy);
-
-                //配列内をクリア
-                inputList.Clear();
-                return copy;
-            }
-        }
-
-
-        public InputData[] getInputBuffer { 
-            get {
-
-                //入力順にソート
-                inputBuffer.Sort((x,y) => {
-                    if(y.frameCount > x.frameCount){
-                        return 1;
-                    }
-                        return -1;
-                });
-
-                //配列にコピー
-                InputData[] copy = new InputData[inputBuffer.Count];
-                inputBuffer.CopyTo(copy);
-
-                //inputListをクリア
-                inputList.Clear();
-                return copy;
-            }
-        }
-
-        
     }
 
     public struct InputData{

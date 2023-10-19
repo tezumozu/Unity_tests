@@ -19,7 +19,9 @@ namespace MyInputSystems {
             isHoldDic.Add(E_InputType.WALK_LEFT,false);
             isHoldDic.Add(E_InputType.WALK_RIGHT,false);
             isHoldDic.Add(E_InputType.GUARD,false);
-            isHoldDic.Add(E_InputType.CHARGE_ATTACK,false);            
+            isHoldDic.Add(E_InputType.CHARGE_ATTACK,false);     
+
+            isActive = true;      
         }
 
 
@@ -40,7 +42,7 @@ namespace MyInputSystems {
 
         //移動
         public void walk_Button_Left (InputAction.CallbackContext context){
-            if(context.started) return;
+            if(context.started || !isActive) return;
 
             if(context.performed){
                 //currentMoveDirection = E_InputType.WALK_LEFT;
@@ -55,7 +57,7 @@ namespace MyInputSystems {
         }
 
         public void walk_Button_Right (InputAction.CallbackContext context){
-            if(context.started) return;
+            if(context.started || !isActive) return;
                 
             if(context.performed){
                 //currentMoveDirection = E_InputType.WALK_RIGHT;
@@ -70,6 +72,7 @@ namespace MyInputSystems {
         }
 
         public void walk_Stick (InputAction.CallbackContext context){
+            if(!isActive) return;
 
             //ホールド時
             if(isHoldDic[E_InputType.WALK_LEFT] || isHoldDic[E_InputType.WALK_RIGHT]){
@@ -103,7 +106,7 @@ namespace MyInputSystems {
 
          //ジャンプ・小ジャン
         public void JumpInputs (InputAction.CallbackContext context){
-            if(context.started) return;
+            if(context.started || !isActive) return;
 
             if(context.performed){
                 inputManager.setInputData(E_InputType.JUMP);
@@ -111,7 +114,7 @@ namespace MyInputSystems {
         }
 
         public void littleJumpInputs (InputAction.CallbackContext context){
-            if(context.started) return;
+            if(context.started || !isActive) return;
 
             if(context.performed){
                 inputManager.setInputData(E_InputType.LITTLE_JUMP);
@@ -121,7 +124,7 @@ namespace MyInputSystems {
 
         //攻撃
         public void attackInputs (InputAction.CallbackContext context){
-            if(context.started) return;
+            if(context.started || !isActive) return;
 
             if(context.performed){
                 inputManager.setInputData(E_InputType.ATTACK);
@@ -132,7 +135,7 @@ namespace MyInputSystems {
         //溜め攻撃
         public void chargeAttackInputs (InputAction.CallbackContext context){
 
-            if(context.started) return;
+            if(context.started || !isActive) return;
 
             if(context.performed){
                 isHoldDic[E_InputType.CHARGE_ATTACK] = true;
@@ -148,7 +151,7 @@ namespace MyInputSystems {
 
         //ダッシュ
         public void dashInputs (InputAction.CallbackContext context){
-            if(context.started) return;
+            if(context.started || !isActive) return;
 
             if(context.performed){
                 inputManager.setInputData(E_InputType.DUSH);
@@ -158,7 +161,7 @@ namespace MyInputSystems {
 
         //カメラ <---> アクション 切り替え
         public void cameraChangeInputs (InputAction.CallbackContext context){
-            if(context.started) return;
+            if(context.started || !isActive) return;
 
             if(context.performed){
                 inputManager.setInputData(E_InputType.CAMERA_CHANGE);
@@ -167,7 +170,7 @@ namespace MyInputSystems {
 
         //ガード
         public void guardInputs (InputAction.CallbackContext context){
-            if(context.started) return;
+            if(context.started || !isActive) return;
 
             if(context.performed){
                 isHoldDic[E_InputType.GUARD] = true;
@@ -182,7 +185,7 @@ namespace MyInputSystems {
 
          //ポーズ
         public void pouseInputs (InputAction.CallbackContext context){
-            if(context.started) return;
+            if(context.started || !isActive) return;
 
             if(context.performed){
                 inputManager.setInputData(E_InputType.POUSE);
