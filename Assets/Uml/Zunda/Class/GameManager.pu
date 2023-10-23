@@ -1,0 +1,40 @@
+@startuml ゲーマネージャ
+class GameManager <<SingletonMonobehaviour>>{
+    - Dictionary<E_Scene,SceneObjectManager> secneManagerList
+    - async void Start()
+    - async void Update()
+}
+
+class SceneObjectManager{
+    -List<I_ObjectUpdatable> objectList
+    -List<I_ObjectUpdatable> managerList
+    -List<I_ObjectUpdatable> UIList
+
+    + void GameObjectUpdate()
+    + void ManagerUpdate()
+    + void UIUpdate()
+    + void SceneInitiarize()
+}
+
+class hogehogeManager{
+
+}
+
+interface I_ObjectUpdatable {
+    + void ObjectUpdate ()
+    + void ObjectInit ()
+}
+
+class SceneManager <<singleton>>{
+    - Subject<E_Scene> sceneSubject
+
+    + ovid ObseveManager(Action method)
+    + IEnumerator LoadScene()
+}
+
+
+GameManager --> SceneManager : Obseveb
+GameManager o-right-> SceneObjectManager : Update
+SceneObjectManager o--> I_ObjectUpdatable
+hogehogeManager <|-left- I_ObjectUpdatable
+@enduml

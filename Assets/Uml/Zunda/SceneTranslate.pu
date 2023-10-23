@@ -1,0 +1,28 @@
+@startuml 画面遷移図
+
+state TitleScene{
+    state Title_UI
+    state Option_UI
+
+    Title_UI -left-> TitleScene.Option_UI
+    TitleScene.Option_UI -right-> Title_UI
+}
+
+state ActionScene{
+    state Action_UI
+    state Option_UI
+
+    Action_UI -left-> ActionScene.Option_UI
+    ActionScene.Option_UI -right-> Action_UI
+}
+
+[*] --> TitleScene
+TitleScene -right-> StoryScene :初回OP　staetGame
+TitleScene --> StageSelectScene :Continue
+StageSelectScene --> CollectionScene
+StageSelectScene --> ActionScene
+ActionScene --> StageSelectScene
+ActionScene --> StoryScene :ストーリー進行時
+StoryScene --> StageSelectScene
+CollectionScene --> StageSelectScene
+@enduml
