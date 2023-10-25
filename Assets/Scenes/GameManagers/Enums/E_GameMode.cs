@@ -5,5 +5,11 @@ using UnityEngine;
 
 public enum E_GameMode {
     TITLE,
-    ACTION
+    TITLE_OPTION,
+
+    ACTION,
+    ACTION_OPTION,
+    ACTION_POSE,
+
+    STAGE_SELECT
 }

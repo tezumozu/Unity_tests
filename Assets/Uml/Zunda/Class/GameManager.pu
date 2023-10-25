@@ -13,40 +13,57 @@ class GameManager <<SingletonMonobehaviour>>{
 
 }
 
-abstract class SceneObjectManager{
+
+abstract class GameModeManager {
+    - Dictionary<E_GameMode,GameMode> gameModeList
+    - E_GameMode currentGameMode
+
+    + virtual GameMode GetCurrentGameMode()
+    + abstract void SceneInit()
+    - abstract void changeGameMode(E_GameMode)
+}
+
+class hogehogeScene{
+
+    + void changeGameMode(E_GameMode)
+    + void SceneInit()
+}
+
+
+abstract class GameMode{
     - List<InputMode> InputModeList
     -List<I_ObjectUpdatable> objectList
     -List<I_ObjectUpdatable> managerList
     -List<I_ObjectUpdatable> UIList
+    - bool isActive
+    - Subject<E_GameMode> changeGameModeSubject
     + bool IsFinished {get; protected set;}
     + E_GameScene GetNextScene {get; protected set;}
 
     + abstract void ObjectInit()
     + abstract void ObjectRelease()
+    + abstract void UIUpdate(InputData[] inputs)
     + abstract void ManagerUpdate(InputData[] inputs)
-    + abstract void UIUpdate();
+    + abstract void ObjectUpdate()
+    + abstract void PlayerUpdate(InputData[] inputs)
 
-    + virtual void PlayerUpdate(InputData[] inputs)
-    + virtual void ObjectUpdate()
     + virtual void SetLoadingActive(bool flag)
+    + virtual void SetActive(bool flag)
+    + virtual void SubscriveChangeGameMode(Action<E_GameMode> method)
 }
 
-class hogehogeSceneManager{
-    - List<InputMode> InputModeList
-    - ist<I_ObjectUpdatable> objectList
-    - List<I_ObjectUpdatable> managerList
-    - List<I_ObjectUpdatable> UIList
-    + bool IsFinished {get; protected set;}
-    + E_GameScene GetNextScene {get; protected set;}
-
+class hogehogeMode{
+    + void UIUpdate(InputData[] inputs)
     + void ObjectInit()
     + void ObjectRelease()
     + void ManagerUpdate(InputData[] inputs)
-    + void UIUpdate()
 
     + void PlayerUpdate(InputData[] inputs)
     + void ObjectUpdate()
     + void SetLoadingActive(bool flag)
+    + virtual void SetActive(bool flag)
+    + virtual void SubscriveChangeGameMode(Action<E_GameMode> method)
+
 
 }
 
@@ -71,8 +88,13 @@ enum E_GameState{
 }
 
 
-GameManager *--> SceneLoader : Obseveb
-GameManager o-right-> SceneObjectManager : Update
-SceneObjectManager o--> I_ObjectUpdatable
-hogehogeSceneManager <|-left- I_ObjectUpdatable
+GameManager *-left-> SceneLoader : Obseveb
+GameManager -right-> GameMode : Update
+GameManager o--> GameModeManager
+
+GameModeManager o-right- GameMode
+hogehogeScene <|-right- GameModeManager
+
+GameMode o--> I_ObjectUpdatable
+hogehogeMode <|-left- I_ObjectUpdatable
 @enduml

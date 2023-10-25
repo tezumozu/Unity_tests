@@ -1,0 +1,40 @@
+@startuml オプション周りのクラス設計
+
+    class OptionManager {
+        - int currentIndex
+
+        + void SaveOptiopn()       
+        + void UpdateOption(InputData[] input)
+    }
+
+    class OptionPage {
+        - int currentIndex
+        - bool isActive
+        - Subject<bool> IsActiveSubject
+        - Dictionary<E_OptionItem,OptionItem> OptionData
+
+        + void SubscriveIsActive (Actin<bool> method)
+        + void UpdateItem(InputData[] input)
+        + void SetActive(bool flagh)
+    }
+
+    class OptionItem <<MonoBehaviour>>{
+        - static Dictionary<E_OptionItem,String> ItemNameDic 
+        - E_OptionItem ownItem
+        + int value {get; private set;}
+        + void UpdateVulue(InputData[] input)
+
+    }
+
+    enum E_OptionItem{
+        SE,
+        BGM,
+        VOISE,
+        CONTOROLE
+    }
+
+    enum E_OptionPage{
+        DEFAULT
+    }
+
+@enduml

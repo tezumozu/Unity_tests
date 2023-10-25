@@ -9,28 +9,13 @@ using Cysharp.Threading.Tasks;
 using System.Threading.Tasks;
 
 
-public class ActionSceneManager : SceneObjectManager{
-    public override void ObjectInit(){
+public class ActionSceneManager : GameModeManager{
+    public override void SceneInit(){
         Debug.Log("test");
     }
 
     public override void ObjectRelease(){
 
     }
-
-    public override void ManagerUpdate(InputData[] inputs){
-
-    }
-
-    public override void UIUpdate(){
-        
-    }
-
-    public override void PlayerUpdate(InputData[] inputs){
-
-    }
-
-    public override void ObjectUpdate(){
-
-    } 
+ 
 }

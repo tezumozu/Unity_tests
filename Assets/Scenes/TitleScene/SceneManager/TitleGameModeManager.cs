@@ -8,20 +8,12 @@ using MyInputSystems;
 using Cysharp.Threading.Tasks;
 using System.Threading.Tasks;
 
-public class TitleSceneManager : SceneObjectManager{
-    public override void ObjectInit(){
+public class TitleGameModeManager : GameModeManager{
+    public override void SceneInit(){
         Debug.Log("test");
     }
 
     public override void ObjectRelease(){
-
-    }
-
-    public override void ManagerUpdate(InputData[] inputs){
-
-    }
-
-    public override void UIUpdate(){
 
     }
 }

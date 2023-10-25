@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 public class MyGameManager : MonoSingleton<MyGameManager> {
 
-    private Dictionary<E_GameScene,SceneObjectManager> sceneObjectManagerList;
+    private Dictionary<E_GameScene,GameModeManager> sceneObjectManagerList;
 
     private E_GameScene currentScene;
     
@@ -31,7 +31,7 @@ public class MyGameManager : MonoSingleton<MyGameManager> {
         currentScene = E_GameScene.TitleScene;
         sceneLoader = new SceneLoader();
 
-        sceneObjectManagerList = new Dictionary<E_GameScene, SceneObjectManager>();
+        sceneObjectManagerList = new Dictionary<E_GameScene, GameModeManager>();
         inputManager = InputManager.instance;
 
         //各シーンの初期化
@@ -45,7 +45,7 @@ public class MyGameManager : MonoSingleton<MyGameManager> {
 
         //シーンの初期化
         initAsync = UniTask.RunOnThreadPool( () =>{
-            sceneObjectManagerList[currentScene].ObjectInit();
+            sceneObjectManagerList[currentScene].SceneInit();
         }); 
     }
 
@@ -69,21 +69,23 @@ public class MyGameManager : MonoSingleton<MyGameManager> {
                 var inputs = inputManager.getInputList;
                 inputManager.inputUpdate();
 
+                var gameMode = sceneObjectManagerList[currentScene].GetCurrentGameMode();
+
+                //UIアップデート(UIへのユーザ入力を処理)
+                gameMode.UIUpdate(inputs);
+
                 //マネージャアップデート
-                sceneObjectManagerList[currentScene].ManagerUpdate(inputs);
+                gameMode.ManagerUpdate(inputs);
 
                 //プレイヤアップデート
-                sceneObjectManagerList[currentScene].PlayerUpdate(inputs);
+                gameMode.PlayerUpdate(inputs);
 
                 //オブジェクトアップデート
-                sceneObjectManagerList[currentScene].ObjectUpdate();
-
-                //UIアップデート
-                sceneObjectManagerList[currentScene].UIUpdate();
+                gameMode.ObjectUpdate();
 
 
                 //シーンが終了していればシーンを切り替える
-                if(sceneObjectManagerList[currentScene].IsFinished){
+                if(gameMode.IsSceneFinished){
                     //ゲームの状態をExitへ変更
                     currentGameState = E_GameState.EXIT;
 
@@ -91,7 +93,7 @@ public class MyGameManager : MonoSingleton<MyGameManager> {
                     sceneObjectManagerList[currentScene].ObjectRelease();
 
                     //Sceneを更新
-                    currentScene = sceneObjectManagerList[currentScene].GetNextScene;
+                    currentScene = gameMode.GetNextScene;
 
                     //ローディング画面を有効にする
                     sceneObjectManagerList[currentScene].SetLoadingActive(true);
