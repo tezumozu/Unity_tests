@@ -8,21 +8,21 @@ using MyInputSystems;
 using UniRx;
 
 abstract public class GameMode {
-    protected List<InputMode> InputModeList;
-    protected bool IsActive;
+    protected InputMode inputMode;
+    protected bool isActive;
 
-    protected Subject<E_GameMode> ChangeGameModeSubject;
+    protected Subject<E_GameMode> changeGameModeSubject;
+    protected Subject<bool> setActiveSubject;
 
     public bool IsSceneFinished {get; protected set;} = false;
 
     public E_GameScene GetNextScene {get; protected set;}
 
-
     public GameMode(){
-        List<InputMode> InputModeList = new List<InputMode>();
-        ChangeGameModeSubject = new Subject<E_GameMode>();
+        changeGameModeSubject = new Subject<E_GameMode>();
+        IsSceneFinished = false;
+        isActive = false;
     }
-
 
     public abstract void ObjectInit();
 
@@ -39,11 +39,20 @@ abstract public class GameMode {
     }
 
     public virtual void SetActive(bool flag){
-        IsActive = flag;
+        isActive = flag;
+        inputMode.SetActive(flag);
     }
 
-    public virtual void CangeGameModeSubscribe(Action<E_GameMode> method){
-        ChangeGameModeSubject.Subscribe(
+    public virtual void SubscribeCangeGameMode(Action<E_GameMode> method){
+        changeGameModeSubject.Subscribe(
+            (x) => {
+                method(x);
+            }
+        );
+    }
+
+    public virtual void SubscribeSetActive(Action<bool> method){
+        setActiveSubject.Subscribe(
             (x) => {
                 method(x);
             }

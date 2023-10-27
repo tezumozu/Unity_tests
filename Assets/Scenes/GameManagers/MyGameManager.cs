@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 public class MyGameManager : MonoSingleton<MyGameManager> {
 
-    private Dictionary<E_GameScene,GameModeManager> sceneObjectManagerList;
+    private Dictionary<E_GameScene,GameModeManager> gameObjectManagerList;
 
     private E_GameScene currentScene;
     
@@ -31,10 +31,11 @@ public class MyGameManager : MonoSingleton<MyGameManager> {
         currentScene = E_GameScene.TitleScene;
         sceneLoader = new SceneLoader();
 
-        sceneObjectManagerList = new Dictionary<E_GameScene, GameModeManager>();
+        gameObjectManagerList = new Dictionary<E_GameScene, GameModeManager>();
         inputManager = InputManager.instance;
 
         //各シーンの初期化
+        gameObjectManagerList[E_GameScene.TitleScene] = new TitleGameModeManager();
     }
     
 
@@ -45,7 +46,7 @@ public class MyGameManager : MonoSingleton<MyGameManager> {
 
         //シーンの初期化
         initAsync = UniTask.RunOnThreadPool( () =>{
-            sceneObjectManagerList[currentScene].SceneInit();
+            gameObjectManagerList[currentScene].InitScene();
         }); 
     }
 
@@ -59,7 +60,7 @@ public class MyGameManager : MonoSingleton<MyGameManager> {
                     //GameStateをPlayへ
                     currentGameState = E_GameState.PLAY;
                     //ローディング画面を無効にする
-                    sceneObjectManagerList[currentScene].SetLoadingActive(false);
+                    gameObjectManagerList[currentScene].SetLoadingActive(false);
                 }
                 break;
 
@@ -69,7 +70,7 @@ public class MyGameManager : MonoSingleton<MyGameManager> {
                 var inputs = inputManager.getInputList;
                 inputManager.inputUpdate();
 
-                var gameMode = sceneObjectManagerList[currentScene].GetCurrentGameMode();
+                var gameMode = gameObjectManagerList[currentScene].GetCurrentGameMode;
 
                 //UIアップデート(UIへのユーザ入力を処理)
                 gameMode.UIUpdate(inputs);
@@ -90,13 +91,13 @@ public class MyGameManager : MonoSingleton<MyGameManager> {
                     currentGameState = E_GameState.EXIT;
 
                     //シーンのオブジェクトを破棄 メモリリークを防ぐ
-                    sceneObjectManagerList[currentScene].ObjectRelease();
+                    gameObjectManagerList[currentScene].ReleaseObject();
 
                     //Sceneを更新
                     currentScene = gameMode.GetNextScene;
 
                     //ローディング画面を有効にする
-                    sceneObjectManagerList[currentScene].SetLoadingActive(true);
+                    gameObjectManagerList[currentScene].SetLoadingActive(true);
 
                     //シーン読み込み開始
                     StartCoroutine(sceneLoader.loadScene(currentScene));

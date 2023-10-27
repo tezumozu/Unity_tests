@@ -7,24 +7,33 @@ using System.Threading.Tasks;
 
 using MyInputSystems;
 
+using UniRx;
+
 public abstract class GameModeManager {
-    private Dictionary<E_GameMode , GameMode> GameModeList;
-    private E_GameMode currentGameMode;
+    protected Dictionary<E_GameMode , GameMode> gameModeList;
+    protected E_GameMode currentGameMode;
     private GameObject loadingUI;
-
-    public abstract void SceneInit();
-
-    public abstract void ObjectRelease();
-
-    public virtual void ChangeGameMode(E_GameMode nextMode){
-
+    private Subject<bool> setActiveSubject;
+    public GameMode GetCurrentGameMode{
+       get{ return gameModeList[currentGameMode];}
     }
 
-    public virtual GameMode GetCurrentGameMode (){
-        return GameModeList[currentGameMode];
+    public GameModeManager (){
+        loadingUI = GameObject.Find("LoadingUI");
+        gameModeList = new Dictionary<E_GameMode, GameMode>();
+    }
+
+    public abstract void InitScene();
+
+    public abstract void ReleaseObject();
+
+    protected virtual void ChangeGameMode(E_GameMode nextMode){
+        gameModeList[currentGameMode].SetActive(false);
+        gameModeList[nextMode].SetActive(true);
+        currentGameMode = nextMode;
     }
 
     public virtual void SetLoadingActive(bool flag){
         loadingUI.SetActive(flag);
-    } 
+    }
 }

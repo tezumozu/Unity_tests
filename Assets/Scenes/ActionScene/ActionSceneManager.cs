@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 
 public class ActionSceneManager : GameModeManager{
-    public override void SceneInit(){
+    public override void InitScene(){
         Debug.Log("test");
     }
 
-    public override void ObjectRelease(){
+    public override void ReleaseObject(){
 
     }
  

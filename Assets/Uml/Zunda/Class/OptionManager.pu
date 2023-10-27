@@ -1,11 +1,33 @@
 @startuml オプション周りのクラス設計
 
     class OptionManager {
-        - int currentIndex
+        - I_OptionUIUpdatable optionUIManager
 
-        + void SaveOptiopn()       
-        + void UpdateOption(InputData[] input)
+        + OptionManager (I_OptionUIUpdatable UIManager)
+        + UpdataManager (InputData[] input)
     }
+
+    interface I_OptionUIUpdatable{
+        + void UpdataItem(InputData[])
+        + void CangePage(InputData[])
+        + void getOptionData()
+        + void setOptionData()
+
+    }
+
+    class OptionUIManager {
+        + void UpdataItem(InputData[])
+        + void CangePage(InputData[])
+        + void getOptionData()
+        + void setOptionData()
+    }
+
+
+    class OptionLoder{
+        + Dictionary<E_OptionItem,int> LoadOption()
+        + void SaveOption()
+    }
+
 
     class OptionPage {
         - int currentIndex
@@ -16,13 +38,17 @@
         + void SubscriveIsActive (Actin<bool> method)
         + void UpdateItem(InputData[] input)
         + void SetActive(bool flagh)
+        + void SetValues(Dictionary<E_OptionItem,int> dataDic)
     }
 
     class OptionItem <<MonoBehaviour>>{
         - static Dictionary<E_OptionItem,String> ItemNameDic 
-        - E_OptionItem ownItem
-        + int value {get; private set;}
+        + E_OptionItem OwnItem {get; private set;}
+        + int Value {get; private set;}
         + void UpdateVulue(InputData[] input)
+    }
+
+    class GameMode{
 
     }
 
@@ -37,4 +63,10 @@
         DEFAULT
     }
 
+    OptionLoder *-right-> OptionManager
+    GameMode *--> OptionManager : injection Object
+    OptionManager *--> I_OptionUIUpdatable
+    I_OptionUIUpdatable <|-right-> OptionUIManager
+    OptionUIManager o--> OptionPage
+    OptionPage o--> OptionItem 
 @enduml

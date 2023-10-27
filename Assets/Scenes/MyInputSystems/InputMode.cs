@@ -14,4 +14,8 @@ abstract public class InputMode : MonoBehaviour{
     virtual public void inputUpdate(){
         
     }
+
+    virtual public void SetActive(bool flag){
+        gameObject.SetActive(flag);
+    }
 }
