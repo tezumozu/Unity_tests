@@ -14,13 +14,9 @@ abstract public class GameMode {
     protected Subject<E_GameMode> changeGameModeSubject;
     protected Subject<bool> setActiveSubject;
 
-    public bool IsSceneFinished {get; protected set;} = false;
-
-    public E_GameScene GetNextScene {get; protected set;}
-
     public GameMode(){
         changeGameModeSubject = new Subject<E_GameMode>();
-        IsSceneFinished = false;
+        setActiveSubject = new Subject<bool>();
         isActive = false;
     }
 
@@ -35,6 +31,10 @@ abstract public class GameMode {
     }
 
     public virtual void ObjectUpdate(){
+
+    }
+
+    public virtual void ObjectRelease(){
 
     }
 

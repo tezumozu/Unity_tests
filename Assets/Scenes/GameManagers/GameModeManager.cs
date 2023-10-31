@@ -23,9 +23,54 @@ public abstract class GameModeManager {
         gameModeList = new Dictionary<E_GameMode, GameMode>();
     }
 
-    public abstract void InitScene();
+    async public void InitScene(){
+        //各ゲームモードの初期化
+        List<UniTask> taskList = new List<UniTask>();
 
-    public abstract void ReleaseObject();
+        var keys = gameModeList.Keys;
+
+        foreach( var key in keys ){
+
+            var task = UniTask.RunOnThreadPool(()=>{
+                gameModeList[key].ObjectInit();
+                gameModeList[key].SubscribeCangeGameMode(ChangeGameMode);
+            });
+
+            taskList.Add(task);
+        }
+
+        await taskList;
+
+        //各GameModeManager固有の初期化処理
+        await OnInitialize();
+    }
+
+    protected abstract UniTask OnInitialize();
+
+    public async void ReleaseObject(){
+
+        //各ゲームモードのオブジェクトを破棄
+        List<UniTask> taskList = new List<UniTask>();
+
+        var keys = gameModeList.Keys;
+
+        foreach( var key in keys ){
+
+            var task = UniTask.RunOnThreadPool(()=>{
+                gameModeList[key].ObjectRelease();
+            });
+
+            taskList.Add(task);
+        }
+
+        await taskList;
+
+        await OnExit();
+
+        gameModeList.Clear();
+    }
+
+    protected abstract UniTask OnExit();
 
     protected virtual void ChangeGameMode(E_GameMode nextMode){
         gameModeList[currentGameMode].SetActive(false);

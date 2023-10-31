@@ -16,9 +16,7 @@ public class TitleMenu : GameMode{
     }
 
     public override void ManagerUpdate(InputData[] inputs){
-        if(true){
 
-        }
     }
 
     public override void UIUpdate(InputData[] inputs){

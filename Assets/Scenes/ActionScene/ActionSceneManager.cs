@@ -10,12 +10,16 @@ using System.Threading.Tasks;
 
 
 public class ActionSceneManager : GameModeManager{
-    public override void InitScene(){
-        Debug.Log("test");
+    protected override UniTask OnInitialize(){
+        return UniTask.RunOnThreadPool(()=>{
+            Debug.Log("test");
+        });
     }
 
-    public override void ReleaseObject(){
-
+    protected override UniTask OnExit(){
+        return UniTask.RunOnThreadPool(()=>{
+            Debug.Log("test");
+        });
     }
  
 }

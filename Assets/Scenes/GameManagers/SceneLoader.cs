@@ -6,18 +6,19 @@ using UnityEngine.SceneManagement;
 
 using UniRx;
 
-public class SceneLoader{
+public class SceneLoader : GenericSingletonObject<SceneLoader>{
     private static Subject<E_GameScene> loadSubject;
     private AsyncOperation asyncLoad;
 
-    public SceneLoader(){
-        if(loadSubject == null){
-            loadSubject = new Subject<E_GameScene>();
-        }
+    public override void OnInitialize (){
+        loadSubject = new Subject<E_GameScene>();
     }
 
     public IEnumerator loadScene (E_GameScene sceneName){
+        //シーンが読み込まれることを通知
         loadSubject.OnNext(sceneName);
+
+        //シーン読み込み開始
         asyncLoad = SceneManager.LoadSceneAsync(Enum.GetName(typeof(E_GameScene),sceneName));
 
         asyncLoad.allowSceneActivation = false;
