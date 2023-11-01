@@ -87,7 +87,7 @@ public class GameLoopManager : MonoSingleton<GameLoopManager> {
 
                 //シーンが終了していればシーンを切り替える
                 /*
-                if(gameMode.IsSceneFinished){
+                if(gameModeManagerList[currentScene].getIsSceneFinished){
                     //ゲームの状態をExitへ変更
                     currentGameState = E_GameState.EXIT;
 

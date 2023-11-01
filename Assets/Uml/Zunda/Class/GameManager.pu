@@ -1,100 +1,57 @@
 @startuml ゲーマネージャ
-class GameManager <<SingletonMonobehaviour>>{
+class GameLoopManager <<MonoSingleton>>{
+    - void E_LoopState
     - UniTask initAsync
-    - E_GameScene currentScene
-    - Dictionary<E_GameScene,SceneObjectManager> secneManagerList
-    - E_GameState currentGameState
-    - InputManager inputManager
-    - SceneLoader sceneLoader
+    - Dictionary <E_SceneName,GameModeManager> GameModeManagerDic
+    - E_SceneName currentScene
+    - private SceneLoader sceneLoader
+    - void Stat()
+    - void Updata()
+    + void override OnInitialize()
 
-    - void Start()
-    - void Update()
-    + override void OnInitialize()
-
+    - enum E_LoopState { INIT , UPDATE , EXIT , QUIT }
 }
 
 
-abstract class GameModeManager {
-    - Dictionary<E_GameMode,GameMode> gameModeList
-    - E_GameMode currentGameMode
+abstract GameModeManager {
+    + GameMode GetCurrentGameMode { get; }
+    + Dictionary <E_GameMode,GameMode> GameModeDic
+    + E_GameMode currentGameMode
 
-    + virtual GameMode GetCurrentGameMode()
-    + abstract void SceneInit()
-    - abstract void changeGameMode(E_GameMode)
+    + virtual void ObjectRelease()
+    + virtual void ObjectInit()
 }
 
-class hogehogeScene{
-
-    + void changeGameMode(E_GameMode)
-    + void SceneInit()
+interface I_GameObjectUpdatable{
+    + abstract UpdataObject()
+    + abstract ObserveGameModeChange(E_GameMode nextScene)
+    + abstract ObjectRelease()
+    + abstract ObjectInit()
 }
 
+abstract GameMode {
+    + GameManager GameManager {get; protected set;}
 
-abstract class GameMode{
-    - List<InputMode> InputModeList
-    -List<I_ObjectUpdatable> objectList
-    -List<I_ObjectUpdatable> managerList
-    -List<I_ObjectUpdatable> UIList
-    - bool isActive
-    - Subject<E_GameMode> changeGameModeSubject
-    + bool IsFinished {get; protected set;}
-    + E_GameScene GetNextScene {get; protected set;}
-
-    + abstract void ObjectInit()
-    + abstract void ObjectRelease()
-    + abstract void UIUpdate(InputData[] inputs)
-    + abstract void ManagerUpdate(InputData[] inputs)
-    + abstract void ObjectUpdate()
-    + abstract void PlayerUpdate(InputData[] inputs)
-
-    + virtual void SetLoadingActive(bool flag)
-    + virtual void SetActive(bool flag)
-    + virtual void SubscriveChangeGameMode(Action<E_GameMode> method)
+    + UpdataObject()
+    + ObserveGameModeChange(E_GameMode nextScene)
+    + ObjectRelease()
+    + ObjectInit()
 }
 
-class hogehogeMode{
-    + void UIUpdate(InputData[] inputs)
-    + void ObjectInit()
-    + void ObjectRelease()
-    + void ManagerUpdate(InputData[] inputs)
+interface I_LoadSceneAlertable {
+    + ObserveLoadSceneAlert(Action method)
+}
 
-    + void PlayerUpdate(InputData[] inputs)
-    + void ObjectUpdate()
-    + void SetLoadingActive(bool flag)
-    + virtual void SetActive(bool flag)
-    + virtual void SubscriveChangeGameMode(Action<E_GameMode> method)
-
+abstract class GameManager{
 
 }
 
-interface I_ObjectUpdatable {
-    + void ObjectUpdate ()
-    + void ObjectInit ()
-}
+GameLoopManager --> I_GameObjectUpdatable
+GameLoopManager o--> GameModeManager
+GameLoopManager -right-> I_LoadSceneAlertable
+GameModeManager *-right- GameMode
+GameManager -up-|> I_LoadSceneAlertable
+GameMode -up-|> I_GameObjectUpdatable
+GameMode *-right-> GameManager
 
-class SceneLoader{
-    - static Subject<E_Scene> sceneSubject
-
-    + static void SubscriveManager(Action method)
-    + IEnumerator loadScene()
-}
-
-enum E_GameScene{
-
-}
-
-enum E_GameState{
-
-}
-
-
-GameManager *-left-> SceneLoader : Obseveb
-GameManager -right-> GameMode : Update
-GameManager o--> GameModeManager
-
-GameModeManager o-right- GameMode
-hogehogeScene <|-right- GameModeManager
-
-GameMode o--> I_ObjectUpdatable
-hogehogeMode <|-left- I_ObjectUpdatable
 @enduml
