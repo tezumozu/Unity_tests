@@ -1,0 +1,44 @@
+@startuml タイトルシーン
+class TitleGameManager{
+
+}
+
+class TitleUIManager{
+
+}
+
+class TitleMenuGameMode{
+
+}
+
+class TitleGameModeManager{
+
+}
+
+abstract class GameMode{
+
+}
+
+abstract class GameModeManager{
+
+}
+
+abstract class GameManager{
+
+}
+
+TitleGameManager --|> GameManager
+TitleGameModeManager -up-|> GameModeManager
+TitleMenuGameMode --|> GameMode
+
+TitleMenuGameMode *--> TitleUIManager
+TitleMenuGameMode *--> TitleGameManager 
+
+TitleGameManager --> TitleUIManager : Observe
+
+TitleGameModeManager -right-> TitleGameManager : Observe
+TitleGameModeManager *--> TitleMenuGameMode
+
+
+
+@enduml

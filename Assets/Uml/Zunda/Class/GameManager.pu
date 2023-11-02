@@ -22,9 +22,8 @@ abstract GameModeManager {
     + virtual void ObjectInit()
 }
 
-interface I_GameObjectUpdatable{
+interface I_GameManagerUpdatable{
     + abstract UpdataObject()
-    + abstract ObserveGameModeChange(E_GameMode nextScene)
     + abstract ObjectRelease()
     + abstract ObjectInit()
 }
@@ -33,25 +32,32 @@ abstract GameMode {
     + GameManager GameManager {get; protected set;}
 
     + UpdataObject()
-    + ObserveGameModeChange(E_GameMode nextScene)
     + ObjectRelease()
     + ObjectInit()
+    # ObserveGameModeChangeAlert(E_GameMode nextScene)
 }
 
 interface I_LoadSceneAlertable {
     + ObserveLoadSceneAlert(Action method)
 }
 
+interface I_GameModeChangeAlertable {
+    + GameModeChangeAlert(Action method)
+}
+
 abstract class GameManager{
 
 }
 
-GameLoopManager --> I_GameObjectUpdatable
+GameLoopManager --> I_GameManagerUpdatable
 GameLoopManager o--> GameModeManager
 GameLoopManager -right-> I_LoadSceneAlertable
 GameModeManager *-right- GameMode
 GameManager -up-|> I_LoadSceneAlertable
-GameMode -up-|> I_GameObjectUpdatable
+GameMode -up-|> I_GameManagerUpdatable
 GameMode *-right-> GameManager
+GameManager --|> I_GameModeChangeAlertable
+GameModeManager --> I_GameModeChangeAlertable
+ 
 
 @enduml

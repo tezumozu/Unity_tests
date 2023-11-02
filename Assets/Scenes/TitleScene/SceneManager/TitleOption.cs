@@ -18,6 +18,10 @@ public class TitleOption : GameMode{
 
     }
 
+    public override void ReleaseObject(){
+
+    }
+
     public override void UIUpdate(InputData[] inputs){
 
     }

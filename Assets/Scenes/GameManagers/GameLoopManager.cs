@@ -47,6 +47,8 @@ public class GameLoopManager : MonoSingleton<GameLoopManager> {
         //シーンの初期化
         initAsync = UniTask.RunOnThreadPool( () =>{
             gameModeManagerList[currentScene].InitScene();
+            //ゲームマネージャをサブスク
+            
         }); 
     }
 

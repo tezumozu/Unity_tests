@@ -31,9 +31,12 @@ public abstract class GameModeManager {
 
         foreach( var key in keys ){
 
+            //上書き対策
+            var currentKey = key;
+
             var task = UniTask.RunOnThreadPool(()=>{
-                gameModeList[key].ObjectInit();
-                gameModeList[key].SubscribeCangeGameMode(ChangeGameMode);
+                gameModeList[currentKey].ObjectInit();
+                gameModeList[currentKey].GameManager.SubscribeChangeGameModeAlert(ChangeGameMode);
             });
 
             taskList.Add(task);
@@ -56,8 +59,11 @@ public abstract class GameModeManager {
 
         foreach( var key in keys ){
 
+            //上書き対策
+            var currentKey = key;
+
             var task = UniTask.RunOnThreadPool(()=>{
-                gameModeList[key].ObjectRelease();
+                gameModeList[currentKey].ReleaseObject();
             });
 
             taskList.Add(task);

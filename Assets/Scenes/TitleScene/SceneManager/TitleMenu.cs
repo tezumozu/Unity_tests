@@ -19,6 +19,10 @@ public class TitleMenu : GameMode{
 
     }
 
+    public override void ReleaseObject(){
+
+    }
+
     public override void UIUpdate(InputData[] inputs){
 
     }
