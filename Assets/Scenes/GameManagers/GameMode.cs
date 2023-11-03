@@ -12,7 +12,7 @@ abstract public class GameMode : I_GameObjectUpdatable{
     protected bool isActive;
     protected Subject<bool> setActiveSubject;
 
-    public GameManager GameManager { get; protected set;}
+    public GameManager OwnGameManager { get; protected set;}
 
 
     public GameMode(){
@@ -23,14 +23,15 @@ abstract public class GameMode : I_GameObjectUpdatable{
 
     public virtual void SetActive(bool flag){
         isActive = flag;
-        inputMode.SetActive(flag);
+        inputMode.SetInputActive(flag);
+        setActiveSubject.OnNext(flag);
     }
 
 
     //必須メソッド
-    public abstract void ObjectInit();
+    public abstract void InitObject();
 
-    public abstract void ManagerUpdate(InputData[] inputs);
+    public abstract void UpdateManager(InputData[] inputs);
 
     public abstract void ReleaseObject();
 
@@ -38,17 +39,17 @@ abstract public class GameMode : I_GameObjectUpdatable{
 
     //必須ではないメソッド
     //UI更新用
-    public virtual void UIUpdate(InputData[] inputs){
+    public virtual void UpdateUI(InputData[] inputs){
 
     }
 
     //プレイヤーキャラクター更新用
-    public virtual void PlayerUpdate(InputData[] inputs){
+    public virtual void UpdatePlayer(InputData[] inputs){
 
     }
 
     //ステージギミックやNPC更新用
-    public virtual void ObjectUpdate(){
+    public virtual void UpdateObject(){
 
     }
 }

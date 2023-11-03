@@ -16,12 +16,12 @@ public abstract class GameManager : I_ChangeGameModeAreltable , I_LoadSceneArelt
     }
 
     //シーンロード
-    protected virtual void loadSceneAlart(E_GameScene nextScene){
+    protected virtual void loadSceneAlert(E_GameScene nextScene){
         loadSceneAreltSubject.OnNext(nextScene);
     }
 
     //シーンロードをサブスクライブ
-    public virtual void SubscribeLoadSceneAlart(Action<E_GameScene> method){
+    public virtual void SubscribeLoadSceneAlert(Action<E_GameScene> method){
         loadSceneAreltSubject.Subscribe((x) => {
             method(x);
         });
@@ -29,7 +29,7 @@ public abstract class GameManager : I_ChangeGameModeAreltable , I_LoadSceneArelt
 
 
     //ゲームモード切り替え
-    protected virtual void changeGameModeAlart(E_GameMode nextMode){
+    protected virtual void changeGameModeAlert(E_GameMode nextMode){
         changeGameModeAreltSubject.OnNext(nextMode);
     }
 

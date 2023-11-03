@@ -7,7 +7,7 @@ abstract public class InputMode : MonoBehaviour{
 
     protected bool isActive = false;
 
-    virtual public void init(){
+    virtual public void Init(){
 
     }
     
@@ -15,7 +15,7 @@ abstract public class InputMode : MonoBehaviour{
         
     }
 
-    virtual public void SetActive(bool flag){
-        gameObject.SetActive(flag);
+    virtual public void SetInputActive(bool flag){
+        isActive = flag;
     }
 }

@@ -5,17 +5,17 @@ using UnityEngine;
 using MyInputSystems;
 
 public interface I_GameObjectUpdatable{
-    public abstract void ObjectInit();
+    public abstract void InitObject();
 
     //マネージャ更新用
-    public abstract void ManagerUpdate(InputData[] inputs);
+    public abstract void UpdateManager(InputData[] inputs);
 
     //UI更新用
-    public abstract void UIUpdate(InputData[] inputs);
+    public abstract void UpdateUI(InputData[] inputs);
 
     //プレイヤーキャラクター更新用
-    public abstract void PlayerUpdate(InputData[] inputs);
+    public abstract void UpdatePlayer(InputData[] inputs);
 
     //ステージギミックやNPC更新用
-    public abstract void ObjectUpdate();
+    public abstract void UpdateObject();
 }

@@ -6,16 +6,25 @@ using MyInputSystems;
 
 public class TitleMenu : GameMode{
 
+    private TitleMenuUIManager UIManager;
+
     public TitleMenu(){
-        
+        //入力を初期化する
+        inputMode = GameObject.Find("IM_TitleMenu").GetComponent<InputMode>();
+        inputMode.Init();
     }   
 
-    public override void ObjectInit(){
-        var loadResult = GenericLoader<InputMode,E_InputMode>.loadAsetResouse(E_InputMode.IM_Title);
-        inputMode = loadResult.GetAwaiter().GetResult();
+    public override void InitObject(){
+
+        //UIマネージャを生成
+        UIManager = new TitleMenuUIManager();
+       
+        //ゲームマネージャを生成
+        OwnGameManager = new TitleMenuGameManager(UIManager);
+
     }
 
-    public override void ManagerUpdate(InputData[] inputs){
+    public override void UpdateManager(InputData[] inputs){
 
     }
 
@@ -23,7 +32,7 @@ public class TitleMenu : GameMode{
 
     }
 
-    public override void UIUpdate(InputData[] inputs){
-
+    public override void UpdateUI(InputData[] inputs){
+        UIManager.UpdateUI(inputs);
     }
 }

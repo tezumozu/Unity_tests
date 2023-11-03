@@ -182,7 +182,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 746533075}
         m_TargetAssemblyTypeName: MyInputSystems.TitleInput, Assembly-CSharp
         m_MethodName: CursorMoveStick
         m_Mode: 0
@@ -198,7 +198,7 @@ MonoBehaviour:
     m_ActionName: TItle/StickCursorMove[/SwitchProControllerHID/leftStick]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 746533075}
         m_TargetAssemblyTypeName: MyInputSystems.TitleInput, Assembly-CSharp
         m_MethodName: DecideInputs
         m_Mode: 0
@@ -214,7 +214,7 @@ MonoBehaviour:
     m_ActionName: TItle/Deside[/SwitchProControllerHID/buttonEast]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 746533075}
         m_TargetAssemblyTypeName: MyInputSystems.TitleInput, Assembly-CSharp
         m_MethodName: CancelInputs
         m_Mode: 0
@@ -230,7 +230,7 @@ MonoBehaviour:
     m_ActionName: TItle/Cancel[/SwitchProControllerHID/buttonSouth]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 746533075}
         m_TargetAssemblyTypeName: MyInputSystems.TitleInput, Assembly-CSharp
         m_MethodName: CursorMoveButtonUp
         m_Mode: 0
@@ -246,7 +246,7 @@ MonoBehaviour:
     m_ActionName: TItle/KeyCursorMoveUP
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 746533075}
         m_TargetAssemblyTypeName: MyInputSystems.TitleInput, Assembly-CSharp
         m_MethodName: CursorMoveButtonDown
         m_Mode: 0
@@ -262,7 +262,7 @@ MonoBehaviour:
     m_ActionName: TItle/KeyCursorMoveDOWN
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 746533075}
         m_TargetAssemblyTypeName: MyInputSystems.TitleInput, Assembly-CSharp
         m_MethodName: CursorMoveButtonLeft
         m_Mode: 0
@@ -278,7 +278,7 @@ MonoBehaviour:
     m_ActionName: TItle/KeyCursorMoveLEFT
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 746533075}
         m_TargetAssemblyTypeName: MyInputSystems.TitleInput, Assembly-CSharp
         m_MethodName: CursorMoveButtonRight
         m_Mode: 0
@@ -416,6 +416,78 @@ MonoScript:
   m_ClassName: InputSystemUIInputModule
   m_Namespace: UnityEngine.InputSystem.UI
   m_AssemblyName: Unity.InputSystem
+--- !u!1001 &746533074
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2937222192155585832, guid: 006047f9dc75a1843ae527855d79c00a, type: 3}
+      propertyPath: m_Name
+      value: IM_TitleMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 8717088228431633416, guid: 006047f9dc75a1843ae527855d79c00a, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8717088228431633416, guid: 006047f9dc75a1843ae527855d79c00a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.8080518
+      objectReference: {fileID: 0}
+    - target: {fileID: 8717088228431633416, guid: 006047f9dc75a1843ae527855d79c00a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.19322494
+      objectReference: {fileID: 0}
+    - target: {fileID: 8717088228431633416, guid: 006047f9dc75a1843ae527855d79c00a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.41619045
+      objectReference: {fileID: 0}
+    - target: {fileID: 8717088228431633416, guid: 006047f9dc75a1843ae527855d79c00a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8717088228431633416, guid: 006047f9dc75a1843ae527855d79c00a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8717088228431633416, guid: 006047f9dc75a1843ae527855d79c00a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8717088228431633416, guid: 006047f9dc75a1843ae527855d79c00a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8717088228431633416, guid: 006047f9dc75a1843ae527855d79c00a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8717088228431633416, guid: 006047f9dc75a1843ae527855d79c00a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8717088228431633416, guid: 006047f9dc75a1843ae527855d79c00a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 006047f9dc75a1843ae527855d79c00a, type: 3}
+--- !u!114 &746533075 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7372079164194086553, guid: 006047f9dc75a1843ae527855d79c00a, type: 3}
+  m_PrefabInstance: {fileID: 746533074}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 376c1495fe652d74489e50807751e847, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &826790366
 GameObject:
   m_ObjectHideFlags: 0

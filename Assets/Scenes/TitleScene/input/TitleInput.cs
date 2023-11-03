@@ -9,7 +9,7 @@ namespace MyInputSystems {
         private InputManager inputManager;
         //private E_InputType currentMoveDirection;
 
-        override public void init() {
+        override public void Init() {
 
             //inputSystemを取得
             inputManager = InputManager.instance;

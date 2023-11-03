@@ -18,6 +18,7 @@ public class GameLoopManager : MonoSingleton<GameLoopManager> {
     private Dictionary<E_GameScene,GameModeManager> gameModeManagerList;
 
     private E_GameScene currentScene;
+    private E_GameScene nextScene;
     
     private UniTask initAsync;
 
@@ -27,6 +28,8 @@ public class GameLoopManager : MonoSingleton<GameLoopManager> {
 
     private SceneLoader sceneLoader;
 
+    private bool isHaveNeedLoading;
+
     public override void OnInitialize(){
         currentScene = E_GameScene.TitleScene;
         sceneLoader = SceneLoader.instance;
@@ -34,13 +37,15 @@ public class GameLoopManager : MonoSingleton<GameLoopManager> {
         gameModeManagerList = new Dictionary<E_GameScene, GameModeManager>();
         inputManager = InputManager.instance;
 
-        //各シーンの初期化
+        //各シーンのGameMmodeManagerを初期化
         gameModeManagerList[E_GameScene.TitleScene] = new TitleGameModeManager();
     }
     
 
     //シーン開始時の共通の初期化
     private void Start(){
+        isHaveNeedLoading = false;
+
         //gameStateを初期化
         currentGameState = E_GameState.INIT;
 
@@ -48,7 +53,10 @@ public class GameLoopManager : MonoSingleton<GameLoopManager> {
         initAsync = UniTask.RunOnThreadPool( () =>{
             gameModeManagerList[currentScene].InitScene();
             //ゲームマネージャをサブスク
-            
+            var gameManagers = gameModeManagerList[currentScene].GetLoadSceneAreltableObjects();
+            foreach (var gm in gameManagers){
+                gm.SubscribeLoadSceneAlert(LoadScene);
+            }
         }); 
     }
 
@@ -75,36 +83,40 @@ public class GameLoopManager : MonoSingleton<GameLoopManager> {
                 var gameMode = gameModeManagerList[currentScene].GetCurrentGameMode;
 
                 //UIアップデート(UIへのユーザ入力を処理)
-                gameMode.UIUpdate(inputs);
+                gameMode.UpdateUI(inputs);
 
                 //マネージャアップデート
-                gameMode.ManagerUpdate(inputs);
+                gameMode.UpdateManager(inputs);
 
                 //プレイヤアップデート
-                gameMode.PlayerUpdate(inputs);
+                gameMode.UpdatePlayer(inputs);
 
                 //オブジェクトアップデート
-                gameMode.ObjectUpdate();
+                gameMode.UpdateObject();
+
+                //GameModeManagerの更新
+                gameModeManagerList[currentScene].UpdateOwn();
 
 
-                //シーンが終了していればシーンを切り替える
-                /*
-                if(gameModeManagerList[currentScene].getIsSceneFinished){
+                //ロードの必要があればシーンロード
+                if(isHaveNeedLoading){
                     //ゲームの状態をExitへ変更
                     currentGameState = E_GameState.EXIT;
 
                     //シーンのオブジェクトを破棄 メモリリークを防ぐ
-                    gameObjectManagerList[currentScene].ReleaseObject();
-
-                    //Sceneを更新
-                    currentScene = gameMode.GetNextScene;
+                    gameModeManagerList[currentScene].ReleaseObject();
 
                     //ローディング画面を有効にする
-                    gameObjectManagerList[currentScene].SetLoadingActive(true);
+                    gameModeManagerList[currentScene].SetLoadingActive(true);
+
+                    //Sceneを更新
+                    currentScene = nextScene;
 
                     //シーン読み込み開始
-                    StartCoroutine(sceneLoader.loadScene(currentScene));
-                }*/
+                    //StartCoroutine(sceneLoader.loadScene(currentScene));
+
+                    isHaveNeedLoading = false;
+                }
 
                 break;
 
@@ -113,7 +125,13 @@ public class GameLoopManager : MonoSingleton<GameLoopManager> {
                 //読み込み完了まで待機
                 break;
         }
-        
+    }
+
+
+    //呼び出されたフレームの最後にロードを行う
+    private void  LoadScene(E_GameScene next){
+        isHaveNeedLoading = true;
+        nextScene = next;
     }
 }
     

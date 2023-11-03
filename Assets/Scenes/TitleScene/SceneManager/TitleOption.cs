@@ -10,11 +10,11 @@ public class TitleOption : GameMode{
 
     }
 
-    public override void ObjectInit(){
+    public override void InitObject(){
 
     }
 
-    public override void ManagerUpdate(InputData[] inputs){
+    public override void UpdateManager(InputData[] inputs){
 
     }
 
@@ -22,7 +22,7 @@ public class TitleOption : GameMode{
 
     }
 
-    public override void UIUpdate(InputData[] inputs){
+    public override void UpdateUI(InputData[] inputs){
 
     }
 }

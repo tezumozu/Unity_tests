@@ -11,16 +11,43 @@ using UniRx;
 
 public abstract class GameModeManager {
     protected Dictionary<E_GameMode , GameMode> gameModeList;
+    protected Dictionary<E_GameMode , string> gameModeInputList;
     protected E_GameMode currentGameMode;
-    private GameObject loadingUI;
-    private Subject<bool> setActiveSubject;
+    protected E_GameMode nextGameMode;
+
+    protected bool isHaveNeedChangeGameMode;
+
+    protected GameObject loadingUI;
+    protected Subject<bool> setActiveSubject;
     public GameMode GetCurrentGameMode{
        get{ return gameModeList[currentGameMode];}
     }
 
+
     public GameModeManager (){
+        isHaveNeedChangeGameMode = false;
         loadingUI = GameObject.Find("LoadingUI");
         gameModeList = new Dictionary<E_GameMode, GameMode>();
+        gameModeInputList = new Dictionary<E_GameMode, string>();
+    }
+
+
+    //各GameModeManager固有の初期化処理
+    protected abstract UniTask OnInitialize();
+
+    //各GameModeManager固有の終了処理
+    protected abstract UniTask OnFinal();
+
+    //自信をUpdateする
+    public virtual void UpdateOwn(){
+        if(isHaveNeedChangeGameMode){
+            //現状のモードを無効にする
+            gameModeList[currentGameMode].SetActive(false);
+
+            //次のモードを有効にする
+            gameModeList[nextGameMode].SetActive(true);
+            currentGameMode = nextGameMode;
+        }
     }
 
     async public void InitScene(){
@@ -35,8 +62,8 @@ public abstract class GameModeManager {
             var currentKey = key;
 
             var task = UniTask.RunOnThreadPool(()=>{
-                gameModeList[currentKey].ObjectInit();
-                gameModeList[currentKey].GameManager.SubscribeChangeGameModeAlert(ChangeGameMode);
+                gameModeList[currentKey].InitObject();
+                gameModeList[currentKey].OwnGameManager.SubscribeChangeGameModeAlert(ChangeGameMode);
             });
 
             taskList.Add(task);
@@ -48,7 +75,6 @@ public abstract class GameModeManager {
         await OnInitialize();
     }
 
-    protected abstract UniTask OnInitialize();
 
     public async void ReleaseObject(){
 
@@ -71,20 +97,25 @@ public abstract class GameModeManager {
 
         await taskList;
 
-        await OnExit();
-
-        gameModeList.Clear();
+        //固有の終了処理
+        await OnFinal();
     }
 
-    protected abstract UniTask OnExit();
 
     protected virtual void ChangeGameMode(E_GameMode nextMode){
-        gameModeList[currentGameMode].SetActive(false);
-        gameModeList[nextMode].SetActive(true);
-        currentGameMode = nextMode;
+        isHaveNeedChangeGameMode = true;
+        nextGameMode = nextMode;
     }
 
     public virtual void SetLoadingActive(bool flag){
         loadingUI.SetActive(flag);
+    }
+
+    public virtual List<I_LoadSceneAreltable> GetLoadSceneAreltableObjects (){
+        var result = new List<I_LoadSceneAreltable>();
+        foreach(var key in gameModeList.Keys){
+            result.Add(gameModeList[key].OwnGameManager);
+        }
+        return result;
     }
 }

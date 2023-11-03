@@ -16,7 +16,7 @@ public class ActionSceneManager : GameModeManager{
         });
     }
 
-    protected override UniTask OnExit(){
+    protected override UniTask OnFinal(){
         return UniTask.RunOnThreadPool(()=>{
             Debug.Log("test");
         });
