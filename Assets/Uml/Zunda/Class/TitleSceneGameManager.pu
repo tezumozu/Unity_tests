@@ -1,6 +1,5 @@
 @startuml タイトルシーン
 class TitleGameManager{
-
 }
 
 class TitleUIManager{
@@ -27,12 +26,12 @@ abstract class GameManager{
 
 }
 
-TitleGameManager --|> GameManager
+TitleGameManager -up-|> GameManager
 TitleGameModeManager -up-|> GameModeManager
-TitleMenuGameMode --|> GameMode
+TitleMenuGameMode -up-|> GameMode
 
 TitleMenuGameMode *--> TitleUIManager
-TitleMenuGameMode *--> TitleGameManager 
+TitleMenuGameMode *-right-> TitleGameManager 
 
 TitleGameManager --> TitleUIManager : Observe
 

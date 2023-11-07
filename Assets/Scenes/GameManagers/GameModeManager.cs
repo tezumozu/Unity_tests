@@ -11,7 +11,6 @@ using UniRx;
 
 public abstract class GameModeManager {
     protected Dictionary<E_GameMode , GameMode> gameModeList;
-    protected Dictionary<E_GameMode , string> gameModeInputList;
     protected E_GameMode currentGameMode;
     protected E_GameMode nextGameMode;
 
@@ -28,7 +27,6 @@ public abstract class GameModeManager {
         isHaveNeedChangeGameMode = false;
         loadingUI = GameObject.Find("LoadingUI");
         gameModeList = new Dictionary<E_GameMode, GameMode>();
-        gameModeInputList = new Dictionary<E_GameMode, string>();
     }
 
 
@@ -47,6 +45,8 @@ public abstract class GameModeManager {
             //次のモードを有効にする
             gameModeList[nextGameMode].SetActive(true);
             currentGameMode = nextGameMode;
+
+            isHaveNeedChangeGameMode = false;
         }
     }
 

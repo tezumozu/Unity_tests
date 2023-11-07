@@ -1,0 +1,38 @@
+@startuml ActionScene
+    namespace StageSelectScene{
+        class StageScelectUIManager{
+
+        }
+    }
+
+    namespace ActionScene{
+        class StageManager{
+
+        }
+    }
+
+    class StageJasonDataManager <<Singleton>> {
+
+    }
+
+    interface I_StageSelectable{
+        + void ScelectStage (E_Stage stage)
+    }
+
+    interface I_StageDataLoadable{
+        + StageData GetStage()
+        + void SaveStageData(StageData data)
+    }
+
+    class StageData{
+
+    }
+
+    StageScelectUIManager *--> I_StageSelectable
+
+    StageManager *--> I_StageDataLoadable
+
+    StageJasonDataManager .up.|> I_StageDataLoadable
+    StageJasonDataManager .up.|> I_StageSelectable
+
+@enduml

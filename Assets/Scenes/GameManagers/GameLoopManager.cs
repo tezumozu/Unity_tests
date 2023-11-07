@@ -30,6 +30,7 @@ public class GameLoopManager : MonoSingleton<GameLoopManager> {
 
     private bool isHaveNeedLoading;
 
+    //ゲーム開始時の初期化
     public override void OnInitialize(){
         currentScene = E_GameScene.TitleScene;
         sceneLoader = SceneLoader.instance;
@@ -39,6 +40,7 @@ public class GameLoopManager : MonoSingleton<GameLoopManager> {
 
         //各シーンのGameMmodeManagerを初期化
         gameModeManagerList[E_GameScene.TitleScene] = new TitleGameModeManager();
+        gameModeManagerList[E_GameScene.ActionScene] = new ActionGameModeManager();
     }
     
 

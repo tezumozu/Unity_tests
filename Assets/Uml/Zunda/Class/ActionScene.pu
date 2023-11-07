@@ -1,0 +1,80 @@
+@startuml ActionScene_ActionMode
+    abstract GameMode{
+
+    }
+
+    abstract GameModeManager{
+
+    }
+
+    abstract GameManager{
+
+    }
+
+    class ActionGameMode{
+
+    }
+
+    class StageManager{
+
+    }
+
+    class PlayerManager{
+
+    }
+
+    class ActionGameManager{
+
+    }
+
+    class ActionGameModeManager{
+
+    }
+
+    class Area{
+
+    }
+
+    class AreaObject{
+
+    }
+
+    class Player {
+
+    }
+
+    class ActionUIManager{
+
+    }
+
+    interface I_AreaUpdatable{
+
+    }
+
+    interface I_AreaObjectUpdatable{
+
+    }
+
+    ActionGameMode -up-|> GameMode
+    ActionGameMode *--> PlayerManager
+    ActionGameMode *-right-> StageManager
+    ActionGameMode *--> ActionGameManager
+
+    ActionGameModeManager -up-|> GameModeManager
+    GameModeManager o--> GameMode
+
+    ActionGameManager -up-|> GameManager 
+    GameModeManager --> GameManager : Observe
+
+    ActionGameManager --> PlayerManager : Observe 
+    
+    StageManager o--> I_AreaUpdatable
+    Area -up-|> I_AreaUpdatable
+
+    Area o--> I_AreaObjectUpdatable
+
+    AreaObject -left-|> I_AreaObjectUpdatable
+
+    ActionUIManager -left-> PlayerManager : Observe
+
+@enduml
