@@ -20,14 +20,16 @@ public class ActionGameMode : GameMode{
 
     public override void InitObject(){
        
+        PlayerDataLoader playerDataLoader = new PlayerDataLoader();
+
         //プレイヤーマネージャ生成
         playerManager = new PlayerManager(player);
 
         //ステージマネージャ生成
-        stageManager = new StageManager();
+        stageManager = new StageManager(playerDataLoader);
 
         //ゲームマネージャを生成
-        OwnGameManager = new ActionGameManager(playerManager);
+        OwnGameManager = new ActionGameManager(playerManager,stageManager,playerDataLoader);
 
     }
 

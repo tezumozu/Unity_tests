@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MyInputSystems;
 
 namespace StateManagement_ver3{
-    public class PlayerManager {
+    public class PlayerManager : I_GameOverAlertable{
 
         private I_PlayerUpdatable player;
         private PlayerStateManager stateManager;
@@ -26,6 +27,10 @@ namespace StateManagement_ver3{
 
             //プレイヤーの更新
             player.playerUpdate();
+        }
+
+        public void ObserveGameOverAlert(Action method){
+
         }
 
     }

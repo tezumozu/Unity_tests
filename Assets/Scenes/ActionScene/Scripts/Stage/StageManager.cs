@@ -1,15 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageManager{
-    // Start is called before the first frame update
-    void initManager(){
-        
+public class StageManager : I_StageClearAlertable{
+    public StageManager (I_PlayerDataUpdatable playerDataLoader){
+
     }
 
-    // Update is called once per frame
-    void Update(){
-        
+    public void ObserveStageClearAlert(Action method){
+
     }
 }

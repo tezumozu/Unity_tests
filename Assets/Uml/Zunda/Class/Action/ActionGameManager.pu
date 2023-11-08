@@ -1,0 +1,61 @@
+@startuml ActionGameManager
+
+    class ActionGameManager{
+        + ActionGameManager(I_StageGoalObservable stageManager, I_PlayerLifeObservable playerManager , I_PlayerDataLoadable dataLoader)
+
+        + void GameOver()
+        + void StageClear()
+        + void GameClear()
+    }
+
+    class PlayerJsonDataManmager{
+        + PlayerFlagData LoadData () 
+    }
+
+    class PlayerFlagData{
+        + Dictionary<E_Stage,bool> StageCleaFlag
+        + Dictionary<E_Treasure,bool> TreasureFlag
+    }
+
+    class PlayerManager{
+        + Subject<Unit> GameOverAralt
+    }
+
+    class StageManager{
+        + Subject<Unit> StageClearAralt
+    }
+
+    interface I_PlayerDataLoadable{
+        + PlayerFlagData LoadData()
+    }
+
+    interface I_PlayerDataUpdatable{
+        + void SaveData()
+        + void TreasureGet()
+        + void StageClear()
+    }
+
+    interface I_StageGoalObservable{
+        + abstract ObserveGoalAralt(Action method)
+    }
+
+    interface I_PlayerLifeObservable{
+        + abstract ObserveGameOverAralt(Action method)
+    }
+
+    ActionGameManager --> I_PlayerLifeObservable : Observe
+    ActionGameManager --> I_StageGoalObservable : Observe
+    
+    PlayerManager -up-|> I_PlayerLifeObservable
+    
+    StageManager -up-|> I_StageGoalObservable
+
+    PlayerJsonDataManmager -up-|> I_PlayerDataLoadable
+    PlayerJsonDataManmager -up-|> I_PlayerDataUpdatable
+
+    StageManager -left-> I_PlayerDataUpdatable
+    ActionGameManager --> I_PlayerDataLoadable
+
+
+
+@enduml
