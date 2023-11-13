@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 public class ActionGameModeManager : GameModeManager{
 
     public ActionGameModeManager(){
-        gameModeList[E_GameMode.ACTION] = new ActionGameMode();
+        //gameModeList[E_GameMode.ACTION] = new ActionGameMode();
     }
 
     protected override UniTask OnInitialize(){
