@@ -5,10 +5,22 @@ using UnityEngine;
 using Zenject;
 
 public class ZenjectTestableObject {
-    [Inject]
     I_ZenjectTestLogable testLoger;
 
+    private ZenjectTestableObject (I_ZenjectTestLogable obj){
+        testLoger = obj;
+    }
+
     public void Test(){
-        testLoger.TestLog();
+        if(testLoger == null){
+            Debug.Log("Object Null");
+        }else{
+            testLoger.TestLog();
+        }
+    }
+
+
+    public class TestFactory : PlaceholderFactory<ZenjectTestableObject>{
+
     }
 }
